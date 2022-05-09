@@ -1,8 +1,8 @@
-package syntaxtree;
+package syntaxtree.structure;
 
 import common.Type;
 
-public class ParameterDecl {
+public class MethodParameter {
 
     private Type type;
     private String identifier;
