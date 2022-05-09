@@ -31,11 +31,6 @@
             <artifactId>asm</artifactId>
             <version>9.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-util</artifactId>
-            <version>9.3</version>
-        </dependency>
     </dependencies>
 
 </project>

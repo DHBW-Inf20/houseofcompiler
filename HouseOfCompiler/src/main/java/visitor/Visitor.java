@@ -1,6 +1,10 @@
 package visitor;
 
 
+import syntaxtree.ClassDecl;
+import syntaxtree.Program;
+
 public interface Visitor {
-    //public void visit(Program prog);
+    void visit(Program program);
+    void visit(ClassDecl clazz);
 }
