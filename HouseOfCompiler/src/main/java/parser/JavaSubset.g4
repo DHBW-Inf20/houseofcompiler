@@ -13,10 +13,15 @@ parameterList: parameter(Comma parameter)*;
 parameterDecl: type Identifier;
 //ident | methodCall() | ...
 parameter: stmtExpr | expression;
-//int a, {...}, return
+//int a, {...}, return a, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
 statement: localVarDecl | block | returnStmt | whileStmt | forStmt | ifStmt | stmtExpr;
+//a = expr, new Object(), method(param1)
 stmtExpr: assign | newDecl | methodCall;
-expression: Identifier | instVar | unaryExpr | binaryExpr | value;
+//property, a = expr, a = 3+1, a = 3
+expression: Identifier | instVar | binaryExpr | value;
+
+localVarDecl: type Identifier;
+block: OpenCurlyBracket ClosedCurlyBracket
 accessModifier: (Public | Private | Protected)? Static?;
 returnStmt: Return (expression|stmtExpr);
 type: Int | Boolean | Char;
