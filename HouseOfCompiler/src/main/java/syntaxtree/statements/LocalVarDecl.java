@@ -1,15 +1,15 @@
-package syntaxtree.structure;
+package syntaxtree.statements;
 
 import common.Type;
 
 import java.util.Objects;
 
-public class MethodParameter {
+public class LocalVarDecl implements IStatement{
 
-    private Type type;
-    private String identifier;
+    Type type;
+    String identifier;
 
-    public MethodParameter(String identifier) {
+    public LocalVarDecl(String identifier) {
         this.identifier = identifier;
     }
 
@@ -29,7 +29,7 @@ public class MethodParameter {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MethodParameter that = (MethodParameter) o;
+        LocalVarDecl that = (LocalVarDecl) o;
         return Objects.equals(type, that.type) && identifier.equals(that.identifier);
     }
 

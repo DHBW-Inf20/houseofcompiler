@@ -1,24 +1,24 @@
-package syntaxtree.structure;
+package syntaxtree.expressions;
 
 import common.Type;
 
 import java.util.Objects;
 
-public class MethodParameter {
+public class LocalOrFieldVar implements IExpression{
 
-    private Type type;
     private String identifier;
+    private Type type;
 
-    public MethodParameter(String identifier) {
+    public LocalOrFieldVar(String identifier) {
         this.identifier = identifier;
-    }
-
-    public Type getType() {
-        return type;
     }
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setType(Type type) {
@@ -29,12 +29,12 @@ public class MethodParameter {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MethodParameter that = (MethodParameter) o;
-        return Objects.equals(type, that.type) && identifier.equals(that.identifier);
+        LocalOrFieldVar that = (LocalOrFieldVar) o;
+        return identifier.equals(that.identifier) && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, identifier);
+        return Objects.hash(identifier, type);
     }
 }
