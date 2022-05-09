@@ -1,4 +1,4 @@
-package syntaxtree;
+package common;
 
 public enum Primitives {
     INT,

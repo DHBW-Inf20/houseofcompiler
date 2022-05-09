@@ -1,8 +1,7 @@
 package syntaxtree;
 
-import syntaxtree.Expression;
-import syntaxtree.Statement;
-import syntaxtree.Type;
+import common.Type;
+import common.syntaxtree.Statement;
 
 public class WhileStmt extends Statement {
 

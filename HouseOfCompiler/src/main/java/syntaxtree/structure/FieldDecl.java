@@ -1,4 +1,8 @@
-package syntaxtree;
+package syntaxtree.structure;
+
+import common.AccessModifier;
+import common.Type;
+import syntaxtree.Expression;
 
 import java.util.Vector;
 

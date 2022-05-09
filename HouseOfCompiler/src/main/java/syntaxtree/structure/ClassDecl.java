@@ -1,4 +1,6 @@
-package syntaxtree;
+package syntaxtree.structure;
+
+import common.Type;
 
 import java.util.Vector;
 

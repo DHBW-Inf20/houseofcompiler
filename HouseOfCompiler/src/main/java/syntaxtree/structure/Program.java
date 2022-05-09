@@ -1,4 +1,4 @@
-package syntaxtree;
+package syntaxtree.structure;
 
 import java.util.Vector;
 
