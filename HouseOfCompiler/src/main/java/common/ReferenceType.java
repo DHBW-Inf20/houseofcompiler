@@ -1,4 +1,4 @@
-package syntaxtree;
+package common;
 
 import common.Type;
 

@@ -1,305 +1,478 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Diagram>
   <ID>JAVA</ID>
-  <OriginalElement>class_diagram</OriginalElement>
+  <OriginalElement>syntaxtree</OriginalElement>
   <nodes>
-    <node x="1168.224358974359" y="150.0">class_diagram.Expression</node>
-    <node x="1032.0208333333333" y="404.5">class_diagram.FieldDecl</node>
-    <node x="746.3958333333333" y="126.5">class_diagram.ParameterDecl</node>
-    <node x="165.5" y="609.0">class_diagram.ReferenceType</node>
-    <node x="385.89583333333326" y="150.0">class_diagram.Statement</node>
-    <node x="561.5" y="-189.0">class_diagram.ClassDecl</node>
-    <node x="1.0" y="712.0">class_diagram.BaseType.Type</node>
-    <node x="928.3958333333333" y="93.0">class_diagram.AccessModifier</node>
-    <node x="671.1923076923076" y="393.5">class_diagram.MethodDecl</node>
-    <node x="641.3958333333333" y="-269.0">class_diagram.Program</node>
-    <node x="116.0" y="537.0">class_diagram.Type</node>
-    <node x="353.1923076923077" y="415.5">class_diagram.ConstructorDecl</node>
-    <node x="29.5" y="609.0">class_diagram.BaseType</node>
+    <node x="1041.125" y="498.0">syntaxtree.statements.WhileStmt</node>
+    <node x="991.813131313133" y="864.0">syntaxtree.statements.LocalVarDecl</node>
+    <node x="2941.1077441077477" y="498.0">syntaxtree.expressions.Unary</node>
+    <node x="1796.1077441077475" y="538.0">syntaxtree.expressions.Null</node>
+    <node x="3244.1077441077477" y="478.0">syntaxtree.expressions.Binary</node>
+    <node x="1991.1077441077475" y="518.0">syntaxtree.expressions.BoolExpr</node>
+    <node x="1246.813131313133" y="864.0">syntaxtree.statements.Block</node>
+    <node x="1587.1077441077475" y="518.0">syntaxtree.expressions.CharExpr</node>
+    <node x="801.438131313133" y="0.0">syntaxtree.structure.Program</node>
+    <node x="0.0" y="458.0">syntaxtree.structure.MethodDecl</node>
+    <node x="5251.75" y="1060.0">syntaxtree.statements.IStatement</node>
+    <node x="3975.75" y="906.0">syntaxtree.expressions.IExpression</node>
+    <node x="4535.107744107747" y="478.0">syntaxtree.statementexpression.MethodCall</node>
+    <node x="3554.1077441077477" y="498.0">syntaxtree.expressions.InstVar</node>
+    <node x="3857.1077441077473" y="478.0">syntaxtree.structure.FieldDecl</node>
+    <node x="485.125" y="478.0">syntaxtree.structure.ConstructorDecl</node>
+    <node x="2460.1077441077477" y="538.0">syntaxtree.expressions.This</node>
+    <node x="4924.107744107747" y="498.0">syntaxtree.statementexpression.Assign</node>
+    <node x="5623.107744107747" y="478.0">syntaxtree.statements.IfStmt</node>
+    <node x="696.438131313133" y="144.0">syntaxtree.structure.ClassDecl</node>
+    <node x="2223.1077441077477" y="518.0">syntaxtree.expressions.IntegerExpr</node>
+    <node x="4232.107744107747" y="518.0">syntaxtree.statements.ReturnStmt</node>
+    <node x="2655.1077441077477" y="518.0">syntaxtree.expressions.LocalOrFieldVar</node>
+    <node x="5224.943181818181" y="906.0">syntaxtree.statementexpression.IStatementExpression</node>
+    <node x="680.813131313133" y="864.0">syntaxtree.structure.MethodParameter</node>
+    <node x="5234.107744107747" y="518.0">syntaxtree.statementexpression.NewDecl</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="class_diagram.ConstructorDecl" target="class_diagram.Statement" relationship="TO_ONE">
-      <point x="-74.50000000000006" y="-50.0" />
-      <point x="427.6923076923076" y="360.0" />
-      <point x="424.75" y="360.0" />
-      <point x="424.75" y="330.0" />
-      <point x="415.89583333333326" y="330.0" />
-      <point x="-30.0" y="15.5" />
+    <edge source="syntaxtree.statementexpression.Assign" target="syntaxtree.statementexpression.IStatementExpression" relationship="REALIZATION">
+      <point x="96.66666666666663" y="87.0" />
+      <point x="5165.774410774414" y="763.0" />
+      <point x="5388.443181818181" y="763.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.FieldDecl" target="class_diagram.Expression" relationship="DEPENDENCY">
-      <point x="54.75" y="-61.0" />
-      <point x="1196.2708333333333" y="360.0" />
-      <point x="1225.3285256410256" y="360.0" />
-      <point x="1225.3285256410256" y="350.0" />
-      <point x="1259.724358974359" y="350.0" />
-      <point x="30.5" y="15.5" />
+    <edge source="syntaxtree.statements.ReturnStmt" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="0.0" y="67.0" />
+      <point x="4373.607744107747" y="753.0" />
+      <point x="4665.291666666667" y="753.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.Type" relationship="TO_ONE">
-      <point x="-139.69230769230762" y="-72.0" />
-      <point x="683.5" y="377.0" />
-      <point x="158.0" y="377.0" />
-      <point x="0.0" y="-15.5" />
+    <edge source="syntaxtree.statements.IfStmt" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="68.75" y="107.0" />
+      <point x="5829.357744107747" y="733.0" />
+      <point x="5766.107744107747" y="733.0" />
+      <point x="5766.107744107747" y="813.0" />
+      <point x="4665.291666666667" y="813.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.ParameterDecl" relationship="DEPENDENCY">
-      <point x="76.0" y="-72.0" />
-      <point x="899.1923076923076" y="360.0" />
-      <point x="964.0" y="360.0" />
-      <point x="964.0" y="280.0" />
-      <point x="858.8958333333333" y="280.0" />
-      <point x="37.5" y="39.0" />
+    <edge source="syntaxtree.statementexpression.NewDecl" target="syntaxtree.expressions.IExpression" relationship="TO_MANY">
+      <point x="-123.0" y="67.0" />
+      <point x="5295.607744107747" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.BaseType" target="class_diagram.Type" relationship="GENERALIZATION">
-      <point x="0.0" y="-15.5" />
-      <point x="87.0" y="589.0" />
-      <point x="158.0" y="589.0" />
-      <point x="0.0" y="15.5" />
+    <edge source="syntaxtree.statementexpression.Assign" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="-96.66666666666674" y="87.0" />
+      <point x="4972.441077441081" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ReferenceType" target="class_diagram.Type" relationship="GENERALIZATION">
-      <point x="0.0" y="-28.0" />
-      <point x="240.5" y="589.0" />
-      <point x="158.0" y="589.0" />
-      <point x="0.0" y="15.5" />
+    <edge source="syntaxtree.statements.IfStmt" target="syntaxtree.statements.IStatement" relationship="DEPENDENCY">
+      <point x="68.75" y="107.0" />
+      <point x="5829.357744107747" y="733.0" />
+      <point x="5766.107744107747" y="733.0" />
+      <point x="5766.107744107747" y="1039.0" />
+      <point x="5425.916666666666" y="1039.0" />
+      <point x="69.66666666666669" y="-25.0" />
     </edge>
-    <edge source="class_diagram.FieldDecl" target="class_diagram.Type" relationship="TO_ONE">
-      <point x="1.6666666670062114E-4" y="-61.0" />
-      <point x="1141.521" y="377.0" />
-      <point x="158.0" y="377.0" />
-      <point x="0.0" y="-15.5" />
+    <edge source="syntaxtree.structure.ConstructorDecl" target="syntaxtree.statements.Block" relationship="TO_ONE">
+      <point x="-134.0" y="107.0" />
+      <point x="619.125" y="733.0" />
+      <point x="772.7887205387187" y="733.0" />
+      <point x="772.7887205387187" y="793.0" />
+      <point x="1108.188131313133" y="793.0" />
+      <point x="1108.188131313133" y="843.0" />
+      <point x="1327.313131313133" y="843.0" />
+      <point x="-80.5" y="-67.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.Type" relationship="DEPENDENCY">
-      <point x="-157.0" y="-15.0" />
-      <point x="335.692" y="-132.0" />
-      <point x="335.692" y="132.5" />
-      <point x="143.0" y="132.5" />
-      <point x="-15.0" y="-15.5" />
+    <edge source="syntaxtree.statements.Block" target="syntaxtree.statements.IStatement" relationship="TO_MANY">
+      <point x="80.5" y="67.0" />
+      <point x="1488.313131313133" y="1029.0" />
+      <point x="5356.25" y="1029.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ConstructorDecl" target="class_diagram.Statement" relationship="DEPENDENCY">
-      <point x="74.49999999999994" y="-50.0" />
-      <point x="576.6923076923076" y="360.0" />
-      <point x="746.5" y="360.0" />
-      <point x="746.5" y="300.0" />
-      <point x="797.6458333333333" y="300.0" />
-      <point x="797.6458333333333" y="280.0" />
-      <point x="475.89583333333326" y="280.0" />
-      <point x="30.0" y="15.5" />
+    <edge source="syntaxtree.structure.ClassDecl" target="syntaxtree.structure.FieldDecl" relationship="TO_MANY">
+      <point x="132.0" y="127.0" />
+      <point x="1092.438131313133" y="418.0" />
+      <point x="965.438131313133" y="418.0" />
+      <point x="965.438131313133" y="438.0" />
+      <point x="4123.357744107747" y="438.0" />
+      <point x="88.75" y="-107.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.ConstructorDecl" relationship="DEPENDENCY">
-      <point x="78.5" y="-72.0" />
-      <point x="797.0" y="590.0" />
-      <point x="995.1458333333333" y="590.0" />
-      <point x="995.1458333333333" y="570.0" />
-      <point x="576.6923076923076" y="570.0" />
-      <point x="74.49999999999994" y="50.0" />
+    <edge source="syntaxtree.structure.MethodDecl" target="syntaxtree.statements.Block" relationship="TO_ONE">
+      <point x="-109.0" y="127.0" />
+      <point x="109.0" y="733.0" />
+      <point x="480.91372053871874" y="733.0" />
+      <point x="480.91372053871874" y="803.0" />
+      <point x="1108.188131313133" y="803.0" />
+      <point x="1108.188131313133" y="843.0" />
+      <point x="1327.313131313133" y="843.0" />
+      <point x="-80.5" y="-67.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.ParameterDecl" relationship="TO_MANY">
-      <point x="-76.0" y="-72.0" />
-      <point x="747.1923076923076" y="350.0" />
-      <point x="686.0" y="350.0" />
-      <point x="686.0" y="310.0" />
-      <point x="592.5464743589744" y="310.0" />
-      <point x="592.5464743589744" y="270.0" />
-      <point x="783.8958333333333" y="270.0" />
-      <point x="-37.5" y="39.0" />
+    <edge source="syntaxtree.expressions.CharExpr" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="0.0" y="67.0" />
+      <point x="1681.6077441077475" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.FieldDecl" target="class_diagram.Type" relationship="DEPENDENCY">
-      <point x="1.6666666670062114E-4" y="61.0" />
-      <point x="1141.521" y="554.0" />
-      <point x="335.692" y="554.0" />
-      <point x="335.692" y="132.5" />
-      <point x="143.0" y="132.5" />
-      <point x="-15.0" y="-15.5" />
+    <edge source="syntaxtree.statementexpression.MethodCall" target="syntaxtree.statementexpression.IStatementExpression" relationship="REALIZATION">
+      <point x="123.0" y="107.0" />
+      <point x="4842.607744107747" y="763.0" />
+      <point x="5388.443181818181" y="763.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.Type" relationship="DEPENDENCY">
-      <point x="-61.000307692307615" y="72.0" />
-      <point x="762.192" y="554.0" />
-      <point x="335.692" y="554.0" />
-      <point x="335.692" y="132.5" />
-      <point x="143.0" y="132.5" />
-      <point x="-15.0" y="-15.5" />
+    <edge source="syntaxtree.structure.ClassDecl" target="syntaxtree.structure.ConstructorDecl" relationship="DEPENDENCY">
+      <point x="-132.0" y="127.0" />
+      <point x="828.438131313133" y="418.0" />
+      <point x="955.438131313133" y="418.0" />
+      <point x="955.438131313133" y="428.0" />
+      <point x="619.125" y="428.0" />
+      <point x="-134.0" y="-107.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.ConstructorDecl" relationship="TO_MANY">
-      <point x="-78.5" y="-72.0" />
-      <point x="640.0" y="590.0" />
-      <point x="627.3958333333333" y="590.0" />
-      <point x="627.3958333333333" y="580.0" />
-      <point x="427.6923076923077" y="580.0" />
-      <point x="-74.5" y="50.0" />
+    <edge source="syntaxtree.statementexpression.MethodCall" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="0.0" y="107.0" />
+      <point x="4719.607744107747" y="753.0" />
+      <point x="4665.291666666667" y="753.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.Type" relationship="TO_ONE">
-      <point x="-157.0" y="15.0" />
-      <point x="368.396" y="-102.0" />
-      <point x="368.396" y="377.0" />
-      <point x="158.0" y="377.0" />
-      <point x="0.0" y="-15.5" />
+    <edge source="syntaxtree.expressions.Unary" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="70.75" y="87.0" />
+      <point x="3153.3577441077477" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ParameterDecl" target="class_diagram.Type" relationship="TO_ONE">
-      <point x="52.5001666666667" y="39.0" />
-      <point x="873.896" y="377.0" />
-      <point x="158.0" y="377.0" />
-      <point x="0.0" y="-15.5" />
+    <edge source="syntaxtree.structure.Program" target="syntaxtree.structure.ClassDecl" relationship="DEPENDENCY">
+      <point x="-79.5" y="47.0" />
+      <point x="880.938131313133" y="119.0" />
+      <point x="828.438131313133" y="119.0" />
+      <point x="-132.0" y="-127.0" />
     </edge>
-    <edge source="class_diagram.Program" target="class_diagram.ClassDecl" relationship="TO_MANY">
-      <point x="94.0" y="0.0" />
-      <point x="1348.349358974359" y="-241.0" />
-      <point x="1348.349358974359" y="-117.0" />
-      <point x="157.0" y="0.0" />
+    <edge source="syntaxtree.structure.ConstructorDecl" target="syntaxtree.structure.MethodParameter" relationship="DEPENDENCY">
+      <point x="134.0" y="107.0" />
+      <point x="887.125" y="733.0" />
+      <point x="1082.4137205387187" y="733.0" />
+      <point x="1082.4137205387187" y="773.0" />
+      <point x="1118.188131313133" y="773.0" />
+      <point x="1118.188131313133" y="833.0" />
+      <point x="899.063131313133" y="833.0" />
+      <point x="72.75" y="-67.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.MethodDecl" relationship="DEPENDENCY">
-      <point x="78.5" y="-72.0" />
-      <point x="797.0" y="590.0" />
-      <point x="995.1458333333333" y="590.0" />
-      <point x="995.1458333333333" y="570.0" />
-      <point x="899.1923076923076" y="570.0" />
-      <point x="76.0" y="72.0" />
+    <edge source="syntaxtree.expressions.Binary" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="72.5" y="107.0" />
+      <point x="3461.6077441077477" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ConstructorDecl" target="class_diagram.Type" relationship="DEPENDENCY">
-      <point x="-131.69230769230768" y="-50.0" />
-      <point x="370.5" y="397.0" />
-      <point x="335.692" y="397.0" />
-      <point x="335.692" y="132.5" />
-      <point x="143.0" y="132.5" />
-      <point x="-15.0" y="-15.5" />
+    <edge source="syntaxtree.statements.ReturnStmt" target="syntaxtree.statements.IStatement" relationship="REALIZATION">
+      <point x="94.33333333333337" y="67.0" />
+      <point x="4467.941077441081" y="773.0" />
+      <point x="4879.359848484848" y="773.0" />
+      <point x="4879.359848484848" y="1019.0" />
+      <point x="1126.7083333333335" y="1019.0" />
+      <point x="1126.7083333333335" y="1039.0" />
+      <point x="5286.583333333334" y="1039.0" />
+      <point x="-69.66666666666669" y="-25.0" />
     </edge>
-    <edge source="class_diagram.BaseType.Type" target="class_diagram.BaseType" relationship="INNER_CLASS">
-      <point x="0.0" y="-83.5" />
-      <point x="80.0" y="640.0" />
-      <point x="0.0" y="15.5" />
+    <edge source="syntaxtree.statements.WhileStmt" target="syntaxtree.statements.Block" relationship="TO_ONE">
+      <point x="0.0" y="87.0" />
+      <point x="1182.625" y="733.0" />
+      <point x="1521.125" y="733.0" />
+      <point x="1521.125" y="813.0" />
+      <point x="1108.188131313133" y="813.0" />
+      <point x="1108.188131313133" y="843.0" />
+      <point x="1327.313131313133" y="843.0" />
+      <point x="-80.5" y="-67.0" />
     </edge>
-    <edge source="class_diagram.ConstructorDecl" target="class_diagram.ParameterDecl" relationship="DEPENDENCY">
-      <point x="74.49999999999994" y="-50.0" />
-      <point x="576.6923076923076" y="360.0" />
-      <point x="746.5" y="360.0" />
-      <point x="746.5" y="310.0" />
-      <point x="858.8958333333333" y="310.0" />
-      <point x="37.5" y="39.0" />
+    <edge source="syntaxtree.expressions.IntegerExpr" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="0.0" y="67.0" />
+      <point x="2331.6077441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.FieldDecl" relationship="TO_MANY">
-      <point x="-78.5" y="-72.0" />
-      <point x="640.0" y="590.0" />
-      <point x="627.3958333333333" y="590.0" />
-      <point x="627.3958333333333" y="580.0" />
-      <point x="1086.7708333333333" y="580.0" />
-      <point x="-54.75" y="61.0" />
+    <edge source="syntaxtree.expressions.InstVar" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="-70.75" y="87.0" />
+      <point x="3624.8577441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.Program" target="class_diagram.ClassDecl" relationship="DEPENDENCY">
-      <point x="-94.0" y="0.0" />
-      <point x="-17.5" y="-241.0" />
-      <point x="-17.5" y="-117.0" />
-      <point x="-157.0" y="0.0" />
+    <edge source="syntaxtree.statements.IfStmt" target="syntaxtree.statements.IStatement" relationship="TO_ONE">
+      <point x="-68.75" y="107.0" />
+      <point x="5691.857744107747" y="733.0" />
+      <point x="5755.107744107747" y="733.0" />
+      <point x="5755.107744107747" y="1029.0" />
+      <point x="5356.25" y="1029.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.Statement" relationship="DEPENDENCY">
-      <point x="76.0" y="-72.0" />
-      <point x="899.1923076923076" y="360.0" />
-      <point x="964.0" y="360.0" />
-      <point x="964.0" y="290.0" />
-      <point x="797.6458333333333" y="290.0" />
-      <point x="797.6458333333333" y="280.0" />
-      <point x="475.89583333333326" y="280.0" />
-      <point x="30.0" y="15.5" />
+    <edge source="syntaxtree.expressions.LocalOrFieldVar" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="0.0" y="67.0" />
+      <point x="2788.1077441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.FieldDecl" target="class_diagram.AccessModifier" relationship="TO_ONE">
-      <point x="-54.75" y="-61.0" />
-      <point x="1086.7708333333333" y="360.0" />
-      <point x="1053.5208333333333" y="360.0" />
-      <point x="1053.5208333333333" y="320.0" />
-      <point x="1030.3958333333333" y="320.0" />
-      <point x="1030.3958333333333" y="260.0" />
-      <point x="981.8958333333333" y="260.0" />
-      <point x="-53.5" y="72.5" />
+    <edge source="syntaxtree.statementexpression.Assign" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="0.0" y="87.0" />
+      <point x="5069.107744107747" y="753.0" />
+      <point x="4665.291666666667" y="753.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ParameterDecl" target="class_diagram.Type" relationship="DEPENDENCY">
-      <point x="-74.9998333333333" y="-33.0" />
-      <point x="143.0" y="132.5" />
-      <point x="-15.0" y="-15.5" />
+    <edge source="syntaxtree.statementexpression.NewDecl" target="syntaxtree.statementexpression.IStatementExpression" relationship="REALIZATION">
+      <point x="123.0" y="67.0" />
+      <point x="5541.607744107747" y="763.0" />
+      <point x="5388.443181818181" y="763.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.AccessModifier" relationship="DEPENDENCY">
-      <point x="76.0" y="-72.0" />
-      <point x="899.1923076923076" y="360.0" />
-      <point x="964.0" y="360.0" />
-      <point x="964.0" y="340.0" />
-      <point x="1040.3958333333333" y="340.0" />
-      <point x="1040.3958333333333" y="260.0" />
-      <point x="1088.8958333333333" y="260.0" />
-      <point x="53.5" y="72.5" />
+    <edge source="syntaxtree.structure.ConstructorDecl" target="syntaxtree.structure.MethodParameter" relationship="TO_MANY">
+      <point x="-134.0" y="107.0" />
+      <point x="619.125" y="733.0" />
+      <point x="772.7887205387187" y="733.0" />
+      <point x="772.7887205387187" y="813.0" />
+      <point x="480.91372053871874" y="813.0" />
+      <point x="480.91372053871874" y="833.0" />
+      <point x="753.563131313133" y="833.0" />
+      <point x="-72.75" y="-67.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.MethodDecl" relationship="TO_MANY">
-      <point x="-78.5" y="-72.0" />
-      <point x="640.0" y="590.0" />
-      <point x="627.3958333333333" y="590.0" />
-      <point x="627.3958333333333" y="580.0" />
-      <point x="747.1923076923076" y="580.0" />
-      <point x="-76.0" y="72.0" />
+    <edge source="syntaxtree.expressions.InstVar" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="70.75" y="87.0" />
+      <point x="3766.3577441077477" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.ConstructorDecl" target="class_diagram.Type" relationship="TO_ONE">
-      <point x="-3.07692307671914E-4" y="-50.0" />
-      <point x="502.192" y="377.0" />
-      <point x="158.0" y="377.0" />
-      <point x="0.0" y="-15.5" />
+    <edge source="syntaxtree.structure.ConstructorDecl" target="syntaxtree.statements.Block" relationship="DEPENDENCY">
+      <point x="134.0" y="107.0" />
+      <point x="887.125" y="733.0" />
+      <point x="1082.4137205387187" y="733.0" />
+      <point x="1082.4137205387187" y="753.0" />
+      <point x="1417.813131313133" y="753.0" />
+      <point x="1417.813131313133" y="833.0" />
+      <point x="1488.313131313133" y="833.0" />
+      <point x="80.5" y="-67.0" />
     </edge>
-    <edge source="class_diagram.ConstructorDecl" target="class_diagram.ParameterDecl" relationship="TO_MANY">
-      <point x="-74.50000000000006" y="-50.0" />
-      <point x="427.6923076923076" y="360.0" />
-      <point x="424.75" y="360.0" />
-      <point x="424.75" y="350.0" />
-      <point x="592.5464743589744" y="350.0" />
-      <point x="592.5464743589744" y="270.0" />
-      <point x="783.8958333333333" y="270.0" />
-      <point x="-37.5" y="39.0" />
+    <edge source="syntaxtree.statements.IfStmt" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="-68.75" y="107.0" />
+      <point x="5691.857744107747" y="733.0" />
+      <point x="5755.107744107747" y="733.0" />
+      <point x="5755.107744107747" y="803.0" />
+      <point x="4083.25" y="803.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.Statement" relationship="TO_ONE">
-      <point x="-76.0" y="-72.0" />
-      <point x="747.1923076923076" y="350.0" />
-      <point x="686.0" y="350.0" />
-      <point x="686.0" y="320.0" />
-      <point x="415.89583333333326" y="320.0" />
-      <point x="-30.0" y="15.5" />
+    <edge source="syntaxtree.statements.Block" target="syntaxtree.statements.IStatement" relationship="REALIZATION">
+      <point x="-80.5" y="67.0" />
+      <point x="1327.313131313133" y="1019.0" />
+      <point x="1126.7083333333335" y="1019.0" />
+      <point x="1126.7083333333335" y="1039.0" />
+      <point x="5286.583333333334" y="1039.0" />
+      <point x="-69.66666666666669" y="-25.0" />
     </edge>
-    <edge source="class_diagram.FieldDecl" target="class_diagram.AccessModifier" relationship="DEPENDENCY">
-      <point x="54.75" y="-61.0" />
-      <point x="1196.2708333333333" y="360.0" />
-      <point x="1225.3285256410256" y="360.0" />
-      <point x="1225.3285256410256" y="310.0" />
-      <point x="1040.3958333333333" y="310.0" />
-      <point x="1040.3958333333333" y="260.0" />
-      <point x="1088.8958333333333" y="260.0" />
-      <point x="53.5" y="72.5" />
+    <edge source="syntaxtree.statements.WhileStmt" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="0.0" y="87.0" />
+      <point x="1182.625" y="733.0" />
+      <point x="1521.125" y="733.0" />
+      <point x="1521.125" y="793.0" />
+      <point x="4083.25" y="793.0" />
+      <point x="0.0" y="-25.0" />
     </edge>
-    <edge source="class_diagram.FieldDecl" target="class_diagram.Expression" relationship="TO_MANY">
-      <point x="-54.75" y="-61.0" />
-      <point x="1086.7708333333333" y="360.0" />
-      <point x="1053.5208333333333" y="360.0" />
-      <point x="1053.5208333333333" y="270.0" />
-      <point x="1198.724358974359" y="270.0" />
-      <point x="-30.5" y="15.5" />
+    <edge source="syntaxtree.structure.MethodDecl" target="syntaxtree.structure.MethodParameter" relationship="DEPENDENCY">
+      <point x="109.0" y="127.0" />
+      <point x="327.0" y="743.0" />
+      <point x="782.7887205387187" y="743.0" />
+      <point x="782.7887205387187" y="783.0" />
+      <point x="1118.188131313133" y="783.0" />
+      <point x="1118.188131313133" y="833.0" />
+      <point x="899.063131313133" y="833.0" />
+      <point x="72.75" y="-67.0" />
     </edge>
-    <edge source="class_diagram.ClassDecl" target="class_diagram.FieldDecl" relationship="DEPENDENCY">
-      <point x="78.5" y="-72.0" />
-      <point x="797.0" y="590.0" />
-      <point x="995.1458333333333" y="590.0" />
-      <point x="995.1458333333333" y="570.0" />
-      <point x="1196.2708333333333" y="570.0" />
-      <point x="54.75" y="61.0" />
+    <edge source="syntaxtree.structure.ClassDecl" target="syntaxtree.structure.MethodDecl" relationship="TO_MANY">
+      <point x="132.0" y="127.0" />
+      <point x="1092.438131313133" y="418.0" />
+      <point x="965.438131313133" y="418.0" />
+      <point x="965.438131313133" y="438.0" />
+      <point x="327.0" y="438.0" />
+      <point x="109.0" y="-127.0" />
     </edge>
-    <edge source="class_diagram.MethodDecl" target="class_diagram.AccessModifier" relationship="TO_ONE">
-      <point x="-76.0" y="-72.0" />
-      <point x="747.1923076923076" y="350.0" />
-      <point x="686.0" y="350.0" />
-      <point x="686.0" y="330.0" />
-      <point x="1030.3958333333333" y="330.0" />
-      <point x="1030.3958333333333" y="260.0" />
-      <point x="981.8958333333333" y="260.0" />
-      <point x="-53.5" y="72.5" />
+    <edge source="syntaxtree.structure.Program" target="syntaxtree.structure.ClassDecl" relationship="TO_MANY">
+      <point x="79.5" y="47.0" />
+      <point x="1039.938131313133" y="119.0" />
+      <point x="1092.438131313133" y="119.0" />
+      <point x="132.0" y="-127.0" />
+    </edge>
+    <edge source="syntaxtree.structure.MethodDecl" target="syntaxtree.structure.MethodParameter" relationship="TO_MANY">
+      <point x="-109.0" y="127.0" />
+      <point x="109.0" y="733.0" />
+      <point x="480.91372053871874" y="733.0" />
+      <point x="480.91372053871874" y="833.0" />
+      <point x="753.563131313133" y="833.0" />
+      <point x="-72.75" y="-67.0" />
+    </edge>
+    <edge source="syntaxtree.structure.ClassDecl" target="syntaxtree.structure.MethodDecl" relationship="DEPENDENCY">
+      <point x="-132.0" y="127.0" />
+      <point x="828.438131313133" y="418.0" />
+      <point x="955.438131313133" y="418.0" />
+      <point x="955.438131313133" y="428.0" />
+      <point x="109.0" y="428.0" />
+      <point x="-109.0" y="-127.0" />
+    </edge>
+    <edge source="syntaxtree.structure.MethodDecl" target="syntaxtree.statements.Block" relationship="DEPENDENCY">
+      <point x="109.0" y="127.0" />
+      <point x="327.0" y="743.0" />
+      <point x="782.7887205387187" y="743.0" />
+      <point x="782.7887205387187" y="763.0" />
+      <point x="1417.813131313133" y="763.0" />
+      <point x="1417.813131313133" y="833.0" />
+      <point x="1488.313131313133" y="833.0" />
+      <point x="80.5" y="-67.0" />
+    </edge>
+    <edge source="syntaxtree.structure.FieldDecl" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="88.75" y="107.0" />
+      <point x="4123.357744107747" y="753.0" />
+      <point x="4665.291666666667" y="753.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.expressions.This" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="0.0" y="47.0" />
+      <point x="2547.6077441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.structure.ClassDecl" target="syntaxtree.structure.ConstructorDecl" relationship="TO_MANY">
+      <point x="132.0" y="127.0" />
+      <point x="1092.438131313133" y="418.0" />
+      <point x="965.438131313133" y="418.0" />
+      <point x="965.438131313133" y="438.0" />
+      <point x="887.125" y="438.0" />
+      <point x="134.0" y="-107.0" />
+    </edge>
+    <edge source="syntaxtree.expressions.BoolExpr" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="0.0" y="67.0" />
+      <point x="2097.1077441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statementexpression.MethodCall" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="-123.0" y="107.0" />
+      <point x="4596.607744107747" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statements.LocalVarDecl" target="syntaxtree.statements.IStatement" relationship="REALIZATION">
+      <point x="0.0" y="67.0" />
+      <point x="1109.313131313133" y="1019.0" />
+      <point x="1126.7083333333335" y="1019.0" />
+      <point x="1126.7083333333335" y="1039.0" />
+      <point x="5286.583333333334" y="1039.0" />
+      <point x="-69.66666666666669" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.structure.ClassDecl" target="syntaxtree.structure.FieldDecl" relationship="DEPENDENCY">
+      <point x="-132.0" y="127.0" />
+      <point x="828.438131313133" y="418.0" />
+      <point x="955.438131313133" y="418.0" />
+      <point x="955.438131313133" y="428.0" />
+      <point x="3945.8577441077473" y="428.0" />
+      <point x="-88.75" y="-107.0" />
+    </edge>
+    <edge source="syntaxtree.statements.WhileStmt" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="94.33333333333303" y="87.0" />
+      <point x="1276.958333333333" y="743.0" />
+      <point x="1671.6077441077475" y="743.0" />
+      <point x="1671.6077441077475" y="783.0" />
+      <point x="4665.291666666667" y="783.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statementexpression.MethodCall" target="syntaxtree.expressions.IExpression" relationship="TO_MANY">
+      <point x="-123.0" y="107.0" />
+      <point x="4596.607744107747" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statements.WhileStmt" target="syntaxtree.statements.Block" relationship="DEPENDENCY">
+      <point x="94.33333333333303" y="87.0" />
+      <point x="1276.958333333333" y="743.0" />
+      <point x="1671.6077441077475" y="743.0" />
+      <point x="1671.6077441077475" y="823.0" />
+      <point x="1417.813131313133" y="823.0" />
+      <point x="1417.813131313133" y="833.0" />
+      <point x="1488.313131313133" y="833.0" />
+      <point x="80.5" y="-67.0" />
+    </edge>
+    <edge source="syntaxtree.expressions.Unary" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="-70.75" y="87.0" />
+      <point x="3011.8577441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.structure.FieldDecl" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="-88.75" y="107.0" />
+      <point x="3945.8577441077473" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statements.WhileStmt" target="syntaxtree.statements.IStatement" relationship="REALIZATION">
+      <point x="-94.33333333333303" y="87.0" />
+      <point x="1088.291666666667" y="823.0" />
+      <point x="351.438131313133" y="823.0" />
+      <point x="351.438131313133" y="1019.0" />
+      <point x="1126.7083333333335" y="1019.0" />
+      <point x="1126.7083333333335" y="1039.0" />
+      <point x="5286.583333333334" y="1039.0" />
+      <point x="-69.66666666666669" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statementexpression.NewDecl" target="syntaxtree.expressions.IExpression" relationship="DEPENDENCY">
+      <point x="0.0" y="67.0" />
+      <point x="5418.607744107747" y="753.0" />
+      <point x="4665.291666666667" y="753.0" />
+      <point x="4665.291666666667" y="823.0" />
+      <point x="4154.916666666667" y="823.0" />
+      <point x="71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.expressions.Binary" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="-72.5" y="107.0" />
+      <point x="3316.6077441077477" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.statements.ReturnStmt" target="syntaxtree.expressions.IExpression" relationship="TO_ONE">
+      <point x="-94.33333333333331" y="67.0" />
+      <point x="4279.274410774414" y="743.0" />
+      <point x="4083.25" y="743.0" />
+      <point x="0.0" y="-25.0" />
+    </edge>
+    <edge source="syntaxtree.expressions.Null" target="syntaxtree.expressions.IExpression" relationship="REALIZATION">
+      <point x="0.0" y="47.0" />
+      <point x="1883.6077441077475" y="733.0" />
+      <point x="2482.9583333333335" y="733.0" />
+      <point x="2482.9583333333335" y="803.0" />
+      <point x="4011.5833333333335" y="803.0" />
+      <point x="-71.66666666666674" y="-25.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="1.0" showDependencies="true" x="673.0" y="305.0" />
-  <SelectedNodes>
-    <node>class_diagram.Type</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic" zoom="0.4828264909613109" showDependencies="true" x="1699.0601555924545" y="520.9269775457733" />
+  <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
-    <Category>Inner Classes</Category>
-    <Category>Methods</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
