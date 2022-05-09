@@ -1,7 +1,7 @@
 package codegen;
 
-import syntaxtree.ClassDecl;
-import syntaxtree.Program;
+import syntaxtree.structure.ClassDecl;
+import syntaxtree.structure.Program;
 
 import java.util.Vector;
 

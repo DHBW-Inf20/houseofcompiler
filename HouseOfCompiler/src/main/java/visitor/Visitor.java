@@ -1,8 +1,8 @@
 package visitor;
 
 
-import syntaxtree.ClassDecl;
-import syntaxtree.Program;
+import syntaxtree.structure.ClassDecl;
+import syntaxtree.structure.Program;
 
 public interface Visitor {
     void visit(Program program);
