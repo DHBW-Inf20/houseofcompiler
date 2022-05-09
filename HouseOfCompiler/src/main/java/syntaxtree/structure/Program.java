@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class Program implements Visitable {
-    public Vector<ClassDecl> classes;
+    private Vector<ClassDecl> classes;
 
 
     public Program(Vector<ClassDecl> classes) {
