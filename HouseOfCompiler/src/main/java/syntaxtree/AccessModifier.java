@@ -1,7 +1,7 @@
 package syntaxtree;
 
 public enum AccessModifier {
-    Public,
-    Private,
-    Protected
+    PUBLIC,
+    PRIVATE,
+    PROTECTED
 }

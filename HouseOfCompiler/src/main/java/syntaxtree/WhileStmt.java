@@ -1,4 +1,4 @@
-package syntaxtree.statements;
+package syntaxtree;
 
 import syntaxtree.Expression;
 import syntaxtree.Statement;
