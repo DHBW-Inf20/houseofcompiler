@@ -9,5 +9,6 @@ public class CodeVisitor {
     public void visit(ClassDecl clazz) {}
     public void visit(FieldDecl field) {}
     public void visit(ConstructorDecl constructor) {}
-    public void visit(MethodDecl method) {}
+    public void visit(MethodDecl method) {
+    }
 }
