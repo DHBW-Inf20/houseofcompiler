@@ -3,26 +3,29 @@ grammar JavaSubset;
 program: classdecl;
 
 //class identifier{...}
-classdecl: Class Identifier OpenCurlyBracket (constuctorDecl|fieldDecl|methodDecl)* ClosedCurlyBracket;
-//public static void main(string[] args) {...}
-methodDecl: AccessModifier? type Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
+classdecl: 'class' Identifier OpenCurlyBracket (constuctorDecl|fieldDecl|methodDecl)* ClosedCurlyBracket;
 constuctorDecl: AccessModifier? Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
+//public static void main(string[] args) {...}
+methodDecl: AccessModifier? (type | Void) Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
 fieldDecl: AccessModifier? type Identifier (Equal expression)? Semicolon;
 //int param1, string param2,...
-parameterList: parameter(Comma parameter);
+parameterList: parameter(Comma parameter)*;
 //int param1
 parameter: type Identifier;
-argumentList: argument(Comma argument)*;
-//ident | methodCall() | ...
-argument: stmtExpr | expression;
-//int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
-statement: returnStmt | localVarDecl | block | whileStmt | ifElseStmt | stmtExpr;
-//a = expr, new Object(), method(param1)
-stmtExpr: assign | newDecl | methodCall;
+
+argumentList: expression? | expression (Comma expression)*?;
 //property, object.a, 3+1, a = 3
 expression: subExpression | binaryExpr; //FIXME unary Expressions fehlen noch
 //subExpression zur Auflösung der Linksrekursion in der Grammatik
 subExpression: Identifier | instVar | value | stmtExpr | OpenRoundBracket expression ClosedRoundBracket;
+//FIXME macht es mehr sinn den Methodenaufruf rekursiv umzusetzen? sodass vorstehende Methodenaufrufe als reciever gehandhabt werden?
+//methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
+//reciever: (instVar | Identifier Dot | methodCall Dot)
+methodCall: reciever? (Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot)* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
+//int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
+statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | ifElseStmt | stmtExpr Semicolon;
+//a = expr, new Object(), method(param1)
+stmtExpr: assign | newDecl | methodCall;
 
 instVar: This Dot Identifier | (This Dot)? (Identifier Dot)+ Identifier;
 
@@ -30,9 +33,9 @@ binaryExpr: subExpression operator expression; //FIXME muss hier auch subExpress
 
 operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator;
 
-returnStmt: Return expression Semicolon;
+returnStmt: Return expression;
 
-localVarDecl: type Identifier (Assign expression)? Semicolon;
+localVarDecl: type Identifier (Assign expression)?;
 
 block: OpenCurlyBracket statement* ClosedCurlyBracket;
 
@@ -45,18 +48,9 @@ elseStmt: Else block;
 
 assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
-//FIXME macht es mehr sinn den Methodenaufruf rekursiv umzusetzen? sodass vorstehende Methodenaufrufe als reciever gehandhabt werden?
-//methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
-//reciever: (instVar | Identifier Dot | methodCall Dot)
-methodCall: reciever (Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot)* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 reciever: (instVar | Identifier Dot);
 type: Int | Boolean | Char;
 value: IntValue | BooleanValue | CharValue;
-
-Identifier: Alpabetic ValidIdentSymbols*;
-fragment Alpabetic : [a-zA-Z];
-fragment Numeric: [0-9];
-fragment ValidIdentSymbols : Alpabetic|Numeric|'$'|'_';
 
 //Access modifier
 AccessModifier: 'public' | 'private' | 'protected';
@@ -66,11 +60,6 @@ Void: 'void';
 Boolean: 'boolean';
 Char: 'char';
 Int: 'int';
-
-//Values
-BooleanValue: 'true'|'false';
-CharValue: Alpabetic;
-IntValue: Minus? Numeric*;
 
 //Operators
 DotOperator: Mult | Div;
@@ -110,3 +99,15 @@ Else: 'else';
 For: 'for';
 Return: 'return';
 New: 'new';
+
+fragment Alpabetic : [a-zA-Z];
+fragment Numeric: [0-9];
+fragment ValidIdentSymbols : Alpabetic|Numeric|'$'|'_';
+Identifier: Alpabetic ValidIdentSymbols*;
+
+//Values
+BooleanValue: 'true'|'false';
+CharValue: Alpabetic;
+IntValue: Minus? Numeric+;
+
+WS: ([ \t\r\n]+) -> skip;
