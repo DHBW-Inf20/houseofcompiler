@@ -15,7 +15,7 @@ import java.util.Vector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Compiler")
-public class TestEmptyClass {
+public class TestRunner {
 
     @Test
     @DisplayName("Empty Class")

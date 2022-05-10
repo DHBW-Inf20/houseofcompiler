@@ -14,12 +14,12 @@ public class Compiler implements CompilerFactory{
 
     @Override
     public IAstGenerator getAstGenerator() {
-        return null;
+        return new AstGenerator();
     }
 
     @Override
     public ITastGenerator getTastGenerator() {
-        return null;
+        return new TastGenerator();
     }
 
     @Override

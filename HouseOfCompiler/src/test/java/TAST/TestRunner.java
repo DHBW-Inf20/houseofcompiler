@@ -1,20 +1,19 @@
-package Compiler;
+package TAST;
 
+import Helper.ReflectLoader;
 import Helper.Resources;
 import common.Compiler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import syntaxtree.structure.*;
-import Helper.ReflectLoader;
+import syntaxtree.structure.ClassDecl;
+import syntaxtree.structure.Program;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Compiler")
+@DisplayName("Typed Abstract Syntax Generation")
 public class TestRunner {
 
     @Test
@@ -22,12 +21,13 @@ public class TestRunner {
     void main() throws Exception {
         InputStream file = Resources.getFileAsStream("EmptyClass.java");
         Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
-        ReflectLoader loader = new ReflectLoader(bc);
-        Class c = loader.findClass("EmptyClass");
-        Object o = c.getDeclaredConstructor().newInstance();
-        assertEquals(o.getClass().getName(), "EmptyClass");
+
+        ClassDecl classDecl = new ClassDecl("EmptyClass", new Vector<>(),new Vector<>(),new Vector<>());
+        Vector<ClassDecl> classDecls = new Vector<>();
+        classDecls.add(classDecl);
+        var testProgram = new Program(classDecls);
+
+        assertEquals(ast, testProgram);
     }
 
 
