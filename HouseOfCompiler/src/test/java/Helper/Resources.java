@@ -1,11 +1,13 @@
 package Helper;
 
-import org.junit.Assert;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class Resources {
 
@@ -13,7 +15,7 @@ public class Resources {
     {
         ClassLoader classLoader = Resources.class.getClassLoader();
         File file = new File(classLoader.getResource(fileName).getFile());
-        Assert.assertNotNull(file);
+        assertNotNull(file);
         try
         {
             return new FileInputStream(file);
@@ -21,7 +23,7 @@ public class Resources {
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
-            Assert.fail();
+            fail();
         }
 
         throw new IllegalStateException();
