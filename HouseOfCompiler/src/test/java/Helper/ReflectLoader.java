@@ -6,16 +6,13 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Custom Classloader which loads the given byte array.
- */
 public class ReflectLoader extends ClassLoader {
     private byte[] byteCode;
-    private Map<String, byte[]> byteCodes;
-    private Map<String, Class<?>> classes = new HashMap<>();
+        private Map<String, byte[]> byteCodes;
+        private Map<String, Class<?>> classes = new HashMap<>();
 
     public ReflectLoader(byte[] byteCode) {
-        byteCodes = new HashMap<>();
+            byteCodes = new HashMap<>();
         this.byteCode = byteCode;
     }
 

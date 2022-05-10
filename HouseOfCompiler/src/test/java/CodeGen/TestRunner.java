@@ -12,11 +12,11 @@ import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("EmptyClass TAS -> Bytecode")
-public class TestEmptyClass {
+@DisplayName("Bytecode Generation")
+public class TestRunner {
 
     @Test
-    @DisplayName("main")
+    @DisplayName("Empty Class")
     void main() throws ReflectiveOperationException {
         ClassDecl emptyClass = new ClassDecl("EmptyClass", new Vector<>(),new Vector<>(),new Vector<>());
         Vector<ClassDecl> classDecls = new Vector<>();

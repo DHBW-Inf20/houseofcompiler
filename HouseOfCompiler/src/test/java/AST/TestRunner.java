@@ -13,21 +13,21 @@ import java.util.Vector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Abstract Syntax Tree Generation")
-public class TestEmptyClass {
+public class TestRunner {
 
     @Test
     @DisplayName("EmptyClass")
     void main() throws FileNotFoundException {
 
-        InputStream file = Resources.getFileAsStream("EmptyClass.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-
-        ClassDecl classDecl = new ClassDecl("EmptyClass", new Vector<>(),new Vector<>(),new Vector<>());
+        ClassDecl emptyClass = new ClassDecl("EmptyClass", new Vector<>(),new Vector<>(),new Vector<>());
         Vector<ClassDecl> classDecls = new Vector<>();
-        classDecls.add(classDecl);
-        var testProgram = new Program(classDecls);
+        classDecls.add(emptyClass);
+        var ast = new Program(classDecls);
+        var tast = ast;
 
-        assertEquals(ast, testProgram);
+        var generatedTast = Compiler.getFactory().getTastGenerator().getTast(ast);
+
+        assertEquals(tast, generatedTast);
 
     }
 

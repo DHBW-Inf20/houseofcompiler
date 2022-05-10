@@ -12,7 +12,6 @@ import java.util.Vector;
 public class ClassDecl implements Visitable {
 
     private String identifier;
-    private Type type;
     private Vector<FieldDecl> fieldDelcarations;
     private Vector<MethodDecl> methodDeclarations;
     private Vector<ConstructorDecl> constructorDeclarations;
@@ -28,9 +27,6 @@ public class ClassDecl implements Visitable {
         return identifier;
     }
 
-    public Type getType() {
-        return type;
-    }
 
     public Vector<FieldDecl> getFieldDelcarations() {
         return fieldDelcarations;
@@ -44,21 +40,18 @@ public class ClassDecl implements Visitable {
         return constructorDeclarations;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClassDecl classDecl = (ClassDecl) o;
-        return identifier.equals(classDecl.identifier) && Objects.equals(type, classDecl.type) && fieldDelcarations.equals(classDecl.fieldDelcarations) && methodDeclarations.equals(classDecl.methodDeclarations) && constructorDeclarations.equals(classDecl.constructorDeclarations);
+        return identifier.equals(classDecl.identifier)  && fieldDelcarations.equals(classDecl.fieldDelcarations) && methodDeclarations.equals(classDecl.methodDeclarations) && constructorDeclarations.equals(classDecl.constructorDeclarations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, type, fieldDelcarations, methodDeclarations, constructorDeclarations);
+        return Objects.hash(identifier, fieldDelcarations, methodDeclarations, constructorDeclarations);
     }
 
     @Override
