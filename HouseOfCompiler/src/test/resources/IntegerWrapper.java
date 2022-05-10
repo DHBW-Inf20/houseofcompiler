@@ -10,11 +10,11 @@ class IntegerWrapper{
         this.i = i;
     }
 
-    //public IntegerWrapper add(IntegerWrapper j){ return new IntegerWrapper(j.i+this.i);}
+    public IntegerWrapper add(IntegerWrapper j){ return new IntegerWrapper(j.i+this.i);}
 
-    //public IntegerWrapper sub(IntegerWrapper j){ return new IntegerWrapper(j.i-this.i);}
+    public IntegerWrapper sub(IntegerWrapper j){ return new IntegerWrapper(j.i-this.i);}
 
-    //public boolean equals(IntegerWrapper j){return j.i == this.i;}
+    public boolean equals(IntegerWrapper j){return j.i == this.i;}
 
 
 }

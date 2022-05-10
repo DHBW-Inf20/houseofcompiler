@@ -6,12 +6,12 @@ program: classdecl+;
 classdecl: 'class' Identifier OpenCurlyBracket (constuctorDecl|fieldDecl|methodDecl)* ClosedCurlyBracket;
 constuctorDecl: AccessModifier? Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
 //public static void main(string[] args) {...}
-methodDecl: AccessModifier? (type | Void) Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
-fieldDecl: AccessModifier? type Identifier (Equal expression)? Semicolon;
+methodDecl: AccessModifier? (type | Void | Identifier) Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
+fieldDecl: AccessModifier? (type | Identifier) Identifier (Equal expression)? Semicolon;
 //int param1, string param2,...
 parameterList: parameter(Comma parameter)*;
 //int param1
-parameter: type Identifier;
+parameter: (type|Identifier) Identifier;
 
 argumentList: expression? | expression (Comma expression)*?;
 //property, object.a, 3+1, a = 3
@@ -35,7 +35,7 @@ operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator;
 
 returnStmt: Return expression;
 
-localVarDecl: type Identifier (Assign expression)?;
+localVarDecl: (type | Identifier) Identifier (Assign expression)?;
 
 block: OpenCurlyBracket statement* ClosedCurlyBracket;
 
