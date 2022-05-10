@@ -5,4 +5,8 @@ import common.Type;
 
 public class BaseType extends Type {
     private Primitives identifier;
+
+    public BaseType(Primitives identifier) {
+        this.identifier = identifier;
+    }
 }
