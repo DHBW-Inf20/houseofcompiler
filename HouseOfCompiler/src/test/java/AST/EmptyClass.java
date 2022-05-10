@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmptyClass {
     @Test
-    void untyped() throws FileNotFoundException {
+    void main() throws FileNotFoundException {
 
         InputStream file = Resources.getFileAsStream("EmptyClass.java");
 
