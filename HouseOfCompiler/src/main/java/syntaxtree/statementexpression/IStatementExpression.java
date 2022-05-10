@@ -1,5 +1,8 @@
 package syntaxtree.statementexpression;
 
-public interface IStatementExpression {
+import syntaxtree.expressions.IExpression;
+import syntaxtree.statements.IStatement;
+
+public interface IStatementExpression extends IStatement, IExpression {
 
 }

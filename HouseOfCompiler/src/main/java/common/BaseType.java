@@ -13,4 +13,10 @@ public class BaseType extends Type {
     public Primitives getIdentifier() {
         return (Primitives) this.identifier;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder(identifier.toString());
+        return sb.toString();
+    }
 }

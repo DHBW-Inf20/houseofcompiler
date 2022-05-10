@@ -7,17 +7,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class Test {
 
     public static void main(String[] args) throws IOException {
         ProgramGenerator codeGen = new ProgramGenerator();
 
-        Vector<ClassDecl> classes = new Vector<>();
+        PrintableVector<ClassDecl> classes = new PrintableVector<>();
 
-        classes.add(new ClassDecl("Hund", new Vector<>(), new Vector<>(), new Vector<>()));
-        classes.add(new ClassDecl("Katze", new Vector<>(), new Vector<>(), new Vector<>()));
+        classes.add(new ClassDecl("Hund", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
+        classes.add(new ClassDecl("Katze", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
 
         Program program = new Program(classes);
 

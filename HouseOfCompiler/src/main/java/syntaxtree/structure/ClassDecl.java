@@ -7,16 +7,16 @@ import visitor.Visitable;
 import visitor.CodeVisitor;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class ClassDecl implements Visitable {
 
     private String identifier;
-    private Vector<FieldDecl> fieldDelcarations;
-    private Vector<MethodDecl> methodDeclarations;
-    private Vector<ConstructorDecl> constructorDeclarations;
+    private PrintableVector<FieldDecl> fieldDelcarations;
+    private PrintableVector<MethodDecl> methodDeclarations;
+    private PrintableVector<ConstructorDecl> constructorDeclarations;
 
-    public ClassDecl(String identifier, Vector<FieldDecl> fieldDelcarations, Vector<MethodDecl> methodDeclarations, Vector<ConstructorDecl> constructorDeclarations) {
+    public ClassDecl(String identifier, PrintableVector<FieldDecl> fieldDelcarations, PrintableVector<MethodDecl> methodDeclarations, PrintableVector<ConstructorDecl> constructorDeclarations) {
         this.identifier = identifier;
         this.fieldDelcarations = fieldDelcarations;
         this.methodDeclarations = methodDeclarations;
@@ -28,15 +28,15 @@ public class ClassDecl implements Visitable {
     }
 
 
-    public Vector<FieldDecl> getFieldDelcarations() {
+    public PrintableVector<FieldDecl> getFieldDelcarations() {
         return fieldDelcarations;
     }
 
-    public Vector<MethodDecl> getMethodDeclarations() {
+    public PrintableVector<MethodDecl> getMethodDeclarations() {
         return methodDeclarations;
     }
 
-    public Vector<ConstructorDecl> getConstructorDeclarations() {
+    public PrintableVector<ConstructorDecl> getConstructorDeclarations() {
         return constructorDeclarations;
     }
 
@@ -62,5 +62,15 @@ public class ClassDecl implements Visitable {
     @Override
     public void accept(CodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append("\"").append(identifier).append("\"\n");
+        sb.append("\tfieldDelcarations:\n\t").append(fieldDelcarations).append("\n");
+        sb.append("\tmethodDeclarations:\n\t").append(methodDeclarations).append("\n");
+        sb.append("\tconstructorDeclarations:\n\t").append(constructorDeclarations).append("\n");
+        return sb.toString();
     }
 }

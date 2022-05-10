@@ -39,6 +39,10 @@ public class FieldDecl implements Visitable {
         return type;
     }
 
+    public void setType(Type type){
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,5 +64,13 @@ public class FieldDecl implements Visitable {
     @Override
     public void accept(CodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(accessModifier).append(" ").append(type).append(" " + identifier).append("\n");
+        sb.append("\t\texprs:").append(expressions).append("\n");
+        return sb.toString();
     }
 }
