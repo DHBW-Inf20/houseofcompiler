@@ -1,6 +1,6 @@
 grammar JavaSubset;
 
-program: classdecl;
+program: classdecl+;
 
 //class identifier{...}
 classdecl: 'class' Identifier OpenCurlyBracket (constuctorDecl|fieldDecl|methodDecl)* ClosedCurlyBracket;
