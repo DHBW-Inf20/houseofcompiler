@@ -21,13 +21,13 @@ public class GenUtils {
     public static String generateDescriptor(Vector<Type> arguments, Type returnType) {
         StringBuilder builder = new StringBuilder();
         builder.append('(');
-        arguments.forEach(type -> builder.append(getDescriptor(type)));
+        arguments.forEach(type -> builder.append(getTypeTerm(type)));
         builder.append(')');
-        builder.append(getDescriptor(returnType));
+        builder.append(getTypeTerm(returnType));
         return builder.toString();
     }
 
-    private static String getDescriptor(Type type) {
+    private static String getTypeTerm(Type type) {
         if (type instanceof BaseType) {
             return switch (((BaseType) type).getIdentifier()) {
                 case VOID -> "V";
