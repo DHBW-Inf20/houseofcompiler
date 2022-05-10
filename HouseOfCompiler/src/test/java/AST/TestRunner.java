@@ -1,6 +1,7 @@
 package AST;
 
 import common.Compiler;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import syntaxtree.structure.*;
 
@@ -11,19 +12,22 @@ import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("Abstract Syntax Tree Generation")
 public class TestEmptyClass {
+
     @Test
+    @DisplayName("EmptyClass")
     void main() throws FileNotFoundException {
 
         InputStream file = Resources.getFileAsStream("EmptyClass.java");
-        Program tast = Compiler.getFactory().getAstGenerator().getAst(file);
+        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
 
-        Vector<ClassDecl> classDecls = new Vector<ClassDecl>();
-        ClassDecl classDecl = new ClassDecl("EmptyClass", new Vector<FieldDecl>(),new Vector<MethodDecl>(),new Vector<ConstructorDecl>());
+        ClassDecl classDecl = new ClassDecl("EmptyClass", new Vector<>(),new Vector<>(),new Vector<>());
+        Vector<ClassDecl> classDecls = new Vector<>();
         classDecls.add(classDecl);
         var testProgram = new Program(classDecls);
 
-        assertEquals(tast, testProgram);
+        assertEquals(ast, testProgram);
 
     }
 
