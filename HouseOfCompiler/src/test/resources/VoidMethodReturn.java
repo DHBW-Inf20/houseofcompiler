@@ -1,8 +1,8 @@
-class VoidMethod{
+class VoidMethodReturn{
 
 
-    void test(){
-        
+    public void test(){
+        return;
     }
 
 }
