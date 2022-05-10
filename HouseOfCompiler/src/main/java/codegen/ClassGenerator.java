@@ -9,7 +9,7 @@ import visitor.CodeVisitor;
 
 public class ClassGenerator extends CodeVisitor implements Opcodes {
 
-    ClassWriter cw;
+    private final ClassWriter cw;
 
     public ClassGenerator() {
         this.cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -27,16 +27,12 @@ public class ClassGenerator extends CodeVisitor implements Opcodes {
         clazz.getFieldDelcarations().forEach(field -> field.accept(this));
 
         if (clazz.getConstructorDeclarations().isEmpty()) {
-            new ConstructorDecl().accept(this);
+            new ConstructorDecl().accept(new MethodGenerator(cw));
         } else {
-            clazz.getConstructorDeclarations().forEach(constructor -> {
-                constructor.accept(new MethodGenerator(cw));
-            });
+            clazz.getConstructorDeclarations().forEach(constructor -> constructor.accept(new MethodGenerator(cw)));
         }
 
-        clazz.getMethodDeclarations().forEach(method -> {
-            method.accept(new MethodGenerator(cw));
-        });
+        clazz.getMethodDeclarations().forEach(method -> method.accept(new MethodGenerator(cw)));
 
         cw.visitEnd();
     }
