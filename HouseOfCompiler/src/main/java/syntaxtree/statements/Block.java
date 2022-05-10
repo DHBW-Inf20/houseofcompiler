@@ -1,5 +1,7 @@
 package syntaxtree.statements;
 
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 
 import java.util.Objects;
@@ -12,6 +14,11 @@ public class Block implements IStatement{
 
     public Block(Vector<IStatement> block) {
         this.block = block;
+    }
+
+    public Block() {
+        block = new Vector<>();
+        type = new BaseType(Primitives.VOID);
     }
 
     public Type getType() {

@@ -3,22 +3,25 @@ package syntaxtree.structure;
 import common.AccessModifier;
 import common.Type;
 import syntaxtree.statements.Block;
+import visitor.SemanticVisitor;
+import visitor.Visitable;
+import visitor.CodeVisitor;
 
 import java.util.Objects;
 import java.util.Vector;
 
-public class MethodDecl {
+public class MethodDecl implements Visitable {
 
     private String identifier;
     private Type type;
     private Vector<MethodParameter> parameters;
-    private Block statement;
+    private Block block;
     private AccessModifier accessModifier;
 
     public MethodDecl(String identifier, Vector<MethodParameter> parameters, Block statement, AccessModifier accessModifier) {
         this.identifier = identifier;
         this.parameters = parameters;
-        this.statement = statement;
+        this.block = statement;
         this.accessModifier = accessModifier;
     }
 
@@ -34,8 +37,8 @@ public class MethodDecl {
         return parameters;
     }
 
-    public Block getStatement() {
-        return statement;
+    public Block getBlock() {
+        return block;
     }
 
     public AccessModifier getAccessModifier() {
@@ -51,11 +54,21 @@ public class MethodDecl {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MethodDecl that = (MethodDecl) o;
-        return identifier.equals(that.identifier) && Objects.equals(type, that.type) && parameters.equals(that.parameters) && statement.equals(that.statement) && accessModifier == that.accessModifier;
+        return identifier.equals(that.identifier) && Objects.equals(type, that.type) && parameters.equals(that.parameters) && block.equals(that.block) && accessModifier == that.accessModifier;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, type, parameters, statement, accessModifier);
+        return Objects.hash(identifier, type, parameters, block, accessModifier);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(CodeVisitor visitor) {
+        visitor.visit(this);
     }
 }
