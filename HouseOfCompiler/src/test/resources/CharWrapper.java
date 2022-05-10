@@ -1,17 +1,17 @@
-class IntegerWrapper{
+class CharWrapper{
 
-    private int i;
+    private char c;
 
-    public IntegerWrapper(int i){
-        this.i = i;
+    public CharWrapper(char c){
+        this.c = c;
     }
 
-    public void setNumber(int i){
-        this.i = i;
+    public void setChar(char c){
+        this.c = c;
     }
 
-    public int getNumber(){
-        return this.i;
+    public char getChar(){
+        return this.c;
     }
 
 }
