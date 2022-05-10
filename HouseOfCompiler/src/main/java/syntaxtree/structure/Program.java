@@ -1,7 +1,8 @@
 package syntaxtree.structure;
 
+import visitor.SemanticVisitor;
 import visitor.Visitable;
-import visitor.Visitor;
+import visitor.CodeVisitor;
 
 import java.util.Objects;
 import java.util.Vector;
@@ -32,9 +33,12 @@ public class Program implements Visitable {
     }
 
     @Override
-    public void accept(Visitor visitor) {
+    public void accept(SemanticVisitor visitor) {
         visitor.visit(this);
     }
 
-
+    @Override
+    public void accept(CodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

@@ -8,7 +8,7 @@ import java.util.Vector;
 public class Test {
 
     public static void main(String[] args) {
-        CodeGen codeGen = new CodeGen();
+        ProgramGenerator codeGen = new ProgramGenerator();
 
         Vector<ClassDecl> classes = new Vector<>();
 
@@ -18,6 +18,6 @@ public class Test {
         Program program = new Program(classes);
 
 
-        codeGen.generateBytecode(program);
+        codeGen.generate(program);
     }
 }
