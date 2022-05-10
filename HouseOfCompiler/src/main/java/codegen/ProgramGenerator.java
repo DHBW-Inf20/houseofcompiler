@@ -1,12 +1,13 @@
 package codegen;
 
+import common.IProgramGenerator;
 import org.objectweb.asm.Opcodes;
 import syntaxtree.structure.Program;
 import visitor.CodeVisitor;
 
 import java.util.HashMap;
 
-public class ProgramGenerator extends CodeVisitor implements Opcodes {
+public class ProgramGenerator extends CodeVisitor implements Opcodes, IProgramGenerator {
 
     private final HashMap<String, byte[]> classes;
 
@@ -17,6 +18,11 @@ public class ProgramGenerator extends CodeVisitor implements Opcodes {
     public HashMap<String, byte[]> generateBytecode(Program program) {
         program.accept(this);
         return classes;
+    }
+
+    public static HashMap<String, byte[]> generate(Program program){
+        ProgramGenerator pg = new ProgramGenerator();
+        return pg.generateBytecode(program);
     }
 
     @Override
