@@ -1,22 +1,36 @@
 package syntaxtree.structure;
 
 import common.AccessModifier;
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 import syntaxtree.statements.Block;
+import visitor.SemanticVisitor;
+import visitor.Visitable;
+import visitor.CodeVisitor;
 
 import java.util.Objects;
 import java.util.Vector;
 
-public class ConstructorDecl {
+public class ConstructorDecl implements Visitable {
 
     private Type type;
     private Vector<MethodParameter> parameterDeclarations;
     private AccessModifier accessModifier;
-    private Block statement;
+    private Block block;
 
-    public ConstructorDecl(Vector<MethodParameter> parameterDeclarations, Block statement) {
+    public ConstructorDecl(AccessModifier accessModifier, Vector<MethodParameter> parameterDeclarations, Block statement) {
+        this.accessModifier = accessModifier;
         this.parameterDeclarations = parameterDeclarations;
-        this.statement = statement;
+        this.block = statement;
+        type = new BaseType(Primitives.VOID);
+    }
+
+    public ConstructorDecl() {
+        this.accessModifier = AccessModifier.PUBLIC;
+        this.parameterDeclarations = new Vector<>();
+        this.block = new Block();
+        type = new BaseType(Primitives.VOID);
     }
 
     public Type getType() {
@@ -27,12 +41,8 @@ public class ConstructorDecl {
         return parameterDeclarations;
     }
 
-    public Block getStatement() {
-        return statement;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
+    public Block getBlock() {
+        return block;
     }
 
     @Override
@@ -40,16 +50,25 @@ public class ConstructorDecl {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConstructorDecl that = (ConstructorDecl) o;
-        return Objects.equals(type, that.type) && parameterDeclarations.equals(that.parameterDeclarations) && accessModifier == that.accessModifier && statement.equals(that.statement);
+        return Objects.equals(type, that.type) && parameterDeclarations.equals(that.parameterDeclarations) && accessModifier == that.accessModifier && block.equals(that.block);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, parameterDeclarations, accessModifier, statement);
+        return Objects.hash(type, parameterDeclarations, accessModifier, block);
     }
 
     public AccessModifier getAccessModifier() {
         return accessModifier;
     }
 
+    @Override
+    public void accept(SemanticVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(CodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }
