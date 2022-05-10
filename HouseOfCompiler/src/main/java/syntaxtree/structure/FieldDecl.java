@@ -3,11 +3,14 @@ package syntaxtree.structure;
 import common.AccessModifier;
 import common.Type;
 import syntaxtree.expressions.IExpression;
+import visitor.SemanticVisitor;
+import visitor.Visitable;
+import visitor.CodeVisitor;
 
 import java.util.Objects;
 
 
-public class FieldDecl {
+public class FieldDecl implements Visitable {
 
     private String identifier;
     private AccessModifier accessModifier;
@@ -47,5 +50,15 @@ public class FieldDecl {
     @Override
     public int hashCode() {
         return Objects.hash(identifier, accessModifier, expressions, type);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(CodeVisitor visitor) {
+        visitor.visit(this);
     }
 }

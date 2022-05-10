@@ -8,14 +8,16 @@ import java.util.Vector;
 public class Test {
 
     public static void main(String[] args) {
-        CodeGen codeGen = new CodeGen();
+        ProgramGenerator codeGen = new ProgramGenerator();
 
-        Program program = new Program();
+        Vector<ClassDecl> classes = new Vector<>();
 
-        program.classes = new Vector<>();
-        program.classes.add(new ClassDecl());
-        program.classes.add(new ClassDecl());
+        classes.add(new ClassDecl("Hund", new Vector<>(), new Vector<>(), new Vector<>()));
+        classes.add(new ClassDecl("Katze", new Vector<>(), new Vector<>(), new Vector<>()));
 
-        codeGen.generateBytecode(program);
+        Program program = new Program(classes);
+
+
+        codeGen.generate(program);
     }
 }
