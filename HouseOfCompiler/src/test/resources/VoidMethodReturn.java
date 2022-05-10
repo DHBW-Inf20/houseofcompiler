@@ -1,0 +1,8 @@
+class VoidMethod{
+
+
+    void test(){
+        
+    }
+
+}
