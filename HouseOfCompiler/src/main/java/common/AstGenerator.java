@@ -5,6 +5,8 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
+import parser.adapter.ClassAdapter;
+import parser.adapter.ProgramAdapter;
 import parser.generated.JavaSubsetLexer;
 import parser.generated.JavaSubsetParser;
 import syntaxtree.structure.ClassDecl;
@@ -30,12 +32,6 @@ public class AstGenerator implements IAstGenerator{
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaSubsetParser parser = new JavaSubsetParser(tokens);
 
-
-        Vector<ClassDecl> classes = new Vector<ClassDecl>();
-        Program program = new Program(classes);
-
-        // TODO: Generatoren Implementieren (Lukas)
-
-        return program;
+        return ProgramAdapter.adapt(parser.program());
     }
 }
