@@ -3,6 +3,8 @@ package codegen;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.Program;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class Test {
@@ -18,6 +20,12 @@ public class Test {
         Program program = new Program(classes);
 
 
-        codeGen.generate(program);
+        HashMap<String, byte[]> bytecodeClasses = codeGen.generateBytecode(program);
+
+        for (String clazz : bytecodeClasses.keySet()) {
+            System.out.println();
+            System.out.println("Klasse: " + clazz);
+            System.out.println("Bytecode: " + new String(bytecodeClasses.get(clazz)));
+        }
     }
 }

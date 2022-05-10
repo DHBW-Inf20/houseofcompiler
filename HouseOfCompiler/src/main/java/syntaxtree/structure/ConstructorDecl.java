@@ -1,6 +1,8 @@
 package syntaxtree.structure;
 
 import common.AccessModifier;
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 import syntaxtree.statements.Block;
 import visitor.SemanticVisitor;
@@ -17,14 +19,18 @@ public class ConstructorDecl implements Visitable {
     private AccessModifier accessModifier;
     private Block block;
 
-    public ConstructorDecl(Vector<MethodParameter> parameterDeclarations, Block statement) {
+    public ConstructorDecl(AccessModifier accessModifier, Vector<MethodParameter> parameterDeclarations, Block statement) {
+        this.accessModifier = accessModifier;
         this.parameterDeclarations = parameterDeclarations;
         this.block = statement;
+        type = new BaseType(Primitives.VOID);
     }
 
     public ConstructorDecl() {
+        this.accessModifier = AccessModifier.PUBLIC;
         this.parameterDeclarations = new Vector<>();
         this.block = new Block();
+        type = new BaseType(Primitives.VOID);
     }
 
     public Type getType() {
@@ -37,10 +43,6 @@ public class ConstructorDecl implements Visitable {
 
     public Block getBlock() {
         return block;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     @Override
