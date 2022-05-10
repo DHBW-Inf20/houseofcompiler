@@ -4,7 +4,7 @@ import codegen.ProgramGenerator;
 
 public class Compiler implements CompilerFactory{
 
-    private Compiler(){
+    public Compiler(){
 
     }
 
@@ -24,6 +24,6 @@ public class Compiler implements CompilerFactory{
 
     @Override
     public IProgramGenerator getProgramGenerator() {
-        return ProgramGenerator::generateBytecode;
+        return ProgramGenerator::generate;
     }
 }

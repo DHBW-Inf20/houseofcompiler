@@ -20,6 +20,11 @@ public class ProgramGenerator extends CodeVisitor implements Opcodes, IProgramGe
         return classes;
     }
 
+    public static HashMap<String, byte[]> generate(Program program){
+        ProgramGenerator pg = new ProgramGenerator();
+        return pg.generateBytecode(program);
+    }
+
     @Override
     public void visit(Program program) {
         System.out.println("Program");
