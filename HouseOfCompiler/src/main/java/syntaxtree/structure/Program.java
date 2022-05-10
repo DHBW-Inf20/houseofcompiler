@@ -5,17 +5,17 @@ import visitor.Visitable;
 import visitor.CodeVisitor;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class Program implements Visitable {
-    private Vector<ClassDecl> classes;
+    private PrintableVector<ClassDecl> classes;
 
 
-    public Program(Vector<ClassDecl> classes) {
+    public Program(PrintableVector<ClassDecl> classes) {
         this.classes = classes;
     }
 
-    public Vector<ClassDecl> getClasses() {
+    public PrintableVector<ClassDecl> getClasses() {
         return classes;
     }
 
@@ -40,5 +40,12 @@ public class Program implements Visitable {
     @Override
     public void accept(CodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Program:\n");
+        sb.append("classes:\n").append(classes);
+        return sb.toString();
     }
 }

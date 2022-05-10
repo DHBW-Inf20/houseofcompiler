@@ -8,17 +8,17 @@ import visitor.Visitable;
 import visitor.CodeVisitor;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class MethodDecl implements Visitable {
 
     private String identifier;
     private Type type;
-    private Vector<MethodParameter> parameters;
+    private PrintableVector<MethodParameter> parameters;
     private Block block;
     private AccessModifier accessModifier;
 
-    public MethodDecl(String identifier, Vector<MethodParameter> parameters, Block statement, AccessModifier accessModifier) {
+    public MethodDecl(String identifier, PrintableVector<MethodParameter> parameters, Block statement, AccessModifier accessModifier) {
         this.identifier = identifier;
         this.parameters = parameters;
         this.block = statement;
@@ -33,7 +33,7 @@ public class MethodDecl implements Visitable {
         return type;
     }
 
-    public Vector<MethodParameter> getParameters() {
+    public PrintableVector<MethodParameter> getParameters() {
         return parameters;
     }
 
@@ -70,5 +70,14 @@ public class MethodDecl implements Visitable {
     @Override
     public void accept(CodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(accessModifier).append(" ").append(type).append("\n");
+        sb.append("\t\tparams:").append(parameters).append("\n");
+        sb.append("\t\tblock:").append(block).append("\n");
+        return sb.toString();
     }
 }

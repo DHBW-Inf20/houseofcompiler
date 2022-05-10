@@ -10,16 +10,16 @@ import visitor.Visitable;
 import visitor.CodeVisitor;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class ConstructorDecl implements Visitable {
 
     private Type type;
-    private Vector<MethodParameter> parameterDeclarations;
+    private PrintableVector<MethodParameter> parameterDeclarations;
     private AccessModifier accessModifier;
     private Block block;
 
-    public ConstructorDecl(AccessModifier accessModifier, Vector<MethodParameter> parameterDeclarations, Block statement) {
+    public ConstructorDecl(AccessModifier accessModifier, PrintableVector<MethodParameter> parameterDeclarations, Block statement) {
         this.accessModifier = accessModifier;
         this.parameterDeclarations = parameterDeclarations;
         this.block = statement;
@@ -28,7 +28,7 @@ public class ConstructorDecl implements Visitable {
 
     public ConstructorDecl() {
         this.accessModifier = AccessModifier.PUBLIC;
-        this.parameterDeclarations = new Vector<>();
+        this.parameterDeclarations = new PrintableVector<>();
         this.block = new Block();
         type = new BaseType(Primitives.VOID);
     }
@@ -37,7 +37,7 @@ public class ConstructorDecl implements Visitable {
         return type;
     }
 
-    public Vector<MethodParameter> getParameterDeclarations() {
+    public PrintableVector<MethodParameter> getParameterDeclarations() {
         return parameterDeclarations;
     }
 
@@ -70,5 +70,14 @@ public class ConstructorDecl implements Visitable {
     @Override
     public void accept(CodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(accessModifier).append(" ").append(type).append("\n");
+        sb.append("\t\tparams:").append(parameterDeclarations).append("\n");
+        sb.append("\t\tblock:").append(block).append("\n");
+        return sb.toString();
     }
 }

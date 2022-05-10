@@ -14,7 +14,7 @@ import syntaxtree.structure.Program;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class AstGenerator implements IAstGenerator{
 

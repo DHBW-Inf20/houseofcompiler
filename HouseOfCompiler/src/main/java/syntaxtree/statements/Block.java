@@ -5,19 +5,19 @@ import common.Primitives;
 import common.Type;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class Block implements IStatement{
 
     private Type type;
-    private Vector<IStatement> block;
+    private PrintableVector<IStatement> block;
 
-    public Block(Vector<IStatement> block) {
+    public Block(PrintableVector<IStatement> block) {
         this.block = block;
     }
 
     public Block() {
-        block = new Vector<>();
+        block = new PrintableVector<>();
         type = new BaseType(Primitives.VOID);
     }
 
@@ -25,7 +25,7 @@ public class Block implements IStatement{
         return type;
     }
 
-    public Vector<IStatement> getBlock() {
+    public PrintableVector<IStatement> getBlock() {
         return block;
     }
 
@@ -44,5 +44,14 @@ public class Block implements IStatement{
     @Override
     public int hashCode() {
         return Objects.hash(type, block);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder(type.toString());
+        sb.append("{");
+        sb.append(block);
+        sb.append('}');
+        return sb.toString();
     }
 }

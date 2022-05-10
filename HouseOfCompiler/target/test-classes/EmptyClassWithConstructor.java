@@ -1,4 +1,4 @@
-class EmptyClassWithConstructor(){
+class EmptyClassWithConstructor{
 
     public EmptyClassWithConstructor(){
 

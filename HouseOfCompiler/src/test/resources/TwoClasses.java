@@ -1,7 +1,0 @@
-class TwoClasses{
-
-}
-
-class TwoClasses{
-
-}
