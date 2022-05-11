@@ -1,13 +1,11 @@
 package syntaxtree.structure;
 
-import common.Type;
-
 import visitor.SemanticVisitor;
 import visitor.Visitable;
-import visitor.CodeVisitor;
 
 import java.util.Objects;
 import common.PrintableVector;
+import visitor.codevisitor.ClassCodeVisitor;
 
 public class ClassDecl implements Visitable {
 
@@ -60,7 +58,7 @@ public class ClassDecl implements Visitable {
     }
 
     @Override
-    public void accept(CodeVisitor visitor) {
+    public void accept(ClassCodeVisitor visitor) {
         visitor.visit(this);
     }
 

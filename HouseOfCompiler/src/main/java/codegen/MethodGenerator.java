@@ -1,5 +1,6 @@
 package codegen;
 
+import codegen.context.Context;
 import codegen.utils.GenUtils;
 import common.Type;
 import org.objectweb.asm.ClassWriter;
@@ -8,18 +9,22 @@ import org.objectweb.asm.Opcodes;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
-import visitor.CodeVisitor;
 
 import common.PrintableVector;
+import visitor.codevisitor.MethodCodeVisitor;
+
 import java.util.stream.Collectors;
 
-public class MethodGenerator extends CodeVisitor implements Opcodes {
+public class MethodGenerator implements MethodCodeVisitor {
 
-    public ClassWriter cw;
-    public MethodVisitor mv;
+    private ClassWriter cw;
+    private MethodVisitor mv;
 
-    public MethodGenerator(ClassWriter cw) {
+    private Context context;
+
+    public MethodGenerator(ClassWriter cw, Context context) {
         this.cw = cw;
+        this.context = context;
     }
 
     @Override

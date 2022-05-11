@@ -5,10 +5,10 @@ import common.Type;
 import syntaxtree.statements.Block;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
-import visitor.CodeVisitor;
 
 import java.util.Objects;
 import common.PrintableVector;
+import visitor.codevisitor.MethodCodeVisitor;
 
 public class MethodDecl implements Visitable {
 
@@ -68,7 +68,7 @@ public class MethodDecl implements Visitable {
     }
 
     @Override
-    public void accept(CodeVisitor visitor) {
+    public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 

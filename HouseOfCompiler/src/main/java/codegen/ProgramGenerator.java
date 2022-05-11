@@ -1,21 +1,23 @@
 package codegen;
 
+import codegen.context.Context;
 import common.IProgramGenerator;
-import org.objectweb.asm.Opcodes;
 import syntaxtree.structure.Program;
-import visitor.CodeVisitor;
+import visitor.codevisitor.ProgramCodeVisitor;
 
 import java.util.HashMap;
 
-public class ProgramGenerator extends CodeVisitor implements Opcodes, IProgramGenerator {
+public class ProgramGenerator implements ProgramCodeVisitor, IProgramGenerator {
 
     private final HashMap<String, byte[]> classes;
+    private Context context;
 
     public ProgramGenerator() {
         classes = new HashMap<>();
     }
 
     public HashMap<String, byte[]> generateBytecode(Program program) {
+        context = new Context(program);
         program.accept(this);
         return classes;
     }
@@ -30,7 +32,7 @@ public class ProgramGenerator extends CodeVisitor implements Opcodes, IProgramGe
         System.out.println("Program");
         classes.clear();
         program.getClasses().forEach(clazz -> {
-            ClassGenerator classGen = new ClassGenerator();
+            ClassGenerator classGen = new ClassGenerator(context);
             clazz.accept(classGen);
             classes.put(clazz.getIdentifier(), classGen.getBytecode());
         });

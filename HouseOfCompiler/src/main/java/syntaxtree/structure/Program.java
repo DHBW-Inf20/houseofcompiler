@@ -2,10 +2,10 @@ package syntaxtree.structure;
 
 import visitor.SemanticVisitor;
 import visitor.Visitable;
-import visitor.CodeVisitor;
 
 import java.util.Objects;
 import common.PrintableVector;
+import visitor.codevisitor.ProgramCodeVisitor;
 
 public class Program implements Visitable {
     private PrintableVector<ClassDecl> classes;
@@ -38,7 +38,7 @@ public class Program implements Visitable {
     }
 
     @Override
-    public void accept(CodeVisitor visitor) {
+    public void accept(ProgramCodeVisitor visitor) {
         visitor.visit(this);
     }
 
