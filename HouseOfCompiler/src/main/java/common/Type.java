@@ -2,6 +2,6 @@ package common;
 
 import visitor.SemanticVisitor;
 
-public interface Type extends SemanticVisitor {
-    public void accept(SemanticVisitor v);
+public class Type  {
+    Object identifier;
 }

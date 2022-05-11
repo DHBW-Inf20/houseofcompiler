@@ -1,16 +1,22 @@
 package visitor;
 
 
+import common.Type;
+import syntaxtree.statementexpression.Assign;
 import syntaxtree.structure.*;
 
 public interface SemanticVisitor {
-    void visit(Program program);
+    Type visit(Program program);
 
-    void visit(ClassDecl clazz);
+    Type visit(ClassDecl clazz);
 
-    void visit(FieldDecl field);
+    Type visit(FieldDecl field);
 
-    void visit(ConstructorDecl constructor);
+    Type visit(ConstructorDecl constructor);
 
-    void visit(MethodDecl method);
+    Type visit(MethodDecl method);
+
+    Type visit(Assign assign);
+
+    Type visit(MethodParameter methodParameter);
 }
