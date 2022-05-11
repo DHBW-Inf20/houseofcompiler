@@ -21,4 +21,9 @@ public class MethodContext {
     public Type getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return accessModifier + " " + type;
+    }
 }

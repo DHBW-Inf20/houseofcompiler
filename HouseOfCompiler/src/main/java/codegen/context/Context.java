@@ -16,4 +16,16 @@ public class Context {
     public HashMap<String, ClassContext> getClasses() {
         return classes;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        classes.forEach((identifier, clazz) -> {
+            builder.append(identifier);
+            builder.append(": \n");
+            builder.append(clazz.toString());
+            builder.append("\n--------------------\n");
+        });
+        return builder.toString();
+    }
 }

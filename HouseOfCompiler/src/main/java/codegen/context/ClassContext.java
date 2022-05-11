@@ -24,4 +24,23 @@ public class ClassContext {
     public HashMap<String, MethodContext> getMethods() {
         return methods;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Fields:\n");
+        fields.forEach((identifier, field) -> {
+            builder.append(identifier);
+            builder.append(" -> ");
+            builder.append(field.toString());
+        });
+        builder.append("\n----------\n");
+        builder.append("Methods:\n");
+        methods.forEach((identifier, method) -> {
+            builder.append(identifier);
+            builder.append(" -> ");
+            builder.append(method.toString());
+        });
+        return builder.toString();
+    }
 }

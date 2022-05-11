@@ -1,6 +1,12 @@
 package codegen;
 
+import codegen.context.Context;
+import common.AccessModifier;
+import common.BaseType;
+import common.Primitives;
 import syntaxtree.structure.ClassDecl;
+import syntaxtree.structure.FieldDecl;
+import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.Program;
 
 import java.io.File;
@@ -16,10 +22,22 @@ public class Test {
 
         PrintableVector<ClassDecl> classes = new PrintableVector<>();
 
-        classes.add(new ClassDecl("Hund", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
-        classes.add(new ClassDecl("Katze", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
+        FieldDecl field = new FieldDecl("testField", AccessModifier.PUBLIC, null);
+        field.setType(new BaseType(Primitives.INT));
+        PrintableVector<FieldDecl> fields = new PrintableVector<>();
+        fields.add(field);
+
+        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), null, AccessModifier.PUBLIC);
+        method.setType(new BaseType(Primitives.INT));
+        PrintableVector<MethodDecl> methods = new PrintableVector<>();
+        methods.add(method);
+
+        classes.add(new ClassDecl("Hund", fields, methods, new PrintableVector<>()));
+//        classes.add(new ClassDecl("Katze", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
 
         Program program = new Program(classes);
+
+        System.out.println(new Context(program).toString());
 
 
         HashMap<String, byte[]> bytecodeClasses = codeGen.generateBytecode(program);
