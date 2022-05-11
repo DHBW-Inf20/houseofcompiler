@@ -1,4 +1,3 @@
-
 class ClassFields {
 
     private int private;

@@ -14,7 +14,6 @@ public class FieldDecl implements Visitable {
 
     private String identifier;
     private AccessModifier accessModifier;
-    private IExpression expressions;
     private Type type;
 
     public FieldDecl(String identifier, AccessModifier accessModifier, IExpression expressions) {
