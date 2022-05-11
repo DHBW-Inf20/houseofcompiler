@@ -18,6 +18,10 @@ public class GenUtils {
         };
     }
 
+    public static String generateDescriptor(Type type) {
+        return getTypeTerm(type);
+    }
+
     public static String generateDescriptor(PrintableVector<Type> arguments, Type returnType) {
         StringBuilder builder = new StringBuilder();
         builder.append('(');
