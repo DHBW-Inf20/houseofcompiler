@@ -42,7 +42,7 @@ block: OpenCurlyBracket statement* ClosedCurlyBracket;
 whileStmt: While OpenRoundBracket expression ClosedRoundBracket block;
 ifElseStmt: ifStmt elseIfStmt* elseStmt?;
 ifStmt: If OpenRoundBracket expression ClosedRoundBracket block;
-elseIfStmt: Else OpenRoundBracket expression ClosedRoundBracket block;
+elseIfStmt: Else ifStmt;
 elseStmt: Else block;
 assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
