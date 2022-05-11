@@ -30,7 +30,7 @@ public class TestRunner {
         var ast = new Program(classDecls);
         var tast = ast;
 
-        var generatedTast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        var generatedTast = Compiler.getFactory().getTastAdapter().getTast(ast);
 
         assertEquals(tast, generatedTast);
 
@@ -46,7 +46,7 @@ public class TestRunner {
         classDecls.add(classDecl);
         var ast = new Program(classDecls);
 
-        var generatedTast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        var generatedTast = Compiler.getFactory().getTastAdapter().getTast(ast);
         var tast = ast;
         assertEquals(tast, generatedTast);
 

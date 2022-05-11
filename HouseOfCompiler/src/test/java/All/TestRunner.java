@@ -20,8 +20,8 @@ public class TestRunner {
     @DisplayName("Empty Class")
     void main() throws Exception {
         InputStream file = Resources.getFileAsStream("EmptyClass.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("EmptyClass");
@@ -35,8 +35,8 @@ public class TestRunner {
     @DisplayName("EmptyClassWithConstructor")
     void emptyClassWithConstructor() throws Exception {
         InputStream file = Resources.getFileAsStream("EmptyClassWithConstructor.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("EmptyClassWithConstructor");
@@ -49,8 +49,8 @@ public class TestRunner {
     @DisplayName("Comments")
     void comments() throws Exception {
         InputStream file = Resources.getFileAsStream("Comments.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("Comments");

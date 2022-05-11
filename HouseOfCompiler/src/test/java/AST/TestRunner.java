@@ -29,7 +29,7 @@ public class TestRunner {
     @DisplayName("Empty Class")
     void main() {
         InputStream file = Resources.getFileAsStream("EmptyClass.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
 
         ClassDecl classDecl = new ClassDecl("EmptyClass", new PrintableVector<>(),new PrintableVector<>(),new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
@@ -44,7 +44,7 @@ public class TestRunner {
     @DisplayName("EmptyClassWithConstructor")
     void emptyClassWithConstructor(){
         InputStream file = Resources.getFileAsStream("EmptyClassWithConstructor.java");
-        Program generatedAst = Compiler.getFactory().getAstGenerator().getAst(file);
+        Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
@@ -60,7 +60,7 @@ public class TestRunner {
     @DisplayName("Comments")
     void commentTest(){
         InputStream file = Resources.getFileAsStream("Comments.java");
-        Program generatedAst = Compiler.getFactory().getAstGenerator().getAst(file);
+        Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
@@ -125,7 +125,7 @@ public class TestRunner {
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var ast = new Program(classDecls);
-        Program generatedAst = Compiler.getFactory().getAstGenerator().getAst(file);
+        Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
         assertEquals(ast, generatedAst);
     }
 

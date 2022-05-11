@@ -4,6 +4,6 @@ import syntaxtree.structure.Program;
 
 import java.io.InputStream;
 
-public interface IAstGenerator {
+public interface IAstAdapter {
     Program getAst(InputStream stream);
 }

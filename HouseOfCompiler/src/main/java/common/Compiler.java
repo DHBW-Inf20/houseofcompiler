@@ -13,13 +13,13 @@ public class Compiler implements CompilerFactory{
     }
 
     @Override
-    public IAstGenerator getAstGenerator() {
-        return new AstGenerator();
+    public IAstAdapter getAstAdapter() {
+        return new AstAdapter();
     }
 
     @Override
-    public ITastGenerator getTastGenerator() {
-        return new TastGenerator();
+    public ITastAdapter getTastAdapter() {
+        return new TastAdapter();
     }
 
     @Override

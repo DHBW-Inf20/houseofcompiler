@@ -2,7 +2,7 @@ package common;
 
 import syntaxtree.structure.Program;
 
-public interface ITastGenerator {
+public interface ITastAdapter {
 
     Program getTast(Program ast);
 

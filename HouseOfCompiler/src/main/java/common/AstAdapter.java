@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import common.PrintableVector;
 
-public class AstGenerator implements IAstGenerator{
+public class AstAdapter implements IAstAdapter{
 
     @Override
     public Program getAst(InputStream stream) {
