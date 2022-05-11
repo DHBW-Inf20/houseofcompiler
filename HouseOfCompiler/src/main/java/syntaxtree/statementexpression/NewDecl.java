@@ -4,18 +4,18 @@ import common.Type;
 import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class NewDecl implements IStatementExpression{
 
-    private Vector<IExpression> arguments;
+    private PrintableVector<IExpression> arguments;
     private Type type;
 
-    public NewDecl(Vector<IExpression> arguments) {
+    public NewDecl(PrintableVector<IExpression> arguments) {
         this.arguments = arguments;
     }
 
-    public Vector<IExpression> getArguments() {
+    public PrintableVector<IExpression> getArguments() {
         return arguments;
     }
 

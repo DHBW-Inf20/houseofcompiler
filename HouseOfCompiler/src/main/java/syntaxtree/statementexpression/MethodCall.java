@@ -4,16 +4,16 @@ import common.Type;
 import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
-import java.util.Vector;
+import common.PrintableVector;
 
 public class MethodCall implements IStatementExpression{
 
     public String identifier;
     public IExpression target;
-    public Vector<IExpression> arguments;
+    public PrintableVector<IExpression> arguments;
     public Type type;
 
-    public MethodCall(String identifier, IExpression target, Vector<IExpression> arguments) {
+    public MethodCall(String identifier, IExpression target, PrintableVector<IExpression> arguments) {
         this.identifier = identifier;
         this.target = target;
         this.arguments = arguments;
@@ -27,7 +27,7 @@ public class MethodCall implements IStatementExpression{
         return target;
     }
 
-    public Vector<IExpression> getArguments() {
+    public PrintableVector<IExpression> getArguments() {
         return arguments;
     }
 

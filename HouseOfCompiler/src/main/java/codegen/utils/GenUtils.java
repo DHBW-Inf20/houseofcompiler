@@ -6,7 +6,7 @@ import common.ReferenceType;
 import common.Type;
 import org.objectweb.asm.Opcodes;
 
-import java.util.Vector;
+import common.PrintableVector;
 
 public class GenUtils {
 
@@ -18,7 +18,7 @@ public class GenUtils {
         };
     }
 
-    public static String generateDescriptor(Vector<Type> arguments, Type returnType) {
+    public static String generateDescriptor(PrintableVector<Type> arguments, Type returnType) {
         StringBuilder builder = new StringBuilder();
         builder.append('(');
         arguments.forEach(type -> builder.append(getTypeTerm(type)));
