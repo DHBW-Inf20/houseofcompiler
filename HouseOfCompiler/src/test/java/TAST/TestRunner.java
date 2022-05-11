@@ -3,6 +3,7 @@ package TAST;
 import Helper.MockGenerator;
 import Helper.ReflectLoader;
 import Helper.Resources;
+import common.AccessModifier;
 import common.Compiler;
 import jdk.jfr.Label;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,8 @@ public class TestRunner {
     @DisplayName("EmptyClass")
     void emptyClass() throws FileNotFoundException {
 
-        ClassDecl emptyClass = new ClassDecl("EmptyClass", new PrintableVector<>(),new PrintableVector<>(),new PrintableVector<>());
+        ClassDecl emptyClass = new ClassDecl("EmptyClass", new PrintableVector<>(), new PrintableVector<>(),
+                new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(emptyClass);
         var ast = new Program(classDecls);
@@ -40,7 +42,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("ClassFields")
-    void classFields(){
+    void classFields() {
 
         Program expectedAst = MockGenerator.getEmptyProgram("ClassFields");
 
@@ -55,15 +57,18 @@ public class TestRunner {
         fields.add(publicField);
         fields.add(protectedField);
 
+        var generatedAst = Compiler.getFactory().getTastAdapter().getTast(expectedAst);
+
         assertEquals(expectedAst, generatedAst);
     }
 
     @Test
     @DisplayName("EmptyClassWithConstructor")
-    void emptyClassWithConstructor(){
+    void emptyClassWithConstructor() {
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),new PrintableVector<>(),constructors);
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),
+                new PrintableVector<>(), constructors);
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var ast = new Program(classDecls);
@@ -72,5 +77,25 @@ public class TestRunner {
         var tast = ast;
         assertEquals(tast, generatedTast);
 
+    }
+
+    @Test
+    @DisplayName("Constructor With Parameters")
+    void constructorWithParameters() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter()
+                .getTast(MockGenerator.getConstructorParameterAst());
+        Program expectedTast = MockGenerator.getConstructorParameterTast();
+
+        assertEquals(expectedTast, generatedTast);
+    }
+
+    @Test
+    @DisplayName("Constructor With this. assign body")
+    void constructorWithThisAssignBody() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter()
+                .getTast(MockGenerator.getConstructorThisDotAst());
+        Program expectedTast = MockGenerator.getConstructorThisDotTast();
+
+        assertEquals(expectedTast, generatedTast);
     }
 }

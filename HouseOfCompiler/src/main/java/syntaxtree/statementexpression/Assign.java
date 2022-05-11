@@ -1,5 +1,7 @@
 package syntaxtree.statementexpression;
 
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 import syntaxtree.expressions.IExpression;
 
@@ -31,6 +33,10 @@ public class Assign implements IStatementExpression{
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setType(Primitives type){
+        this.type = new BaseType(type);
     }
 
     @Override

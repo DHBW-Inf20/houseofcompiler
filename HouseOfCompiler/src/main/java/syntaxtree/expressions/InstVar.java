@@ -1,8 +1,11 @@
 package syntaxtree.expressions;
 
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 
 import java.util.Objects;
+
 
 public class InstVar implements IExpression{
 
@@ -29,6 +32,10 @@ public class InstVar implements IExpression{
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setType(Primitives type){
+        this.type = new BaseType(type);
     }
 
     @Override

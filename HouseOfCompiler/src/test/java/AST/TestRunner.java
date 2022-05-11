@@ -86,11 +86,28 @@ public class TestRunner {
         ClassDecl classDecl = new ClassDecl("Comments", fields, new PrintableVector<>(), constructors);
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
-        var ast = new Program(classDecls);
-        assertEquals(ast, generatedAst);
+        var expectedAst = new Program(classDecls);
+        assertEquals(expectedAst, generatedAst);
 
     }
 
+    @Test
+    @DisplayName("Constructor With Parameters")
+    void constructorWithParameters(){
+        Program generatedAst = Resources.getProgram("SimpleTests/ConstructorParams.java");
+        Program expectedAst = MockGenerator.getConstructorParameterAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("Constructor With this. assign body")
+    void constructorWithThisAssignBody(){
+        Program generatedAst = Resources.getProgram("SimpleTests/ConstructorThisDot.java");
+        Program expectedAst = MockGenerator.getConstructorThisDotAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
 
 
 }

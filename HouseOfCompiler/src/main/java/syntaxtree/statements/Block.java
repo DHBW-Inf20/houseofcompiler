@@ -29,6 +29,10 @@ public class Block implements IStatement{
         return block;
     }
 
+    public void setType(Primitives type) {
+        this.type = new BaseType(type);
+    }
+
     public void setType(Type type) {
         this.type = type;
     }

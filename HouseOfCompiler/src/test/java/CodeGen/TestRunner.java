@@ -1,5 +1,6 @@
 package CodeGen;
 
+import Helper.MockGenerator;
 import Helper.ReflectLoader;
 import common.Compiler;
 import org.junit.jupiter.api.DisplayName;
@@ -49,6 +50,42 @@ public class TestRunner {
         Class c = loader.findClass("EmptyClassWithConstructor");
         Object o = c.getDeclaredConstructor().newInstance();
         assertEquals(o.getClass().getName(), "EmptyClassWithConstructor");
+    }
+
+    @Test
+    @DisplayName("Constructor With Parameters")
+    void constructorWithParameters() {
+        Program tast = MockGenerator.getConstructorParameterTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class c = loader.findClass("ConstructorParams");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor(int.class).newInstance(1);
+            assertEquals(o.getClass().getName(), "ConstructorParams");
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+
+    }
+
+    @Test
+    @DisplayName("Constructor With this. assign body")
+    void constructorWithThisAssignBody() {
+        Program tast = MockGenerator.getConstructorThisDotTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class c = loader.findClass("ConstructorThisDot");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var i = loader.getField("ConstructorThisDot", "i");
+            var ivalue = i.get(o);
+            assertEquals(ivalue, 5);
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+
     }
 
 }

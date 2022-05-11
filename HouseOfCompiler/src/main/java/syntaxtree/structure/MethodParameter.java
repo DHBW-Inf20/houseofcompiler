@@ -1,5 +1,7 @@
 package syntaxtree.structure;
 
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 
 import java.util.Objects;
@@ -10,6 +12,16 @@ public class MethodParameter {
     private String identifier;
 
     public MethodParameter(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public MethodParameter(Type type, String identifier) {
+        this.type = type;
+        this.identifier = identifier;
+    }
+
+    public MethodParameter(Primitives type, String identifier){
+        this.type = new BaseType(type);
         this.identifier = identifier;
     }
 

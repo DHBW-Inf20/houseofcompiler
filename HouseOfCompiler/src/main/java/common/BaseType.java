@@ -10,6 +10,8 @@ public class BaseType extends Type {
         this.identifier = identifier;
     }
 
+    
+
     public Primitives getIdentifier() {
         return (Primitives) this.identifier;
     }
