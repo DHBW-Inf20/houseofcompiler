@@ -5,7 +5,7 @@ import common.Type;
 import syntaxtree.expressions.IExpression;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
-import visitor.CodeVisitor;
+import visitor.codevisitor.ClassCodeVisitor;
 
 import java.util.Objects;
 
@@ -28,7 +28,6 @@ public class FieldDecl implements Visitable {
     public AccessModifier getAccessModifier() {
         return accessModifier;
     }
-
 
     public Type getType() {
         return type;
@@ -57,7 +56,7 @@ public class FieldDecl implements Visitable {
     }
 
     @Override
-    public void accept(CodeVisitor visitor) {
+    public void accept(ClassCodeVisitor visitor) {
         visitor.visit(this);
     }
 
