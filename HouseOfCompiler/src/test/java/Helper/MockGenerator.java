@@ -70,7 +70,7 @@ public abstract class MockGenerator {
     }
 
     public static Program getConstructorParameterAst() {
-        Program expectedAst = getEmptyProgram("ClassConstructors");
+        Program expectedAst = getEmptyProgram("ConstructorParams");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
 

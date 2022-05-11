@@ -81,7 +81,7 @@ public class TestRunner {
             o = c.getDeclaredConstructor().newInstance();
             var i = loader.getField("ConstructorThisDot", "i");
             var ivalue = i.get(o);
-            assertEquals(ivalue, 5);
+            assertEquals(5, ivalue);
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
