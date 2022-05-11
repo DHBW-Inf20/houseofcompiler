@@ -22,7 +22,7 @@ public class Test {
 
         PrintableVector<ClassDecl> classes = new PrintableVector<>();
 
-        FieldDecl field = new FieldDecl("testField", AccessModifier.PUBLIC, null);
+        FieldDecl field = new FieldDecl("testField", AccessModifier.PUBLIC);
         field.setType(new BaseType(Primitives.INT));
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
         fields.add(field);
