@@ -27,7 +27,7 @@ public class Test {
         for (String clazz : bytecodeClasses.keySet()) {
             System.out.println();
             System.out.println("Klasse: " + clazz);
-//            System.out.println("Bytecode: " + new String(bytecodeClasses.get(clazz)));
+            System.out.println("Bytecode: " + new String(bytecodeClasses.get(clazz)));
             File file = new File("../" + clazz + ".class");
             if (!file.exists()) file.createNewFile();
             try (FileOutputStream fos = new FileOutputStream(file)) {

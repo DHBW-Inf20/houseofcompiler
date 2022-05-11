@@ -5,9 +5,9 @@ import org.objectweb.asm.Opcodes;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
-import visitor.CodeVisitor;
+import visitor.codevisitor.ClassCodeVisitor;
 
-public class ClassGenerator extends CodeVisitor implements Opcodes {
+public class ClassGenerator implements ClassCodeVisitor {
 
     private final ClassWriter cw;
 
@@ -22,7 +22,7 @@ public class ClassGenerator extends CodeVisitor implements Opcodes {
     @Override
     public void visit(ClassDecl clazz) {
         System.out.println("Class: " + clazz.getIdentifier());
-        cw.visit(V1_5, ACC_PUBLIC, clazz.getIdentifier(), null, "java/lang/Object", null);
+        cw.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC, clazz.getIdentifier(), null, "java/lang/Object", null);
 
         clazz.getFieldDelcarations().forEach(field -> field.accept(this));
 
