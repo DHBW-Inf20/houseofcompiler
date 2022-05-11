@@ -1,5 +1,6 @@
 package TAST;
 
+import Helper.MockGenerator;
 import Helper.ReflectLoader;
 import Helper.Resources;
 import common.Compiler;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
+import syntaxtree.structure.FieldDecl;
 import syntaxtree.structure.Program;
 
 import java.io.FileNotFoundException;
@@ -34,6 +36,26 @@ public class TestRunner {
 
         assertEquals(tast, generatedTast);
 
+    }
+
+    @Test
+    @DisplayName("ClassFields")
+    void classFields(){
+
+        Program expectedAst = MockGenerator.getEmptyProgram("ClassFields");
+
+        FieldDecl autoAccess = new FieldDecl("autoAccess", null);
+        FieldDecl privateField = new FieldDecl("private", AccessModifier.PRIVATE);
+        FieldDecl publicField = new FieldDecl("public", AccessModifier.PUBLIC);
+        FieldDecl protectedField = new FieldDecl("protected", AccessModifier.PROTECTED);
+
+        PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
+        fields.add(autoAccess);
+        fields.add(privateField);
+        fields.add(publicField);
+        fields.add(protectedField);
+
+        assertEquals(expectedAst, generatedAst);
     }
 
     @Test
