@@ -16,10 +16,9 @@ public class FieldDecl implements Visitable {
     private AccessModifier accessModifier;
     private Type type;
 
-    public FieldDecl(String identifier, AccessModifier accessModifier, IExpression expressions) {
+    public FieldDecl(String identifier, AccessModifier accessModifier) {
         this.identifier = identifier;
         this.accessModifier = accessModifier;
-        this.expressions = expressions;
     }
 
     public String getIdentifier() {
@@ -30,9 +29,6 @@ public class FieldDecl implements Visitable {
         return accessModifier;
     }
 
-    public IExpression getExpressions() {
-        return expressions;
-    }
 
     public Type getType() {
         return type;
@@ -47,12 +43,12 @@ public class FieldDecl implements Visitable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FieldDecl fieldDecl = (FieldDecl) o;
-        return identifier.equals(fieldDecl.identifier) && accessModifier == fieldDecl.accessModifier && expressions.equals(fieldDecl.expressions) && Objects.equals(type, fieldDecl.type);
+        return identifier.equals(fieldDecl.identifier) && accessModifier == fieldDecl.accessModifier && Objects.equals(type, fieldDecl.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, accessModifier, expressions, type);
+        return Objects.hash(identifier, accessModifier, type);
     }
 
     @Override
@@ -69,7 +65,6 @@ public class FieldDecl implements Visitable {
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
         sb.append(accessModifier).append(" ").append(type).append(" " + identifier).append("\n");
-        sb.append("\t\texprs:").append(expressions).append("\n");
         return sb.toString();
     }
 }

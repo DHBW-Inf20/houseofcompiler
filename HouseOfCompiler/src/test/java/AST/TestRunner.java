@@ -65,11 +65,11 @@ public class TestRunner {
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
 
-        FieldDecl lorem = new FieldDecl("lorem", AccessModifier.PRIVATE, null);
+        FieldDecl lorem = new FieldDecl("lorem", AccessModifier.PRIVATE);
         lorem.setType(new BaseType(Primitives.INT));
         fields.add(lorem);
 
-        FieldDecl ipsum = new FieldDecl("ipsum", AccessModifier.PRIVATE, null);
+        FieldDecl ipsum = new FieldDecl("ipsum", AccessModifier.PRIVATE);
         ipsum.setType(new BaseType(Primitives.BOOL));
         fields.add(ipsum);
 
@@ -113,7 +113,7 @@ public class TestRunner {
 
         ConstructorDecl c_2 = new ConstructorDecl(AccessModifier.PUBLIC, c_2_params, c_2_block);
 
-        FieldDecl i = new FieldDecl("i", AccessModifier.PUBLIC, null);
+        FieldDecl i = new FieldDecl("i", AccessModifier.PUBLIC);
         i.setType(new BaseType(Primitives.INT));
         fields.add(i);
 
