@@ -7,7 +7,7 @@ classdecl: 'class' Identifier OpenCurlyBracket (constuctorDecl|fieldDecl|methodD
 constuctorDecl: AccessModifier? Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
 //public static void main(string[] args) {...}
 methodDecl: AccessModifier? (type | Void | Identifier) Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
-fieldDecl: AccessModifier? (type | Identifier) Identifier (Equal expression)? Semicolon;
+fieldDecl: AccessModifier? (type | Identifier) Identifier Semicolon;
 //int param1, string param2,...
 parameterList: parameter(Comma parameter)*;
 //int param1

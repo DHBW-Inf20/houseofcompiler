@@ -28,7 +28,7 @@ public class TestRunner {
     @Test
     @DisplayName("Empty Class")
     void main() {
-        InputStream file = Resources.getFileAsStream("EmptyClass.java");
+        InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
 
         ClassDecl classDecl = new ClassDecl("EmptyClass", new PrintableVector<>(),new PrintableVector<>(),new PrintableVector<>());
@@ -43,7 +43,7 @@ public class TestRunner {
     @Test
     @DisplayName("EmptyClassWithConstructor")
     void emptyClassWithConstructor(){
-        InputStream file = Resources.getFileAsStream("EmptyClassWithConstructor.java");
+        InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClassWithConstructor.java");
         Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
@@ -59,7 +59,7 @@ public class TestRunner {
     @Test
     @DisplayName("Comments")
     void commentTest(){
-        InputStream file = Resources.getFileAsStream("Comments.java");
+        InputStream file = Resources.getFileAsStream("SimpleTests/Comments.java");
         Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();

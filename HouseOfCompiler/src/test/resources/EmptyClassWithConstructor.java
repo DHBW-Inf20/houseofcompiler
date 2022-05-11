@@ -1,7 +1,0 @@
-class EmptyClassWithConstructor{
-
-    public EmptyClassWithConstructor(){
-
-    }
-
-}

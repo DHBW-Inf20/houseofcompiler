@@ -1,14 +1,7 @@
-import common.Operator;
-
 class OperatorTest{
 
-    private x;
 
     public OperatorTest(){}
-
-    public OperatorTest(int x){
-        this.x = x;
-    }
 
     public int assign(int i){
         int returnValue;
