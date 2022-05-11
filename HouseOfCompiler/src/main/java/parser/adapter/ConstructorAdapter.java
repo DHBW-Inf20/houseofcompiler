@@ -7,6 +7,8 @@ import syntaxtree.statements.Block;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.MethodParameter;
 
+import java.util.Locale;
+
 public class ConstructorAdapter {
     public static ConstructorDecl adapt(JavaSubsetParser.ConstuctorDeclContext constuctorDeclContext){
         PrintableVector<MethodParameter> parameters = new PrintableVector<MethodParameter>();
@@ -15,7 +17,9 @@ public class ConstructorAdapter {
         );
         Block block = BlockAdapter.adapt(constuctorDeclContext.block());
         return new ConstructorDecl(
-                AccessModifier.valueOf(constuctorDeclContext.AccessModifier().getText()),
+                AccessModifier.valueOf(
+                        constuctorDeclContext.AccessModifier().getText().toUpperCase(Locale.ROOT)
+                ),
                 parameters,
                 block
         );
