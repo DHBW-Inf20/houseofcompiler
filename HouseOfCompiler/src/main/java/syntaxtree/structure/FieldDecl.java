@@ -29,7 +29,6 @@ public class FieldDecl implements Visitable {
         return accessModifier;
     }
 
-
     public Type getType() {
         return type;
     }

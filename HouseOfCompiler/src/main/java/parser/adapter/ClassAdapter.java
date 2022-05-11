@@ -16,6 +16,15 @@ public class ClassAdapter {
         PrintableVector<FieldDecl> fieldDecls = new PrintableVector<FieldDecl>();
         PrintableVector<MethodDecl> methodDecls = new PrintableVector<MethodDecl>();
 
+        classdeclContext.constuctorDecl().forEach(constuctorDeclContext ->
+                constructorDecls.add(ConstructorAdapter.adapt(constuctorDeclContext))
+        );
+        classdeclContext.fieldDecl().forEach(fieldDeclContext ->
+                fieldDecls.add(FieldAdapter.adapt(fieldDeclContext))
+        );
+        classdeclContext.methodDecl().forEach(methodDeclContext ->
+                methodDecls.add(MethodAdapter.adapt(methodDeclContext))
+        );
         return new ClassDecl(classdeclContext.Identifier().getText(), fieldDecls, methodDecls, constructorDecls);
     }
 }
