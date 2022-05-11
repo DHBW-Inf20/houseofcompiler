@@ -16,7 +16,8 @@ parameter: (type|Identifier) Identifier;
 argumentList: expression? | expression (Comma expression)*?;
 //property, object.a, 3+1, a = 3
 expression: subExpression | binaryExpr; //FIXME unary Expressions fehlen noch
-//subExpression zur Auflösung der Linksrekursion in der Grammatik
+
+//subExpression to dissolve left-recusion
 subExpression: Identifier | instVar | value | stmtExpr | OpenRoundBracket expression ClosedRoundBracket;
 //FIXME macht es mehr sinn den Methodenaufruf rekursiv umzusetzen? sodass vorstehende Methodenaufrufe als reciever gehandhabt werden?
 //methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
@@ -33,19 +34,15 @@ binaryExpr: subExpression operator expression; //FIXME muss hier auch subExpress
 
 operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator;
 
+//Statements
 returnStmt: Return expression;
-
 localVarDecl: (type | Identifier) Identifier (Assign expression)?;
-
 block: OpenCurlyBracket statement* ClosedCurlyBracket;
-
 whileStmt: While OpenRoundBracket expression ClosedRoundBracket block;
-
 ifElseStmt: ifStmt elseIfStmt* elseStmt?;
 ifStmt: If OpenRoundBracket expression ClosedRoundBracket block;
 elseIfStmt: Else If OpenRoundBracket expression ClosedRoundBracket block; //FIXME kann man das hier einfach durch ein ifstatement verkürzen?
 elseStmt: Else block;
-
 assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 reciever: (instVar | Identifier Dot);
@@ -100,6 +97,7 @@ For: 'for';
 Return: 'return';
 New: 'new';
 
+//Identifier
 fragment Alpabetic : [a-zA-Z];
 fragment Numeric: [0-9];
 fragment ValidIdentSymbols : Alpabetic|Numeric|'$'|'_';
@@ -110,4 +108,7 @@ BooleanValue: 'true'|'false';
 CharValue: Alpabetic;
 IntValue: Minus? Numeric+;
 
+//To be Ignored
 WS: ([ \t\r\n]+) -> skip;
+InlineComment:'//' ~[\r\n]* -> skip;
+MultilineComment: '/*' .*? '*/' -> skip;

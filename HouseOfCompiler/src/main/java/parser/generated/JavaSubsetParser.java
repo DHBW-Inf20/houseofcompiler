@@ -23,7 +23,7 @@ public class JavaSubsetParser extends Parser {
 		NotEqual=20, And=21, Or=22, Dot=23, OpenRoundBracket=24, ClosedRoundBracket=25, 
 		OpenCurlyBracket=26, ClosedCurlyBracket=27, Semicolon=28, Comma=29, Class=30, 
 		This=31, While=32, If=33, Else=34, For=35, Return=36, New=37, Identifier=38, 
-		BooleanValue=39, CharValue=40, IntValue=41, WS=42;
+		BooleanValue=39, CharValue=40, IntValue=41, WS=42, InlineComment=43, MultilineComment=44;
 	public static final int
 		RULE_program = 0, RULE_classdecl = 1, RULE_constuctorDecl = 2, RULE_methodDecl = 3, 
 		RULE_fieldDecl = 4, RULE_parameterList = 5, RULE_parameter = 6, RULE_argumentList = 7, 
@@ -62,7 +62,7 @@ public class JavaSubsetParser extends Parser {
 			"Equal", "NotEqual", "And", "Or", "Dot", "OpenRoundBracket", "ClosedRoundBracket", 
 			"OpenCurlyBracket", "ClosedCurlyBracket", "Semicolon", "Comma", "Class", 
 			"This", "While", "If", "Else", "For", "Return", "New", "Identifier", 
-			"BooleanValue", "CharValue", "IntValue", "WS"
+			"BooleanValue", "CharValue", "IntValue", "WS", "InlineComment", "MultilineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -2238,7 +2238,7 @@ public class JavaSubsetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3,\u0128\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3.\u0128\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
