@@ -4,6 +4,8 @@ import common.BaseType;
 import common.Primitives;
 import common.Type;
 import syntaxtree.expressions.IExpression;
+import visitor.SemanticVisitor;
+import visitor.codevisitor.MethodCodeVisitor;
 
 import java.util.Objects;
 
@@ -37,6 +39,16 @@ public class Assign implements IStatementExpression{
 
     public void setType(Primitives type){
         this.type = new BaseType(type);
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+
     }
 
     @Override

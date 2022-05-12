@@ -5,6 +5,8 @@ import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
 import common.PrintableVector;
+import visitor.SemanticVisitor;
+import visitor.codevisitor.MethodCodeVisitor;
 
 public class NewDecl implements IStatementExpression{
 
@@ -25,6 +27,16 @@ public class NewDecl implements IStatementExpression{
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+
     }
 
     @Override

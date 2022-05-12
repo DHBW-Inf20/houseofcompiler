@@ -6,8 +6,11 @@ import common.Type;
 
 import java.util.Objects;
 import common.PrintableVector;
+import visitor.SemanticVisitor;
+import visitor.Visitable;
+import visitor.codevisitor.MethodCodeVisitor;
 
-public class Block implements IStatement{
+public class Block implements IStatement, Visitable {
 
     private Type type;
     private PrintableVector<IStatement> block;
@@ -57,5 +60,15 @@ public class Block implements IStatement{
         sb.append(block);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+
     }
 }
