@@ -18,7 +18,6 @@ import syntaxtree.structure.MethodParameter;
 import common.PrintableVector;
 import visitor.codevisitor.MethodCodeVisitor;
 
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class MethodGenerator implements MethodCodeVisitor {
@@ -69,7 +68,7 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(Block block) {
-        block.getBlock().forEach(statement -> statement.accept(this));
+        block.getStatements().forEach(statement -> statement.accept(this));
     }
 
     @Override
