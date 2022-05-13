@@ -37,7 +37,7 @@ public class TestRunner {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClassWithConstructor.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("EmptyClassWithConstructor");
         
