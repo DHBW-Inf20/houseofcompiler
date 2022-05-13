@@ -6,12 +6,15 @@ import common.Primitives;
 import common.PrintableVector;
 import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;
+import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statements.Block;
+import syntaxtree.statements.ReturnStmt;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
+import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 import syntaxtree.structure.Program;
 
@@ -44,22 +47,32 @@ public abstract class MockGenerator {
     public static Program getClassFieldsAst() {
         Program expectedAst = getEmptyProgram("ClassFields");
 
-        FieldDecl autoAccess = new FieldDecl("autoAccess", null);
-        autoAccess.setType(new BaseType(Primitives.INT));
-        FieldDecl privateField = new FieldDecl("private", AccessModifier.PRIVATE);
+        FieldDecl privateField = new FieldDecl("privateAccess", AccessModifier.PRIVATE);
         privateField.setType(new BaseType(Primitives.INT));
-        FieldDecl publicField = new FieldDecl("public", AccessModifier.PUBLIC);
+        FieldDecl publicField = new FieldDecl("publicAccess", AccessModifier.PUBLIC);
         publicField.setType(new BaseType(Primitives.INT));
-        FieldDecl protectedField = new FieldDecl("protected", AccessModifier.PROTECTED);
+        FieldDecl protectedField = new FieldDecl("protectedAccess", AccessModifier.PROTECTED);
         protectedField.setType(new BaseType(Primitives.INT));
 
         PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
-        fields.add(autoAccess);
         fields.add(privateField);
         fields.add(publicField);
         fields.add(protectedField);
 
         return expectedAst;
+    }
+    public static Program getAutoClassFieldAst() {
+        Program expectedAst = getEmptyProgram("AutoAccessModifierField");
+
+        FieldDecl autoField = new FieldDecl(new BaseType(Primitives.INT), "privateAccess");
+
+        PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
+        fields.add(autoField);
+        return expectedAst;
+    }
+
+    public static Program getAutoClassFieldTast(){
+        return getAutoClassFieldAst();
     }
 
     public static Program getConstructorParameterTast() {
@@ -132,5 +145,41 @@ public abstract class MockGenerator {
 
         return expectedTast;
     }
+
+    public static Program getVoidMethodAst(){
+        Program expectedAst = getEmptyProgram("VoidMethod");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
+        MethodDecl foo = new MethodDecl(new BaseType(Primitives.VOID), "foo",getEmptyParameters(), getEmptyBlock());
+        methods.add(foo);
+
+        return expectedAst;
+    }
+
+    public static Program getVoidMethodTast(){
+        return getVoidMethodAst();
+    }
+
+    public static Program getRealMethodAst(){
+        Program expectedAst = getEmptyProgram("RealMethod");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        Block block = getEmptyBlock();
+        ReturnStmt returnStmt = new ReturnStmt(new LocalOrFieldVar("i"));
+        block.getStatements().add(returnStmt);
+
+        var parameters = getEmptyParameters();
+        parameters.add(new MethodParameter(Primitives.INT, "i"));
+
+        PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
+        MethodDecl foo = new MethodDecl(new BaseType(Primitives.INT), "foo",parameters, block);
+        methods.add(foo);
+
+        return expectedAst;
+    }
+
 
 }

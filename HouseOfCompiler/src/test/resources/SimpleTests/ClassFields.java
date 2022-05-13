@@ -1,8 +1,7 @@
 class ClassFields {
 
-    int autoAccess;
-    private int private;
-    public int public;
-    protected int protected;
+    private int privateAccess;
+    public int publicAccess;
+    protected int protectedAccess;
 
 }

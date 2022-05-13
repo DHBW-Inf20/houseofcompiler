@@ -7,6 +7,12 @@ import visitor.SemanticVisitor;
 
 public class SemanticCheck implements SemanticVisitor {
 
+    public static Program generateTast(Program program){
+        SemanticCheck semanticCheck = new SemanticCheck();
+        program.accept(semanticCheck);
+        return program;
+    }
+
     @Override
     public void visit(Program program) {
         for (ClassDecl classDecl : program.getClasses()) { //32

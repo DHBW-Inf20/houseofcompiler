@@ -67,6 +67,16 @@ public class TestRunner {
     }
 
     @Test
+    @DisplayName("ClassField without AccessModifier")
+    void classFieldWithoutAccessModifier(){
+        Program generatedAst = Resources.getProgram("SimpleTests/AutoAccessModifierField.java");
+
+        Program expectedAst = MockGenerator.getAutoClassFieldAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
     @DisplayName("Comments")
     void commentTest(){
         InputStream file = Resources.getFileAsStream("SimpleTests/Comments.java");
@@ -105,6 +115,15 @@ public class TestRunner {
     void constructorWithThisAssignBody(){
         Program generatedAst = Resources.getProgram("SimpleTests/ConstructorThisDot.java");
         Program expectedAst = MockGenerator.getConstructorThisDotAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("VoidMethod")
+    void voidMethod(){
+        Program generatedAst = Resources.getProgram("SimpleTests/VoidMethod.java");
+        Program expectedAst = MockGenerator.getVoidMethodAst();
 
         assertEquals(expectedAst, generatedAst);
     }
