@@ -22,13 +22,18 @@ import java.util.stream.Collectors;
 
 public class MethodGenerator implements MethodCodeVisitor {
 
-    private ClassWriter cw;
+    private final ClassWriter cw;
     private MethodVisitor mv;
 
-    private Context context;
+    private final Context context;
+
+    private final String className;
+
+    private String lastExpressionIdentifier;
 
 
-    public MethodGenerator(ClassWriter cw, Context context) {
+    public MethodGenerator(String className, ClassWriter cw, Context context) {
+        this.className = className;
         this.cw = cw;
         this.context = context;
     }
@@ -55,7 +60,6 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv = cw.visitMethod(GenUtils.resolveAccessModifier(methodDecl.getAccessModifier()), methodDecl.getIdentifier(), GenUtils.generateDescriptor(parameterTypes, methodDecl.getType()), null, null);
         mv.visitCode();
 
-        mv.visitVarInsn(Opcodes.ALOAD, 0); // 0: this
         methodDecl.getBlock().accept(this);
         mv.visitInsn(Opcodes.RETURN); // Temp
         mv.visitMaxs(0, 0);
@@ -97,7 +101,17 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(Assign assign) {
+        IExpression lExpression = assign.getlExpression();
+        IExpression rExpression = assign.getrExpression();
+        if (lExpression instanceof InstVar) {
+            // lExpression.identifier ist immer ein Field?
+            InstVar instVar = (InstVar) lExpression;
+            instVar.getExpression().accept(this);
+            String lIdentifier = lastExpressionIdentifier;
+            rExpression.accept(this);
+            mv.visitFieldInsn(Opcodes.PUTFIELD, lIdentifier, instVar.getIdentifier(), GenUtils.generateDescriptor(instVar.getType()));
 
+        }
     }
 
     @Override
@@ -136,7 +150,7 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(IntegerExpr integerExpr) {
-
+        mv.visitIntInsn(Opcodes.BIPUSH, integerExpr.getValue());
     }
 
     @Override
@@ -151,7 +165,8 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(This thisExpr) {
-
+        lastExpressionIdentifier = className;
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
     }
 
     @Override

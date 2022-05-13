@@ -33,12 +33,12 @@ public class ClassGenerator implements ClassCodeVisitor {
         clazz.getFieldDelcarations().forEach(field -> field.accept(this));
 
         if (clazz.getConstructorDeclarations().isEmpty()) {
-            new ConstructorDecl().accept(new MethodGenerator(cw, context));
+            new ConstructorDecl().accept(new MethodGenerator(clazz.getIdentifier(), cw, context));
         } else {
-            clazz.getConstructorDeclarations().forEach(constructor -> constructor.accept(new MethodGenerator(cw, context)));
+            clazz.getConstructorDeclarations().forEach(constructor -> constructor.accept(new MethodGenerator(clazz.getIdentifier(), cw, context)));
         }
 
-        clazz.getMethodDeclarations().forEach(method -> method.accept(new MethodGenerator(cw, context)));
+        clazz.getMethodDeclarations().forEach(method -> method.accept(new MethodGenerator(clazz.getIdentifier(), cw, context)));
 
         cw.visitEnd();
     }

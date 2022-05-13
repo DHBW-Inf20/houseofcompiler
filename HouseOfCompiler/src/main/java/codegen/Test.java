@@ -4,6 +4,10 @@ import codegen.context.Context;
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
+import syntaxtree.expressions.InstVar;
+import syntaxtree.expressions.IntegerExpr;
+import syntaxtree.expressions.This;
+import syntaxtree.statementexpression.Assign;
 import syntaxtree.statements.Block;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.FieldDecl;
@@ -28,13 +32,21 @@ public class Test {
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
         fields.add(field);
 
-        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), new Block(), AccessModifier.PUBLIC);
+        Block block = new Block();
+
+        var testField = new InstVar("testField", new This());
+        testField.setType(Primitives.INT);
+
+        Assign assign = new Assign( testField, new IntegerExpr(6));
+        assign.setType(Primitives.VOID);
+        block.getStatements().add(assign);
+
+        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), block, AccessModifier.PUBLIC);
         method.setType(new BaseType(Primitives.INT));
         PrintableVector<MethodDecl> methods = new PrintableVector<>();
         methods.add(method);
 
-        classes.add(new ClassDecl("Hund", fields, methods, new PrintableVector<>()));
-//        classes.add(new ClassDecl("Katze", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
+        classes.add(new ClassDecl("Test", fields, methods, new PrintableVector<>()));
 
         Program program = new Program(classes);
 
