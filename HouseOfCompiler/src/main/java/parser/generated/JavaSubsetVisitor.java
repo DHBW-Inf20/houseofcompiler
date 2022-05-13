@@ -173,6 +173,12 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReciever(JavaSubsetParser.RecieverContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#revievingMethod}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

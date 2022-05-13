@@ -278,6 +278,16 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitReciever(JavaSubsetParser.RecieverContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#revievingMethod}.
+	 * @param ctx the parse tree
+	 */
+	void enterRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#revievingMethod}.
+	 * @param ctx the parse tree
+	 */
+	void exitRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#type}.
 	 * @param ctx the parse tree
 	 */

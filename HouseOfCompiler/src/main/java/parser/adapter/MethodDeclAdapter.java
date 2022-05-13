@@ -7,7 +7,7 @@ import syntaxtree.statements.Block;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 
-public class MethodAdapter {
+public class MethodDeclAdapter {
     public static MethodDecl adapt(JavaSubsetParser.MethodDeclContext methodDeclContext){
         PrintableVector<MethodParameter> parameters = new PrintableVector<MethodParameter>();
         if (methodDeclContext.parameterList() != null){
