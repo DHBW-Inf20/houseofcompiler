@@ -64,7 +64,7 @@ public abstract class MockGenerator {
     public static Program getAutoClassFieldAst() {
         Program expectedAst = getEmptyProgram("AutoAccessModifierField");
 
-        FieldDecl autoField = new FieldDecl(new BaseType(Primitives.INT), "privateAccess");
+        FieldDecl autoField = new FieldDecl(new BaseType(Primitives.INT), "autoAccess");
 
         PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
         fields.add(autoField);

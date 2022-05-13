@@ -14,10 +14,6 @@ public class Null implements IExpression{
         return type;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

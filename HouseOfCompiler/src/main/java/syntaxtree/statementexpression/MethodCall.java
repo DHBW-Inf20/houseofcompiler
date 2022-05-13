@@ -21,6 +21,18 @@ public class MethodCall implements IStatementExpression{
         this.arguments = arguments;
     }
 
+    public MethodCall(IExpression target, String identifier,  PrintableVector<IExpression> arguments) {
+        this.identifier = identifier;
+        this.target = target;
+        this.arguments = arguments;
+    }
+
+    public MethodCall(String identifier, PrintableVector<IExpression> arguments) {
+        this.identifier = identifier;
+        this.target = null;
+        this.arguments = arguments;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

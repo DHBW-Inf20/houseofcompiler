@@ -20,6 +20,13 @@ public class Binary implements IExpression {
         this.operator = operator;
     }
 
+    public Binary(IExpression lExpression, Operator operator, IExpression rExpression) {
+        this.lExpression = lExpression;
+        this.rExpression = rExpression;
+        this.operator = operator;
+        this.type = null;
+    }
+
     public IExpression getlExpression() {
         return lExpression;
     }

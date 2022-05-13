@@ -20,6 +20,11 @@ public class InstVar implements IExpression{
         this.expression = expression;
     }
 
+    public InstVar( IExpression expression,String identifier) {
+        this.identifier = identifier;
+        this.expression = expression;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

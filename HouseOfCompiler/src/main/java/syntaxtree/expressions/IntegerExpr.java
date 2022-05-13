@@ -1,5 +1,7 @@
 package syntaxtree.expressions;
 
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -13,6 +15,7 @@ public class IntegerExpr implements IExpression{
 
     public IntegerExpr(int value) {
         this.value = value;
+        this.type = new BaseType(Primitives.INT);
     }
 
     public int getValue() {

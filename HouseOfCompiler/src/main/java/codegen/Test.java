@@ -33,7 +33,7 @@ public class Test {
         PrintableVector<MethodDecl> methods = new PrintableVector<>();
         methods.add(method);
 
-        classes.add(new ClassDecl("Hund", fields, methods, new PrintableVector<>()));
+        classes.add(new ClassDecl("Hund", fields, new PrintableVector<>(), methods));
 //        classes.add(new ClassDecl("Katze", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
 
         Program program = new Program(classes);
