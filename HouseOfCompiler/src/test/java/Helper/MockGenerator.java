@@ -1,8 +1,5 @@
 package Helper;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
@@ -100,7 +97,7 @@ public abstract class MockGenerator {
         Block block = getEmptyBlock();
 
         Assign assign = new Assign(new InstVar("i", new This()), new IntegerExpr(5));
-        block.getBlock().add(assign);
+        block.getStatements().add(assign);
 
         classDecl.getConstructorDeclarations()
                 .add(new ConstructorDecl(AccessModifier.PUBLIC, getEmptyParameters(), block));
@@ -127,7 +124,7 @@ public abstract class MockGenerator {
 
         Assign assign = new Assign( thisi, new IntegerExpr(5));
         assign.setType(Primitives.VOID);
-        block.getBlock().add(assign);
+        block.getStatements().add(assign);
         block.setType(Primitives.VOID);
 
         classDecl.getConstructorDeclarations()

@@ -2,10 +2,12 @@ package syntaxtree.expressions;
 
 import common.Operator;
 import common.Type;
+import visitor.SemanticVisitor;
+import visitor.codevisitor.MethodCodeVisitor;
 
 import java.util.Objects;
 
-public class Binary implements IExpression{
+public class Binary implements IExpression {
 
     private IExpression lExpression;
     private IExpression rExpression;
@@ -36,6 +38,16 @@ public class Binary implements IExpression{
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+
     }
 
     @Override

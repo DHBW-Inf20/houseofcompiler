@@ -1,5 +1,7 @@
 package syntaxtree.expressions;
 
-public interface IExpression {
+import visitor.Visitable;
+
+public interface IExpression extends Visitable {
 
 }

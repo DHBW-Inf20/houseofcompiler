@@ -6,18 +6,21 @@ import common.Type;
 
 import java.util.Objects;
 import common.PrintableVector;
+import visitor.SemanticVisitor;
+import visitor.Visitable;
+import visitor.codevisitor.MethodCodeVisitor;
 
-public class Block implements IStatement{
+public class Block implements IStatement, Visitable {
 
     private Type type;
-    private PrintableVector<IStatement> block;
+    private PrintableVector<IStatement> statements;
 
-    public Block(PrintableVector<IStatement> block) {
-        this.block = block;
+    public Block(PrintableVector<IStatement> statements) {
+        this.statements = statements;
     }
 
     public Block() {
-        block = new PrintableVector<>();
+        statements = new PrintableVector<>();
         type = new BaseType(Primitives.VOID);
     }
 
@@ -25,8 +28,8 @@ public class Block implements IStatement{
         return type;
     }
 
-    public PrintableVector<IStatement> getBlock() {
-        return block;
+    public PrintableVector<IStatement> getStatements() {
+        return statements;
     }
 
     public void setType(Primitives type) {
@@ -42,20 +45,30 @@ public class Block implements IStatement{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Block block1 = (Block) o;
-        return Objects.equals(type, block1.type) && block.equals(block1.block);
+        return Objects.equals(type, block1.type) && statements.equals(block1.statements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, block);
+        return Objects.hash(type, statements);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder(type.toString());
         sb.append("{");
-        sb.append(block);
+        sb.append(statements);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(SemanticVisitor visitor) {
+
     }
 }
