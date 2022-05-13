@@ -15,6 +15,7 @@ public class GenUtils {
             case PUBLIC -> Opcodes.ACC_PUBLIC;
             case PRIVATE -> Opcodes.ACC_PRIVATE;
             case PROTECTED -> Opcodes.ACC_PROTECTED;
+            case PACKAGE_PRIVATE -> 0;
         };
     }
 

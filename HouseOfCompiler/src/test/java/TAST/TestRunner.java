@@ -63,6 +63,16 @@ public class TestRunner {
     }
 
     @Test
+    @DisplayName("ClassField without AccessModifier")
+    void classFieldWithoutAccessModifier() {
+
+        Program expectedTast = MockGenerator.getAutoClassFieldTast();
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(expectedTast);
+
+        assertEquals(expectedTast, generatedTast);
+    }
+
+    @Test
     @DisplayName("EmptyClassWithConstructor")
     void emptyClassWithConstructor() {
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
@@ -98,4 +108,15 @@ public class TestRunner {
 
         assertEquals(expectedTast, generatedTast);
     }
+
+    @Test
+    @DisplayName("VoidMethod")
+    void voidMethod(){
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getVoidMethodAst());
+
+        Program expectedTast = MockGenerator.getVoidMethodTast();
+
+        assertEquals(expectedTast, generatedTast);
+    }
+
 }

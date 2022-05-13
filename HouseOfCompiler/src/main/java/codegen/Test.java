@@ -4,6 +4,7 @@ import codegen.context.Context;
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
+import syntaxtree.statements.Block;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.FieldDecl;
 import syntaxtree.structure.MethodDecl;
@@ -27,7 +28,7 @@ public class Test {
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
         fields.add(field);
 
-        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), null, AccessModifier.PUBLIC);
+        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), new Block(), AccessModifier.PUBLIC);
         method.setType(new BaseType(Primitives.INT));
         PrintableVector<MethodDecl> methods = new PrintableVector<>();
         methods.add(method);

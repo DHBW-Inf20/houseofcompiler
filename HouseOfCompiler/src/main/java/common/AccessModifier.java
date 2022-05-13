@@ -3,5 +3,6 @@ package common;
 public enum AccessModifier {
     PUBLIC,
     PRIVATE,
-    PROTECTED
+    PROTECTED,
+    PACKAGE_PRIVATE
 }

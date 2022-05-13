@@ -3,11 +3,14 @@ package visitor;
 
 import syntaxtree.structure.*;
 
-public class SemanticVisitor {
-    public void visit(Program program) {}
+public interface SemanticVisitor {
+    void visit(Program program);
 
-    public void visit(ClassDecl clazz) {}
-    public void visit(FieldDecl field) {}
-    public void visit(ConstructorDecl constructor) {}
-    public void visit(MethodDecl method) {}
+    void visit(ClassDecl clazz);
+
+    void visit(FieldDecl field);
+
+    void visit(ConstructorDecl constructor);
+
+    void visit(MethodDecl method);
 }

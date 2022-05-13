@@ -25,6 +25,22 @@ public class MethodDecl implements Visitable {
         this.accessModifier = accessModifier;
     }
 
+    public MethodDecl(AccessModifier accessModifier,Type type, String identifier, PrintableVector<MethodParameter> parameters, Block block){
+        this.type = type;
+        this.identifier = identifier;
+        this.parameters = parameters;
+        this.accessModifier = accessModifier;
+        this.block = block;
+    }
+
+    public MethodDecl(Type type, String identifier, PrintableVector<MethodParameter> parameters, Block block){
+        this.type = type;
+        this.identifier = identifier;
+        this.parameters = parameters;
+        this.accessModifier = AccessModifier.PACKAGE_PRIVATE;
+        this.block = block;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

@@ -9,7 +9,7 @@ import syntaxtree.expressions.This;
 
 import java.util.List;
 
-public class InstVarAdapter implements IExpression {
+public class InstVarAdapter {
     public static InstVar adapt(JavaSubsetParser.InstVarContext instVarContext){
         IExpression generated = generateInstVar(instVarContext.Identifier(),null,0);
 
