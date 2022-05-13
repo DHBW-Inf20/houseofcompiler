@@ -10,13 +10,19 @@ public class NewDecl implements IStatementExpression{
 
     private PrintableVector<IExpression> arguments;
     private Type type;
+    private String identifier;
 
-    public NewDecl(PrintableVector<IExpression> arguments) {
+    public NewDecl(String identifier, PrintableVector<IExpression> arguments) {
         this.arguments = arguments;
+        this.identifier = identifier;
     }
 
     public PrintableVector<IExpression> getArguments() {
         return arguments;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public Type getType() {
@@ -32,11 +38,11 @@ public class NewDecl implements IStatementExpression{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NewDecl newDecl = (NewDecl) o;
-        return arguments.equals(newDecl.arguments) && Objects.equals(type, newDecl.type);
+        return arguments.equals(newDecl.arguments) && Objects.equals(type, newDecl.type) && Objects.equals(identifier, newDecl.identifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(arguments, type);
+        return Objects.hash(arguments, type, identifier);
     }
 }
