@@ -11,7 +11,7 @@ public class SubExpressionAdapter {
                 return new LocalOrFieldVar(subExpressionContext.Identifier().getText());
         }
         else if (subExpressionContext.instVar() != null){
-                return null;
+                return InstVarAdapter.adapt(subExpressionContext.instVar());
         }
         else if (subExpressionContext.value() != null){
                 return null;
@@ -20,7 +20,7 @@ public class SubExpressionAdapter {
                 return null;
         }
         else{ //expression
-                return null;
+                return ExpressionAdapter.adapt(subExpressionContext.expression());
         }
     }
 }
