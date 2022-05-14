@@ -117,7 +117,12 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(LocalVarDecl localVarDecl) {
-
+        localVarDecl.getExpression().accept(this);
+        if (localVarDecl.getType() instanceof BaseType) {
+            mv.visitVarInsn(Opcodes.ISTORE, localVars.push(localVarDecl.getIdentifier()));
+        } else {
+            mv.visitVarInsn(Opcodes.ASTORE, localVars.push(localVarDecl.getIdentifier()));
+        }
     }
 
     @Override
@@ -306,6 +311,7 @@ public class MethodGenerator implements MethodCodeVisitor {
     @Override
     public void visit(InstVar instVar) {
         instVar.getExpression().accept(this);
+        // TODO
     }
 
     @Override
