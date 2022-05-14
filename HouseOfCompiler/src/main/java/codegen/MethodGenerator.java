@@ -6,6 +6,7 @@ import codegen.utils.LocalVarStack;
 import common.BaseType;
 import common.Type;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import syntaxtree.expressions.*;
@@ -24,6 +25,9 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class MethodGenerator implements MethodCodeVisitor {
+
+    private final static int TRUE = Opcodes.ICONST_1;
+    private final static int FALSE = Opcodes.ICONST_0;
 
     private final String className;
     private final Context context;
@@ -156,7 +160,92 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(Binary binary) {
+        switch (binary.getOperator()) {
+            case PLUS, MINUS, MULT, DIV -> visitBinaryArithmetic(binary);
+            case GREATER, LESS, GREATEREQUAL, LESSEQUAL, EQUAL, NOTEQUAL, AND, OR -> visitBoolLogic(binary);
+        }
+    }
 
+    private void visitBinaryArithmetic(Binary binary) {
+        binary.getlExpression().accept(this);
+        binary.getrExpression().accept(this);
+
+        switch (binary.getOperator()) {
+            case PLUS -> mv.visitInsn(Opcodes.IADD);
+            case MINUS -> mv.visitInsn(Opcodes.ISUB);
+            case MULT -> mv.visitInsn(Opcodes.IMUL);
+            case DIV -> mv.visitInsn(Opcodes.IDIV);
+        }
+    }
+
+    private void visitBoolLogic(Binary binary) {
+
+        Label trueLabel = new Label();
+        Label falseLabel = new Label();
+
+        switch (binary.getOperator()) {
+            case GREATER -> {
+                binary.getlExpression().accept(this);
+                binary.getrExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IF_ICMPLE, falseLabel);
+            }
+            case LESS -> {
+                binary.getlExpression().accept(this);
+                binary.getrExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IF_ICMPGE, falseLabel);
+            }
+            case GREATEREQUAL -> {
+                binary.getlExpression().accept(this);
+                binary.getrExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IF_ICMPLT, falseLabel);
+            }
+            case LESSEQUAL -> {
+                binary.getlExpression().accept(this);
+                binary.getrExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IF_ICMPGT, falseLabel);
+            }
+            case AND -> {
+                binary.getlExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IFEQ, falseLabel); // lExpression == false -> false
+                binary.getrExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IFEQ, falseLabel); // rExpression == false -> false
+            }
+            case OR -> {
+                binary.getlExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IFNE, trueLabel); // lExpression == true -> true
+                binary.getrExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IFEQ, falseLabel); // rExpression == false -> false
+            }
+            case EQUAL -> {
+                binary.getlExpression().accept(this);
+                binary.getrExpression().accept(this);
+                if (binary.getlExpression().getType()  instanceof BaseType && binary.getrExpression().getType() instanceof BaseType) {
+                    mv.visitJumpInsn(Opcodes.IF_ICMPNE, falseLabel);
+                } else {
+                    mv.visitJumpInsn(Opcodes.IF_ACMPNE, falseLabel);
+                }
+            }
+            case NOTEQUAL ->  {
+                binary.getlExpression().accept(this);
+                binary.getrExpression().accept(this);
+                if (binary.getlExpression().getType()  instanceof BaseType && binary.getrExpression().getType() instanceof BaseType) {
+                    mv.visitJumpInsn(Opcodes.IF_ICMPEQ, falseLabel);
+                } else {
+                    mv.visitJumpInsn(Opcodes.IF_ACMPEQ, falseLabel);
+                }
+            }
+        }
+
+        Label end = new Label();
+
+        mv.visitLabel(trueLabel);
+        mv.visitInsn(TRUE);
+        mv.visitJumpInsn(Opcodes.GOTO, end);
+
+        mv.visitLabel(falseLabel);
+        mv.visitInsn(FALSE);
+
+        mv.visitLabel(end);
     }
 
     @Override
