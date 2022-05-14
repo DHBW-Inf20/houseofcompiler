@@ -25,14 +25,13 @@ public interface MethodCodeVisitor {
     void visit(NewDecl newDecl);
 
     // Expressions
+    void visit(Unary unary);
     void visit(Binary binary);
     void visit(BoolExpr boolExpr);
     void visit(CharExpr charExpr);
-    void visit(InstVar instVar);
     void visit(IntegerExpr integerExpr);
+    void visit(InstVar instVar);
     void visit(LocalOrFieldVar localOrFieldVar);
     void visit(Null nullExpr);
     void visit(This thisExpr);
-    void visit(Unary unary);
-
 }

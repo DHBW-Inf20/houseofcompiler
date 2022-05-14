@@ -107,7 +107,16 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(ReturnStmt returnStmt) {
-
+        IExpression expression = returnStmt.getExpression();
+        if (expression == null) {
+            mv.visitInsn(Opcodes.RETURN);
+        } else {
+            if (expression.getType() instanceof BaseType) {
+                mv.visitInsn(Opcodes.IRETURN);
+            } else {
+                mv.visitInsn(Opcodes.ARETURN);
+            }
+        }
     }
 
     @Override
@@ -157,6 +166,11 @@ public class MethodGenerator implements MethodCodeVisitor {
     /***************
      * Expressions *
      ***************/
+
+    @Override
+    public void visit(Unary unary) {
+
+    }
 
     @Override
     public void visit(Binary binary) {
@@ -250,22 +264,26 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(BoolExpr boolExpr) {
-
+        if (boolExpr.getValue()) {
+            mv.visitInsn(TRUE);
+        } else {
+            mv.visitInsn(FALSE);
+        }
     }
 
     @Override
     public void visit(CharExpr charExpr) {
-
-    }
-
-    @Override
-    public void visit(InstVar instVar) {
-        instVar.getExpression().accept(this);
+        mv.visitIntInsn(Opcodes.BIPUSH, charExpr.getValue());
     }
 
     @Override
     public void visit(IntegerExpr integerExpr) {
         mv.visitIntInsn(Opcodes.BIPUSH, integerExpr.getValue());
+    }
+
+    @Override
+    public void visit(InstVar instVar) {
+        instVar.getExpression().accept(this);
     }
 
     @Override
@@ -284,17 +302,12 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(Null nullExpr) {
-
+        mv.visitInsn(Opcodes.ACONST_NULL);
     }
 
     @Override
     public void visit(This thisExpr) {
         lastClassName = className;
         mv.visitVarInsn(Opcodes.ALOAD, 0);
-    }
-
-    @Override
-    public void visit(Unary unary) {
-
     }
 }
