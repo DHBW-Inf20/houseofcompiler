@@ -28,7 +28,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("Empty Class")
-    void main() {
+    void emptyClass() {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
 
@@ -49,7 +49,7 @@ public class TestRunner {
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),new PrintableVector<>(),constructors);
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),constructors,new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var ast = new Program(classDecls);
@@ -62,6 +62,16 @@ public class TestRunner {
         Program generatedAst = Resources.getProgram("SimpleTests/ClassFields.java");
 
         Program expectedAst = MockGenerator.getClassFieldsAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("ClassField without AccessModifier")
+    void classFieldWithoutAccessModifier(){
+        Program generatedAst = Resources.getProgram("SimpleTests/AutoAccessModifierField.java");
+
+        Program expectedAst = MockGenerator.getAutoClassFieldAst();
 
         assertEquals(expectedAst, generatedAst);
     }
@@ -83,7 +93,7 @@ public class TestRunner {
         ipsum.setType(new BaseType(Primitives.BOOL));
         fields.add(ipsum);
 
-        ClassDecl classDecl = new ClassDecl("Comments", fields, new PrintableVector<>(), constructors);
+        ClassDecl classDecl = new ClassDecl("Comments", fields, constructors, new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var expectedAst = new Program(classDecls);
@@ -105,6 +115,15 @@ public class TestRunner {
     void constructorWithThisAssignBody(){
         Program generatedAst = Resources.getProgram("SimpleTests/ConstructorThisDot.java");
         Program expectedAst = MockGenerator.getConstructorThisDotAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("VoidMethod")
+    void voidMethod(){
+        Program generatedAst = Resources.getProgram("SimpleTests/VoidMethod.java");
+        Program expectedAst = MockGenerator.getVoidMethodAst();
 
         assertEquals(expectedAst, generatedAst);
     }

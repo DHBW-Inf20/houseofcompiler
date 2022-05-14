@@ -14,7 +14,7 @@ public class ClassDecl implements Visitable {
     private PrintableVector<MethodDecl> methodDeclarations;
     private PrintableVector<ConstructorDecl> constructorDeclarations;
 
-    public ClassDecl(String identifier, PrintableVector<FieldDecl> fieldDelcarations, PrintableVector<MethodDecl> methodDeclarations, PrintableVector<ConstructorDecl> constructorDeclarations) {
+    public ClassDecl(String identifier, PrintableVector<FieldDecl> fieldDelcarations,  PrintableVector<ConstructorDecl> constructorDeclarations, PrintableVector<MethodDecl> methodDeclarations) {
         this.identifier = identifier;
         this.fieldDelcarations = fieldDelcarations;
         this.methodDeclarations = methodDeclarations;

@@ -1,5 +1,7 @@
 package syntaxtree.expressions;
 
+import common.BaseType;
+import common.Primitives;
 import common.Type;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -13,6 +15,7 @@ public class BoolExpr implements IExpression{
 
     public BoolExpr(boolean value) {
         this.value = value;
+        this.type = new BaseType(Primitives.BOOL);
     }
 
     public boolean getValue() {
@@ -21,10 +24,6 @@ public class BoolExpr implements IExpression{
 
     public Type getType() {
         return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     @Override

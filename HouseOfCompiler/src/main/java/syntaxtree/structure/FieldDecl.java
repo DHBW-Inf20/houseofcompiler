@@ -21,6 +21,18 @@ public class FieldDecl implements Visitable {
         this.accessModifier = accessModifier;
     }
 
+    public FieldDecl(AccessModifier accessModifier, Type type, String identifier){
+        this.identifier = identifier;
+        this.accessModifier = accessModifier;
+        this.type = type;
+    }
+
+    public FieldDecl(Type type, String identifier){
+        this.identifier = identifier;
+        this.accessModifier = AccessModifier.PACKAGE_PRIVATE;
+        this.type = type;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

@@ -1,5 +1,7 @@
 package common;
 
-public class Type {
-    Object identifier;
+import visitor.SemanticVisitor;
+
+public interface Type extends SemanticVisitor {
+    public void accept(SemanticVisitor v);
 }
