@@ -4,6 +4,7 @@ import codegen.context.Context;
 import codegen.utils.GenUtils;
 import codegen.utils.LocalVarStack;
 import common.BaseType;
+import common.ReferenceType;
 import common.Type;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -311,7 +312,7 @@ public class MethodGenerator implements MethodCodeVisitor {
     @Override
     public void visit(InstVar instVar) {
         instVar.getExpression().accept(this);
-        // TODO
+        mv.visitFieldInsn(Opcodes.GETFIELD, ((ReferenceType) instVar.getType()).getIdentifier(), instVar.getIdentifier(), GenUtils.generateDescriptor(instVar.getType()));
     }
 
     @Override
