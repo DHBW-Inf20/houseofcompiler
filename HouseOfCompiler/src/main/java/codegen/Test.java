@@ -1,6 +1,7 @@
 package codegen;
 
 import codegen.context.Context;
+import codegen.utils.LocalVarStack;
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
@@ -23,6 +24,7 @@ import common.PrintableVector;
 public class Test {
 
     public static void main(String[] args) throws IOException {
+
         ProgramGenerator codeGen = new ProgramGenerator();
 
         PrintableVector<ClassDecl> classes = new PrintableVector<>();
