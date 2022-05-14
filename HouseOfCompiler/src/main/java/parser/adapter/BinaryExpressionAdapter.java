@@ -15,9 +15,7 @@ public class BinaryExpressionAdapter {
         IExpression rightExpression = ExpressionAdapter.adapt(
                 binaryExprContext.expression()
         );
-        Operator operator = Operator.valueOf(
-                binaryExprContext.operator().getText().toUpperCase(Locale.ROOT));
-
+        Operator operator = OperatorAdapter.adapt(binaryExprContext.operator());
         return new Binary(leftExpression,
                 rightExpression,
                 operator);
