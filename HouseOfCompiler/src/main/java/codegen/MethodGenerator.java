@@ -97,7 +97,22 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(IfStmt ifStmt) {
+        Label falseLabel = new Label();
 
+        ifStmt.getCondition().accept(this);
+        mv.visitJumpInsn(Opcodes.IFEQ, falseLabel); // == false
+
+        Label end = new Label();
+
+        ifStmt.getBlockIf().accept(this);
+        mv.visitJumpInsn(Opcodes.GOTO, end);
+
+        mv.visitLabel(falseLabel);
+        if (ifStmt.getBlockElse() != null) {
+            ifStmt.getBlockElse().accept(this);
+        }
+
+        mv.visitLabel(end);
     }
 
     @Override
@@ -138,17 +153,24 @@ public class MethodGenerator implements MethodCodeVisitor {
             lExpression.accept(this);
             String lClass = lastClassName;
             rExpression.accept(this);
-            mv.visitFieldInsn(Opcodes.PUTFIELD, lClass, ((InstVar) lExpression).getIdentifier(), GenUtils.generateDescriptor(((InstVar) lExpression).getType()));
+            // mv.visitInsn(Opcodes.DUP);
+            mv.visitFieldInsn(Opcodes.PUTFIELD, lClass, ((InstVar) lExpression).getIdentifier(), GenUtils.generateDescriptor((lExpression).getType()));
         } else if (lExpression instanceof LocalOrFieldVar) {
             int index = localVars.get(((LocalOrFieldVar) lExpression).getIdentifier());
             if (index >= 0) { // local var
                 rExpression.accept(this);
-                mv.visitVarInsn(Opcodes.ISTORE, index);
+                // mv.visitInsn(Opcodes.DUP);
+                if (rExpression.getType() instanceof BaseType) {
+                    mv.visitVarInsn(Opcodes.ISTORE, index);
+                } else {
+                    mv.visitVarInsn(Opcodes.ASTORE, index);
+                }
             } else { // field var
                 lExpression.accept(this);
                 String lClass = lastClassName;
                 rExpression.accept(this);
-                mv.visitFieldInsn(Opcodes.PUTFIELD, lClass, ((LocalOrFieldVar) lExpression).getIdentifier(), GenUtils.generateDescriptor(((LocalOrFieldVar) lExpression).getType()));
+                // mv.visitInsn(Opcodes.DUP);
+                mv.visitFieldInsn(Opcodes.PUTFIELD, lClass, ((LocalOrFieldVar) lExpression).getIdentifier(), GenUtils.generateDescriptor((lExpression).getType()));
             }
         }
     }
