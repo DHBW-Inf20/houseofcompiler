@@ -48,7 +48,7 @@ public class Test {
         PrintableVector<MethodDecl> methods = new PrintableVector<>();
         methods.add(method);
 
-        classes.add(new ClassDecl("Test", fields, methods, new PrintableVector<>()));
+        classes.add(new ClassDecl("Test", fields, new PrintableVector<>(), methods));
 
         Program program = new Program(classes);
 
