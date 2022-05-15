@@ -10,52 +10,52 @@ import syntaxtree.statements.*;
 import syntaxtree.structure.*;
 
 public interface SemanticVisitor {
-    Type visit(Program toCheck);
+    Program visit(Program toCheck);
 
-    Type visit(ClassDecl toCheck);
+    ClassDecl visit(ClassDecl toCheck);
 
-    Type visit(FieldDecl toCheck);
+    FieldDecl visit(FieldDecl toCheck);
 
-    Type visit(ConstructorDecl toCheck);
+    ConstructorDecl visit(ConstructorDecl toCheck);
 
-    Type visit(MethodDecl toCheck);
-
-
-
-    Type visit(Assign toCheck);
-
-    Type visit(MethodParameter toCheck);
+    MethodDecl visit(MethodDecl toCheck);
 
 
-    Type visit(WhileStmt whileStmt);
 
-    Type visit(ReturnStmt returnStmt);
+    Assign visit(Assign toCheck);
 
-    Type visit(LocalVarDecl localVarDecl);
+    MethodParameter visit(MethodParameter toCheck);
 
-    Type visit(IfStmt ifStmt);
 
-    Type visit(Block block);
+    WhileStmt visit(WhileStmt whileStmt);
 
-    Type visit(NewDecl newDecl);
+    ReturnStmt visit(ReturnStmt returnStmt);
 
-    Type visit(MethodCall methodCall);
+    LocalVarDecl visit(LocalVarDecl localVarDecl);
 
-    Type visit(Unary unary);
+    IfStmt visit(IfStmt ifStmt);
 
-    Type visit(This aThis);
+    Block visit(Block block);
 
-    Type visit(Null aNull);
+    NewDecl visit(NewDecl newDecl);
 
-    Type visit(LocalOrFieldVar localOrFieldVar);
+    MethodCall visit(MethodCall methodCall);
 
-    Type visit(IntegerExpr integerExpr);
+    Unary visit(Unary unary);
 
-    Type visit(InstVar instVar);
+    This visit(This aThis);
 
-    Type visit(CharExpr charExpr);
+    Null visit(Null aNull);
 
-    Type visit(BoolExpr boolExpr);
+    LocalOrFieldVar visit(LocalOrFieldVar localOrFieldVar);
 
-    Type visit(Binary binary);
+    IntegerExpr visit(IntegerExpr integerExpr);
+
+    InstVar visit(InstVar instVar);
+
+    CharExpr visit(CharExpr charExpr);
+
+    BoolExpr visit(BoolExpr boolExpr);
+
+   Binary visit(Binary binary);
 }

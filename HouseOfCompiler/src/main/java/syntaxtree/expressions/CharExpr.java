@@ -32,7 +32,7 @@ public class CharExpr implements IExpression{
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
+    public Binary accept(SemanticVisitor visitor) {
         return visitor.visit(this);
     }
 

@@ -1,6 +1,7 @@
 package syntaxtree.statements;
 
 import common.Type;
+import syntaxtree.expressions.Binary;
 import syntaxtree.expressions.IExpression;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -34,7 +35,7 @@ public class ReturnStmt implements IStatement {
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
+    public Binary accept(SemanticVisitor visitor) {
         return visitor.visit(this);
     }
 

@@ -1,6 +1,7 @@
 package syntaxtree.statementexpression;
 
 import common.Type;
+import syntaxtree.expressions.Binary;
 import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class NewDecl implements IStatementExpression{
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
+    public Binary accept(SemanticVisitor visitor) {
         return visitor.visit(this);
     }
 

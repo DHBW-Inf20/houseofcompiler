@@ -1,6 +1,6 @@
 package syntaxtree.structure;
 
-import common.Type;
+import syntaxtree.expressions.Binary;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 
@@ -34,7 +34,7 @@ public class Program implements Visitable {
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
+    public Binary accept(SemanticVisitor visitor) {
         return visitor.visit(this);
     }
 

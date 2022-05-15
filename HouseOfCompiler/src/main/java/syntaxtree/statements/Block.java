@@ -6,6 +6,7 @@ import common.Type;
 
 import java.util.Objects;
 import common.PrintableVector;
+import syntaxtree.expressions.Binary;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -68,7 +69,7 @@ public class Block implements IStatement, Visitable {
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
+    public Binary accept(SemanticVisitor visitor) {
         return visitor.visit(this);
     }
 }

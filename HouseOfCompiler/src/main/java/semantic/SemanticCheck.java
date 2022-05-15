@@ -1,6 +1,5 @@
 package semantic;
 
-import codegen.MethodGenerator;
 import common.BaseType;
 import common.Primitives;
 import common.ReferenceType;
@@ -47,7 +46,7 @@ public class SemanticCheck implements SemanticVisitor {
     }
 
     @Override
-    public Type visit(Program program) {
+    public Program visit(Program program) {
         for (ClassDecl classDecl : program.getClasses()) {
             classDecl.accept(this);
         }
@@ -57,7 +56,7 @@ public class SemanticCheck implements SemanticVisitor {
     }
 
     @Override
-    public Type visit(ClassDecl clazz) {
+    public ClassDecl visit(ClassDecl clazz) {
         System.out.println("ClassDecl");
 
         clazz.getFieldDelcarations().forEach(field -> field.accept(this));
@@ -75,7 +74,7 @@ public class SemanticCheck implements SemanticVisitor {
     }
 
     @Override
-    public Type visit(FieldDecl field) {
+    public FieldDecl visit(FieldDecl field) {
         if (field.getType() != null) field.setType(field.getType());
         System.out.print(" ");
         if (field.getType() != null) {
@@ -84,113 +83,116 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         // field.getExpressions();
+        return field;
     }
 
     @Override
-    public Type visit(ConstructorDecl constructor) {
+    public ConstructorDecl visit(ConstructorDecl constructor) {
         constructor.getParameterDeclarations().forEach(methodParam -> methodParam.accept(this));
 
 
+        return constructor;
     }
 
     @Override
-    public Type visit(MethodDecl method) {
+    public MethodDecl visit(MethodDecl method) {
         compareTypes(method.getType(), method.accept(this));
 
 
+        return method;
     }
 
     @Override
-    public Type visit(Assign assign) {
+    public Assign visit(Assign assign) {
         IExpression lExpression = assign.getlExpression();
         IExpression rExpression = assign.getrExpression();
 
-        return assign.getType();
+        return assign;
     }
 
     @Override
-    public Type visit(MethodParameter methodParameter) {
+    public MethodParameter visit(MethodParameter methodParameter) {
         //code
-        return methodParameter.getType();
+        return methodParameter;
     }
 
     @Override
-    public Type visit(WhileStmt whileStmt) {
+    public WhileStmt visit(WhileStmt whileStmt) {
         return null;
     }
 
     @Override
-    public Type visit(ReturnStmt returnStmt) {
+    public ReturnStmt visit(ReturnStmt returnStmt) {
         return null;
     }
 
     @Override
-    public Type visit(LocalVarDecl localVarDecl) {
+    public LocalVarDecl visit(LocalVarDecl localVarDecl) {
         return null;
     }
 
     @Override
-    public Type visit(IfStmt ifStmt) {
+    public IfStmt visit(IfStmt ifStmt) {
         return null;
     }
 
     @Override
-    public Type visit(Block block) {
+    public Block visit(Block block) {
         return null;
     }
 
     @Override
-    public Type visit(NewDecl newDecl) {
+    public NewDecl visit(NewDecl newDecl) {
         return null;
     }
 
     @Override
-    public Type visit(MethodCall methodCall) {
+    public MethodCall visit(MethodCall methodCall) {
         return null;
     }
 
     @Override
-    public Type visit(Unary unary) {
+    public Unary visit(Unary unary) {
         return null;
     }
 
     @Override
-    public Type visit(This aThis) {
+    public This visit(This aThis) {
         return null;
     }
 
     @Override
-    public Type visit(Null aNull) {
+    public Null visit(Null aNull) {
         return null;
     }
 
     @Override
-    public Type visit(LocalOrFieldVar localOrFieldVar) {
+    public LocalOrFieldVar visit(LocalOrFieldVar localOrFieldVar) {
         return null;
     }
 
     @Override
-    public Type visit(IntegerExpr integerExpr) {
+    public IntegerExpr visit(IntegerExpr integerExpr) {
         return null;
     }
 
     @Override
-    public Type visit(InstVar instVar) {
+    public InstVar visit(InstVar instVar) {
         return null;
     }
 
     @Override
-    public Type visit(CharExpr charExpr) {
+    public CharExpr visit(CharExpr charExpr) {
         return null;
     }
 
     @Override
-    public Type visit(BoolExpr boolExpr) {
+    public BoolExpr visit(BoolExpr boolExpr) {
         return null;
     }
 
     @Override
-    public Type visit(Binary binary) {
+    public Binary visit(Binary binary) {
         return null;
     }
 }

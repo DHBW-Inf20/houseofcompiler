@@ -4,6 +4,7 @@ import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
 import common.Type;
+import syntaxtree.expressions.Binary;
 import syntaxtree.statements.Block;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
@@ -63,7 +64,7 @@ public class ConstructorDecl implements Visitable {
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
+    public Binary accept(SemanticVisitor visitor) {
         return visitor.visit(this);
     }
 
