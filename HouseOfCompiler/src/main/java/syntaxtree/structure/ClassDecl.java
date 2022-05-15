@@ -1,6 +1,5 @@
 package syntaxtree.structure;
 
-import common.Type;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 
@@ -54,8 +53,8 @@ public class ClassDecl implements Visitable {
     }
 
     @Override
-    public Type accept(SemanticVisitor visitor) {
-        return visitor.visit(this);
+    public void accept(SemanticVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

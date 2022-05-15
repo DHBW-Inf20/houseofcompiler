@@ -1,5 +1,7 @@
 package syntaxtree.statements;
 
-public interface IStatement {
+import visitor.Visitable;
+
+public interface IStatement extends Visitable {
 
 }

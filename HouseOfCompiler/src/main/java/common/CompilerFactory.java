@@ -2,8 +2,8 @@ package common;
 
 public interface CompilerFactory {
 
-    IAstGenerator getAstGenerator();
-    ITastGenerator getTastGenerator();
+    IAstAdapter getAstAdapter();
+    ITastAdapter getTastAdapter();
     IProgramGenerator getProgramGenerator();
 
 }

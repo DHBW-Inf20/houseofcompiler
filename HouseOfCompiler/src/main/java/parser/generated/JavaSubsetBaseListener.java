@@ -340,6 +340,18 @@ public class JavaSubsetBaseListener implements JavaSubsetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterType(JavaSubsetParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -6,10 +6,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import common.Compiler;
+import syntaxtree.structure.Program;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class Resources {
+
+
+    public static Program getProgram(String fileName){
+        return Compiler.getFactory().getAstAdapter().getAst(getFileAsStream(fileName));
+    }
 
     public static InputStream getFileAsStream(String fileName)
     {

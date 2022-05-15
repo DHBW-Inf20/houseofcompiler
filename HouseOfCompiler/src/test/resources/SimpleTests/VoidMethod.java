@@ -1,0 +1,5 @@
+class VoidMethod {
+
+    void foo(){}
+    
+}

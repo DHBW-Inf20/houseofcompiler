@@ -19,9 +19,9 @@ public class TestRunner {
     @Test
     @DisplayName("Empty Class")
     void main() throws Exception {
-        InputStream file = Resources.getFileAsStream("EmptyClass.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("EmptyClass");
@@ -34,13 +34,13 @@ public class TestRunner {
     @Test
     @DisplayName("EmptyClassWithConstructor")
     void emptyClassWithConstructor() throws Exception {
-        InputStream file = Resources.getFileAsStream("EmptyClassWithConstructor.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
+        InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClassWithConstructor.java");
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("EmptyClassWithConstructor");
-
+        
         Object o = c.getDeclaredConstructor().newInstance();
         assertEquals("EmptyClassWithConstructor", o.getClass().getName());
     }
@@ -48,9 +48,9 @@ public class TestRunner {
     @Test
     @DisplayName("Comments")
     void comments() throws Exception {
-        InputStream file = Resources.getFileAsStream("Comments.java");
-        Program ast = Compiler.getFactory().getAstGenerator().getAst(file);
-        Program tast = Compiler.getFactory().getTastGenerator().getTast(ast);
+        InputStream file = Resources.getFileAsStream("SimpleTests/Comments.java");
+        Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(ast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class c = loader.findClass("Comments");

@@ -21,4 +21,9 @@ public class FieldContext {
     public Type getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return accessModifier + " " + type;
+    }
 }

@@ -2,21 +2,17 @@ package common;
 
 public enum Operator {
 
-    NEG,
-    PLS,
-    MIN,
-    MUL,
+    ASSIGN,
+    PLUS,
+    MINUS,
+    MULT,
     DIV,
-    MOD,
+    GREATER,
+    LESS,
+    GREATEREQUAL,
+    LESSEQUAL,
+    EQUAL,
+    NOTEQUAL,
     AND,
-    OR,
-    XOR,
-    GT,
-    GTE,
-    LT,
-    LTE,
-    LE,
-    EQ,
-    NEQ
-
+    OR
 }

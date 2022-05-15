@@ -1,28 +1,27 @@
 package syntaxtree.structure;
 
-import common.*;
-
-import visitor.SemanticVisitor;
-import visitor.Visitable;
-
+import common.BaseType;
+import common.Primitives;
+import common.Type;
 
 import java.util.Objects;
 
-public class MethodParameter implements Visitable {
+public class MethodParameter {
 
     private Type type;
     private String identifier;
+
+    public MethodParameter(String identifier) {
+        this.identifier = identifier;
+    }
 
     public MethodParameter(Type type, String identifier) {
         this.type = type;
         this.identifier = identifier;
     }
 
-    public MethodParameter() {
-
-    }
-
-    public MethodParameter(String identifier) {
+    public MethodParameter(Primitives type, String identifier){
+        this.type = new BaseType(type);
         this.identifier = identifier;
     }
 
@@ -49,12 +48,5 @@ public class MethodParameter implements Visitable {
     @Override
     public int hashCode() {
         return Objects.hash(type, identifier);
-    }
-
-
-
-    @Override
-    public Type accept(SemanticVisitor visitor) {
-        return visitor.visit(this);
     }
 }
