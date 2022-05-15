@@ -1,9 +1,14 @@
 package codegen;
 
 import codegen.context.Context;
+import codegen.utils.LocalVarStack;
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
+import syntaxtree.expressions.InstVar;
+import syntaxtree.expressions.IntegerExpr;
+import syntaxtree.expressions.This;
+import syntaxtree.statementexpression.Assign;
 import syntaxtree.statements.Block;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.FieldDecl;
@@ -19,6 +24,7 @@ import common.PrintableVector;
 public class Test {
 
     public static void main(String[] args) throws IOException {
+
         ProgramGenerator codeGen = new ProgramGenerator();
 
         PrintableVector<ClassDecl> classes = new PrintableVector<>();
@@ -28,13 +34,21 @@ public class Test {
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
         fields.add(field);
 
-        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), new Block(), AccessModifier.PUBLIC);
+        Block block = new Block();
+
+        var testField = new InstVar("testField", new This());
+        testField.setType(Primitives.INT);
+
+        Assign assign = new Assign( testField, new IntegerExpr(6));
+        assign.setType(Primitives.VOID);
+        block.getStatements().add(assign);
+
+        MethodDecl method = new MethodDecl("testMethod", new PrintableVector<>(), block, AccessModifier.PUBLIC);
         method.setType(new BaseType(Primitives.INT));
         PrintableVector<MethodDecl> methods = new PrintableVector<>();
         methods.add(method);
 
-        classes.add(new ClassDecl("Hund", fields, methods, new PrintableVector<>()));
-//        classes.add(new ClassDecl("Katze", new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>()));
+        classes.add(new ClassDecl("Test", fields, new PrintableVector<>(), methods));
 
         Program program = new Program(classes);
 

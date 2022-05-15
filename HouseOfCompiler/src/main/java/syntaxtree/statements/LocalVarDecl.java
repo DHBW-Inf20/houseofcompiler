@@ -1,6 +1,7 @@
 package syntaxtree.statements;
 
 import common.Type;
+import syntaxtree.expressions.IExpression;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -10,9 +11,16 @@ public class LocalVarDecl implements IStatement{
 
     Type type;
     String identifier;
+    IExpression expression;
 
     public LocalVarDecl(String identifier) {
         this.identifier = identifier;
+    }
+
+    public LocalVarDecl(Type type, String identifier, IExpression expression) {
+        this.type = type;
+        this.identifier = identifier;
+        this.expression = expression;
     }
 
     public Type getType() {
@@ -21,6 +29,10 @@ public class LocalVarDecl implements IStatement{
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public IExpression getExpression() {
+        return expression;
     }
 
     public void setType(Type type) {

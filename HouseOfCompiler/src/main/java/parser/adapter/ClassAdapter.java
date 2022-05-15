@@ -22,6 +22,6 @@ public class ClassAdapter {
         classdeclContext.methodDecl().forEach(methodDeclContext ->
                 methodDecls.add(MethodDeclAdapter.adapt(methodDeclContext))
         );
-        return new ClassDecl(classdeclContext.Identifier().getText(), fieldDecls, methodDecls, constructorDecls);
+        return new ClassDecl(classdeclContext.Identifier().getText(), fieldDecls,  constructorDecls,methodDecls);
     }
 }

@@ -2,26 +2,39 @@ package codegen.context;
 
 import syntaxtree.structure.ClassDecl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ClassContext {
 
     private HashMap<String, FieldContext> fields;
-    private HashMap<String, MethodContext> methods;
+    private ArrayList<ConstructorContext> constructors;
+    private HashMap<String, ArrayList<MethodContext>> methods;
 
     public ClassContext(ClassDecl clazz) {
         fields = new HashMap<>();
+        constructors = new ArrayList<>();
         methods = new HashMap<>();
 
         clazz.getFieldDelcarations().forEach(field -> fields.put(field.getIdentifier(), new FieldContext(field)));
-        clazz.getMethodDeclarations().forEach(method -> methods.put(method.getIdentifier(), new MethodContext(method)));
+        clazz.getConstructorDeclarations().forEach(constructor -> constructors.add(new ConstructorContext(constructor)));
+        clazz.getMethodDeclarations().forEach(method -> {
+            if (!methods.containsKey(method.getIdentifier())) {
+                methods.put(method.getIdentifier(), new ArrayList<>());
+            }
+            methods.get(method.getIdentifier()).add(new MethodContext(method));
+        });
     }
 
     public HashMap<String, FieldContext> getFields() {
         return fields;
     }
 
-    public HashMap<String, MethodContext> getMethods() {
+    public ArrayList<ConstructorContext> getConstructors() {
+        return constructors;
+    }
+
+    public HashMap<String, ArrayList<MethodContext>> getMethods() {
         return methods;
     }
 

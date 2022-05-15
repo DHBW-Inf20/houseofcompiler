@@ -5,6 +5,7 @@ import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
 import common.PrintableVector;
+import common.ReferenceType;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -17,7 +18,9 @@ public class NewDecl implements IStatementExpression{
     public NewDecl(String identifier, PrintableVector<IExpression> arguments) {
         this.arguments = arguments;
         this.identifier = identifier;
+        this.type = new ReferenceType(identifier);
     }
+
 
     public PrintableVector<IExpression> getArguments() {
         return arguments;

@@ -28,7 +28,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("Empty Class")
-    void main() {
+    void emptyClass() {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
 
@@ -49,7 +49,7 @@ public class TestRunner {
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),new PrintableVector<>(),constructors);
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),constructors,new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var ast = new Program(classDecls);
@@ -93,7 +93,7 @@ public class TestRunner {
         ipsum.setType(new BaseType(Primitives.BOOL));
         fields.add(ipsum);
 
-        ClassDecl classDecl = new ClassDecl("Comments", fields, new PrintableVector<>(), constructors);
+        ClassDecl classDecl = new ClassDecl("Comments", fields, constructors, new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var expectedAst = new Program(classDecls);
