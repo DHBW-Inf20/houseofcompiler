@@ -63,8 +63,8 @@ public class FieldDecl implements Visitable {
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-        visitor.visit(this);
+    public Type accept(SemanticVisitor visitor) {
+        return visitor.visit(this);
     }
 
     @Override

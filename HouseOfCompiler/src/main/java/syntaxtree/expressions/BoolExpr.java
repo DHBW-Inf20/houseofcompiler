@@ -32,8 +32,8 @@ public class BoolExpr implements IExpression{
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-
+    public Type accept(SemanticVisitor visitor) {
+        return visitor.visit(this);
     }
 
     @Override

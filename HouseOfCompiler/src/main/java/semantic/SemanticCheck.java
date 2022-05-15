@@ -8,9 +8,11 @@ import common.Type;
 import semantic.exceptions.AlreadyDefinedException;
 import semantic.exceptions.InvalidASTException;
 import semantic.exceptions.TypeMismatchException;
-import syntaxtree.expressions.IExpression;
-import syntaxtree.expressions.LocalOrFieldVar;
+import syntaxtree.expressions.*;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.MethodCall;
+import syntaxtree.statementexpression.NewDecl;
+import syntaxtree.statements.*;
 import syntaxtree.structure.*;
 import visitor.SemanticVisitor;
 
@@ -30,16 +32,16 @@ public class SemanticCheck implements SemanticVisitor {
                         type2.equals(new BaseType(Primitives.CHAR)));
     }
 
-    private Tuple<Type, Type> typeAssign(IExpression expression1, IExpression expression2) {
+    private Tuple<Type, Type> typeAssign(IExpression expression1, IExpression expression2) { //where to set type of these ?
+
        Type typedExpression1 = expression1.getType(); //set type
-        //or
         Type typedExpression2 = expression2.getType(); // set type
-        if (!(typedExpression1 instanceof LocalOrFieldVar || typedExpression1 instanceof InstVar)) {
+        if (!(typedExpression1 instanceof LocalOrFieldVar || typedExpression1 instanceof InstVar)) { //what here
             throw new InvalidASTException("Left side of the assign is not assignable");
         }
-        if (!compareTypes(typedExpression1.getObjectType(), typedExpression2.getObjectType())) {
-            throw new TypeMismatchException("Type " + typedExpression2.getObjectType().getName() + " cannot be assigned to " +
-                    typedExpression1.getObjectType().getName());
+        if (!compareTypes(typedExpression1, typedExpression2)) {
+            throw new TypeMismatchException("Type " + typedExpression2 + " cannot be assigned to " +
+                    typedExpression1);
         }
         return new Tuple<>(typedExpression1, typedExpression2);
     }
@@ -110,5 +112,85 @@ public class SemanticCheck implements SemanticVisitor {
     public Type visit(MethodParameter methodParameter) {
         //code
         return methodParameter.getType();
+    }
+
+    @Override
+    public Type visit(WhileStmt whileStmt) {
+        return null;
+    }
+
+    @Override
+    public Type visit(ReturnStmt returnStmt) {
+        return null;
+    }
+
+    @Override
+    public Type visit(LocalVarDecl localVarDecl) {
+        return null;
+    }
+
+    @Override
+    public Type visit(IfStmt ifStmt) {
+        return null;
+    }
+
+    @Override
+    public Type visit(Block block) {
+        return null;
+    }
+
+    @Override
+    public Type visit(NewDecl newDecl) {
+        return null;
+    }
+
+    @Override
+    public Type visit(MethodCall methodCall) {
+        return null;
+    }
+
+    @Override
+    public Type visit(Unary unary) {
+        return null;
+    }
+
+    @Override
+    public Type visit(This aThis) {
+        return null;
+    }
+
+    @Override
+    public Type visit(Null aNull) {
+        return null;
+    }
+
+    @Override
+    public Type visit(LocalOrFieldVar localOrFieldVar) {
+        return null;
+    }
+
+    @Override
+    public Type visit(IntegerExpr integerExpr) {
+        return null;
+    }
+
+    @Override
+    public Type visit(InstVar instVar) {
+        return null;
+    }
+
+    @Override
+    public Type visit(CharExpr charExpr) {
+        return null;
+    }
+
+    @Override
+    public Type visit(BoolExpr boolExpr) {
+        return null;
+    }
+
+    @Override
+    public Type visit(Binary binary) {
+        return null;
     }
 }
