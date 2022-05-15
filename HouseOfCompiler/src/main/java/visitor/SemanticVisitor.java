@@ -6,17 +6,17 @@ import syntaxtree.statementexpression.Assign;
 import syntaxtree.structure.*;
 
 public interface SemanticVisitor {
-    Type visit(Program program);
+    Type visit(Program toCheck);
 
-    Type visit(ClassDecl clazz);
+    Type visit(ClassDecl toCheck);
 
-    Type visit(FieldDecl field);
+    Type visit(FieldDecl toCheck);
 
-    Type visit(ConstructorDecl constructor);
+    Type visit(ConstructorDecl toCheck);
 
-    Type visit(MethodDecl method);
+    Type visit(MethodDecl toCheck);
 
-    Type visit(Assign assign);
+    Type visit(Assign toCheck);
 
-    Type visit(MethodParameter methodParameter);
+    Type visit(MethodParameter toCheck);
 }
