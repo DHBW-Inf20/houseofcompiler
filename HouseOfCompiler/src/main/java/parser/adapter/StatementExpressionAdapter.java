@@ -11,8 +11,6 @@ import syntaxtree.statementexpression.IStatementExpression;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 
-import java.util.List;
-
 public class StatementExpressionAdapter {
     public static IStatementExpression adapt(JavaSubsetParser.StmtExprContext stmtExprContext){
         if (stmtExprContext.assign() != null) {
