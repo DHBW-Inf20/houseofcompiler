@@ -1,5 +1,6 @@
-package codegen.context;
+package context;
 
+import codegen.utils.GenUtils;
 import common.AccessModifier;
 import common.Type;
 import syntaxtree.structure.FieldDecl;
@@ -22,8 +23,12 @@ public class FieldContext {
         return type;
     }
 
+    public String getDescriptor() {
+        return GenUtils.generateDescriptor(type);
+    }
+
     @Override
     public String toString() {
-        return accessModifier + " " + type;
+        return accessModifier + " " + getDescriptor();
     }
 }

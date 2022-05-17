@@ -1,6 +1,6 @@
 package codegen;
 
-import codegen.context.Context;
+import context.Context;
 import common.IProgramGenerator;
 import syntaxtree.structure.Program;
 import visitor.codevisitor.ProgramCodeVisitor;
