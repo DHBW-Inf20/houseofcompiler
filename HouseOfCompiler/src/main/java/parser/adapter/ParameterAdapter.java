@@ -5,9 +5,11 @@ import syntaxtree.structure.MethodParameter;
 
 public class ParameterAdapter {
     public static MethodParameter adapt(JavaSubsetParser.ParameterContext parameterContext){
-        return new MethodParameter(
+        var parameter = new MethodParameter(
                 TypeAdapter.adapt(parameterContext.type()),
                 parameterContext.Identifier().getText()
         );
+        parameter.setType(TypeAdapter.adapt(parameterContext.type()));
+        return parameter;
     }
 }
