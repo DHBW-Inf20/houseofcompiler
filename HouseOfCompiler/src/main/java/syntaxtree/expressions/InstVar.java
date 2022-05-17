@@ -2,6 +2,7 @@ package syntaxtree.expressions;
 
 import common.BaseType;
 import common.Primitives;
+import common.ReferenceType;
 import common.Type;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -29,6 +30,12 @@ public class InstVar implements IExpression{
         this.identifier = identifier;
         this.expression = expression;
         this.type = type;
+    }
+
+    public InstVar(String type, IExpression expression, String identifier) {
+        this.identifier = identifier;
+        this.expression = expression;
+        this.type = new ReferenceType(type);
     }
 
     public String getIdentifier() {

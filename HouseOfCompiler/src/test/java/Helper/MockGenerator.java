@@ -216,7 +216,7 @@ public abstract class MockGenerator {
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
 
-        FieldDecl i = new FieldDecl(new BaseType(Primitives.INT), "i");
+        FieldDecl i = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "i");
 
         classDecl.getFieldDelcarations().add(i);
         Assign assignStmt = new Assign(new InstVar(new This(), "i"), new LocalOrFieldVar("i"));
@@ -237,10 +237,10 @@ public abstract class MockGenerator {
         Program expectedTast = getEmptyProgram(className);
 
         ClassDecl classDecl = expectedTast.getClasses().firstElement();
-        FieldDecl i = new FieldDecl(new BaseType(Primitives.INT), "i");
+        FieldDecl i = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "i");
 
         classDecl.getFieldDelcarations().add(i);
-        Assign assignStmt = new Assign(new InstVar(new This(
+        Assign assignStmt = new Assign(new InstVar(className, new This(
                 className), "i"), new LocalOrFieldVar(new ReferenceType(className),"i"));
 
         assignStmt.setType(className);
@@ -276,7 +276,22 @@ public abstract class MockGenerator {
     }
 
     public static Program getMethodCallTast(){
-        return getMethodCallAst();
+        Program expectedTast = getEmptyProgram("MethodCall");
+
+        ClassDecl classDecl = expectedTast.getClasses().firstElement();
+        var fields = classDecl.getFieldDelcarations();
+        fields.add(new FieldDecl(new BaseType(Primitives.INT), "i"));
+        PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
+
+        Block block = getBlock(
+                new Assign(new InstVar(new This(), "i"), new MethodCall(new This(), "foo", getArguments())));
+        constructors.add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
+
+        Block fooBlock = getBlock(new ReturnStmt(new IntegerExpr(1)));
+        PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
+        methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo", getEmptyParameters(), fooBlock));
+
+        return expectedTast;
     }
 
 
