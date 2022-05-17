@@ -1,9 +1,8 @@
 package codegen;
 
-import codegen.context.Context;
+import context.Context;
 import codegen.utils.GenUtils;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;

@@ -1,4 +1,4 @@
-package codegen.context;
+package context;
 
 import syntaxtree.structure.ClassDecl;
 

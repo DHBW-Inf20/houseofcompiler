@@ -1,7 +1,6 @@
 package codegen;
 
-import codegen.context.Context;
-import codegen.utils.LocalVarStack;
+import context.Context;
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;

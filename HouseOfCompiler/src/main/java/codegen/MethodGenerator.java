@@ -1,6 +1,6 @@
 package codegen;
 
-import codegen.context.Context;
+import context.Context;
 import codegen.utils.GenUtils;
 import codegen.utils.LocalVarStack;
 import common.BaseType;
@@ -22,7 +22,6 @@ import syntaxtree.structure.MethodParameter;
 import common.PrintableVector;
 import visitor.codevisitor.MethodCodeVisitor;
 
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class MethodGenerator implements MethodCodeVisitor {
