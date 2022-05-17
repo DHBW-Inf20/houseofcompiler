@@ -237,7 +237,9 @@ public abstract class MockGenerator {
         Program expectedTast = getEmptyProgram(className);
 
         ClassDecl classDecl = expectedTast.getClasses().firstElement();
+        FieldDecl i = new FieldDecl(new BaseType(Primitives.INT), "i");
 
+        classDecl.getFieldDelcarations().add(i);
         Assign assignStmt = new Assign(new InstVar(new This(
                 className), "i"), new LocalOrFieldVar(new ReferenceType(className),"i"));
 
