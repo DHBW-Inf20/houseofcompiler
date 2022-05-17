@@ -17,6 +17,7 @@ public class BaseType implements Type {
     }
 
     
+    
 
     public Primitives getIdentifier() {
         return (Primitives) this.identifier;
@@ -74,5 +75,33 @@ public class BaseType implements Type {
     public void accept(SemanticVisitor v) {
         // TODO Auto-generated method stub
         
+    }
+
+
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+        return result;
+    }
+
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BaseType other = (BaseType) obj;
+        if (identifier != other.identifier)
+            return false;
+        return true;
     }
 }

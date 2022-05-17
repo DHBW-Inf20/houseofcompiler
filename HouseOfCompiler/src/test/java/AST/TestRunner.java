@@ -27,6 +27,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TestRunner {
 
     @Test
+    @DisplayName("Control Test")
+    void controlTest(){
+        var first = MockGenerator.getConstructorParameterAst();
+        var second = MockGenerator.getConstructorParameterAst();
+
+        assertEquals(first , second);
+    }
+
+    @Test
     @DisplayName("Empty Class")
     void emptyClass() {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
