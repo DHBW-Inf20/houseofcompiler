@@ -8,7 +8,7 @@ public class StatementAdapter {
         if(statementContext.returnStmt() != null)
             return new ReturnStmt(ExpressionAdapter.adapt(statementContext.returnStmt().expression()));
         else if (statementContext.localVarDecl() != null)
-            return new LocalVarDecl(statementContext.localVarDecl().Identifier().getText());
+            return LocalVarDeclAdapter.adapt(statementContext.localVarDecl());
         else if (statementContext.block() != null)
             return BlockAdapter.adapt(statementContext.block());
         else if (statementContext.whileStmt() != null)

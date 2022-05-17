@@ -17,7 +17,7 @@ public class ClassAdapter {
                 constructorDecls.add(ConstructorAdapter.adapt(constuctorDeclContext))
         );
         classdeclContext.fieldDecl().forEach(fieldDeclContext ->
-                fieldDecls.add(FieldAdapter.adapt(fieldDeclContext))
+                fieldDecls.add(FieldDeclAdapter.adapt(fieldDeclContext))
         );
         classdeclContext.methodDecl().forEach(methodDeclContext ->
                 methodDecls.add(MethodDeclAdapter.adapt(methodDeclContext))

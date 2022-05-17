@@ -23,7 +23,7 @@ subExpression: Identifier | instVar | value | stmtExpr | OpenRoundBracket expres
 //methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
 //reciever: (instVar | Identifier Dot | methodCall Dot)
 //reciever kann (fast beliebige) expression sein (methodenaufrufe mit dot in reciever auslagern)
-methodCall: ((reciever | revievingMethod) Dot)* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
+methodCall: reciever? revievingMethod* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 //int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
 statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | ifElseStmt | stmtExpr Semicolon;
 //a = expr, new Object(), method(param1)
