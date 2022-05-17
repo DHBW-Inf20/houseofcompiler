@@ -1,5 +1,6 @@
 package semantic;
 
+import codegen.context.Context;
 import common.BaseType;
 import common.Primitives;
 import common.ReferenceType;
@@ -17,6 +18,7 @@ import visitor.SemanticVisitor;
 
 
 public class SemanticCheck implements SemanticVisitor {
+    private Context context;
 
     public static Program generateTast(Program program){
         SemanticCheck semanticCheck = new SemanticCheck();
@@ -50,6 +52,10 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(Program toCheck) {
+
+        context = new Context(toCheck);
+
+
         for (ClassDecl classDecl : toCheck.getClasses()) {
             classDecl.accept(this);
         }
@@ -132,7 +138,25 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(Block block) {
-        return null;
+        var statements = block.getStatements();
+        Type blockType = TypeHelper.voidType;
+        var valid = true;
+        for (var statement: statements) {
+            var result = statement.accept(this);
+            valid = valid && result.isValid();
+            //blockvoid
+            if (result.getType() == TypeHelper.voidType) {
+                continue;
+            }
+            //block
+            try {
+                blockType = getUpperBound(blockType, result.getType());
+            } catch (hasNoUpperBoundException e){
+                valid = false;
+               throw new TypeMismatchException("inconsistent type");
+            }
+        }
+        return new TypeCheckResult(valid, blockType);
     }
 
     @Override
