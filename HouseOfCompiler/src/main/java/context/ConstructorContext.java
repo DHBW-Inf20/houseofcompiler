@@ -1,24 +1,24 @@
-package codegen.context;
+package context;
 
 import codegen.utils.GenUtils;
 import common.AccessModifier;
 import common.PrintableVector;
 import common.Type;
-import syntaxtree.structure.MethodDecl;
+import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.MethodParameter;
 
 import java.util.stream.Collectors;
 
-public class MethodContext {
+public class ConstructorContext {
 
     private AccessModifier accessModifier;
     private Type type;
     private PrintableVector<Type> parameterTypes;
 
-    public MethodContext(MethodDecl method) {
-        this.accessModifier = method.getAccessModifier();
-        this.type = method.getType();
-        this.parameterTypes = method.getParameters().stream().map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
+    public ConstructorContext(ConstructorDecl constructor) {
+        this.accessModifier = constructor.getAccessModifier();
+        this.type = constructor.getType();
+        this.parameterTypes = constructor.getParameterDeclarations().stream().map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
     }
 
     public AccessModifier getAccessModifier() {
