@@ -2,6 +2,7 @@ package visitor;
 
 
 import common.Type;
+import semantic.TypeCheckResult;
 import syntaxtree.expressions.*;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
@@ -10,52 +11,52 @@ import syntaxtree.statements.*;
 import syntaxtree.structure.*;
 
 public interface SemanticVisitor {
-    Program visit(Program toCheck);
+    TypeCheckResult typeCheck(Program toCheck);
 
-    ClassDecl visit(ClassDecl toCheck);
+    TypeCheckResult typeCheck(ClassDecl toCheck);
 
-    FieldDecl visit(FieldDecl toCheck);
+    TypeCheckResult typeCheck(FieldDecl toCheck);
 
-    ConstructorDecl visit(ConstructorDecl toCheck);
+    TypeCheckResult typeCheck(ConstructorDecl toCheck);
 
-    MethodDecl visit(MethodDecl toCheck);
-
-
-
-    Assign visit(Assign toCheck);
-
-    MethodParameter visit(MethodParameter toCheck);
+    TypeCheckResult typeCheck(MethodDecl toCheck);
 
 
-    WhileStmt visit(WhileStmt whileStmt);
 
-    ReturnStmt visit(ReturnStmt returnStmt);
+    TypeCheckResult typeCheck(Assign toCheck);
 
-    LocalVarDecl visit(LocalVarDecl localVarDecl);
+    TypeCheckResult typeCheck(MethodParameter toCheck);
 
-    IfStmt visit(IfStmt ifStmt);
 
-    Block visit(Block block);
+    TypeCheckResult typeCheck(WhileStmt whileStmt);
 
-    NewDecl visit(NewDecl newDecl);
+    TypeCheckResult typeCheck(ReturnStmt returnStmt);
 
-    MethodCall visit(MethodCall methodCall);
+    TypeCheckResult typeCheck(LocalVarDecl localVarDecl);
 
-    Unary visit(Unary unary);
+    TypeCheckResult typeCheck(IfStmt ifStmt);
 
-    This visit(This aThis);
+    TypeCheckResult typeCheck(Block block);
 
-    Null visit(Null aNull);
+    TypeCheckResult typeCheck(NewDecl newDecl);
 
-    LocalOrFieldVar visit(LocalOrFieldVar localOrFieldVar);
+    TypeCheckResult typeCheck(MethodCall methodCall);
 
-    IntegerExpr visit(IntegerExpr integerExpr);
+    TypeCheckResult typeCheck(Unary unary);
 
-    InstVar visit(InstVar instVar);
+    TypeCheckResult typeCheck(This aThis);
 
-    CharExpr visit(CharExpr charExpr);
+    TypeCheckResult typeCheck(Null aNull);
 
-    BoolExpr visit(BoolExpr boolExpr);
+    TypeCheckResult typeCheck(LocalOrFieldVar localOrFieldVar);
 
-   Binary visit(Binary binary);
+    TypeCheckResult typeCheck(IntegerExpr integerExpr);
+
+    TypeCheckResult typeCheck(InstVar instVar);
+
+    TypeCheckResult typeCheck(CharExpr charExpr);
+
+    TypeCheckResult typeCheck(BoolExpr boolExpr);
+
+    TypeCheckResult typeCheck(Binary binary);
 }

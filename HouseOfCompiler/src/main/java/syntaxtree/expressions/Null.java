@@ -1,6 +1,8 @@
 package syntaxtree.expressions;
 
 import common.Type;
+import semantic.TypeCheckResult;
+import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -20,8 +22,8 @@ public class Null implements IExpression{
     }
 
     @Override
-    public Binary accept(SemanticVisitor visitor) {
-        return visitor.visit(this);
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override

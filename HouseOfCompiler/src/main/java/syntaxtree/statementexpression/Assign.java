@@ -3,8 +3,9 @@ package syntaxtree.statementexpression;
 import common.BaseType;
 import common.Primitives;
 import common.Type;
-import syntaxtree.expressions.Binary;
+import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
+import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -48,8 +49,8 @@ public class Assign implements IStatementExpression{
     }
 
     @Override
-    public Binary accept(SemanticVisitor visitor) {
-        return visitor.visit(this);
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override

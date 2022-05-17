@@ -45,9 +45,12 @@ public class SemanticCheck implements SemanticVisitor {
         return new Tuple<>(typedExpression1, typedExpression2);
     }
 
+
+
+
     @Override
-    public Program visit(Program program) {
-        for (ClassDecl classDecl : program.getClasses()) {
+    public TypeCheckResult typeCheck(Program toCheck) {
+        for (ClassDecl classDecl : toCheck.getClasses()) {
             classDecl.accept(this);
         }
         System.out.println();
@@ -56,143 +59,134 @@ public class SemanticCheck implements SemanticVisitor {
     }
 
     @Override
-    public ClassDecl visit(ClassDecl clazz) {
+    public TypeCheckResult typeCheck(ClassDecl toCheck) {
         System.out.println("ClassDecl");
 
-        clazz.getFieldDelcarations().forEach(field -> field.accept(this));
+        toCheck.getFieldDelcarations().forEach(field -> field.accept(this));
 
-        if (clazz.getConstructorDeclarations().isEmpty()) {
+        if (toCheck.getConstructorDeclarations().isEmpty()) {
             new ConstructorDecl().accept(this);
         } else {
-            clazz.getConstructorDeclarations().forEach(constructor -> {
+            toCheck.getConstructorDeclarations().forEach(constructor -> {
                 constructor.accept(this);
             });
         }
-        clazz.getMethodDeclarations().forEach(method -> method.accept(this));
+        toCheck.getMethodDeclarations().forEach(method -> method.accept(this));
 
         return null;
     }
 
     @Override
-    public FieldDecl visit(FieldDecl field) {
-        if (field.getType() != null) field.setType(field.getType());
+    public TypeCheckResult typeCheck(FieldDecl toCheck) {
+        if (toCheck.getType() != null) toCheck.setType(toCheck.getType()); // ???
         System.out.print(" ");
-        if (field.getType() != null) {
+        if (toCheck.getType() != null) {
             //field.getIdentifier().accept(this);
-            throw new AlreadyDefinedException("The field variable " + field.getType() + " has already been defined");
+            throw new AlreadyDefinedException("The field variable " + toCheck.getType() + " has already been defined");
         }
 
-        // field.getExpressions();
-        return field;
-    }
-
-    @Override
-    public ConstructorDecl visit(ConstructorDecl constructor) {
-        constructor.getParameterDeclarations().forEach(methodParam -> methodParam.accept(this));
-
-
-        return constructor;
-    }
-
-    @Override
-    public MethodDecl visit(MethodDecl method) {
-        compareTypes(method.getType(), method.accept(this));
-
-
-        return method;
-    }
-
-    @Override
-    public Assign visit(Assign assign) {
-        IExpression lExpression = assign.getlExpression();
-        IExpression rExpression = assign.getrExpression();
-
-        return assign;
-    }
-
-    @Override
-    public MethodParameter visit(MethodParameter methodParameter) {
-        //code
-        return methodParameter;
-    }
-
-    @Override
-    public WhileStmt visit(WhileStmt whileStmt) {
         return null;
     }
 
     @Override
-    public ReturnStmt visit(ReturnStmt returnStmt) {
+    public TypeCheckResult typeCheck(ConstructorDecl toCheck) {
         return null;
     }
 
     @Override
-    public LocalVarDecl visit(LocalVarDecl localVarDecl) {
+    public TypeCheckResult typeCheck(MethodDecl toCheck) {
         return null;
     }
 
     @Override
-    public IfStmt visit(IfStmt ifStmt) {
+    public TypeCheckResult typeCheck(Assign toCheck) {
+        IExpression lExpression = toCheck.getlExpression();
+        IExpression rExpression = toCheck.getrExpression();
         return null;
     }
 
     @Override
-    public Block visit(Block block) {
+    public TypeCheckResult typeCheck(MethodParameter toCheck) {
         return null;
     }
 
     @Override
-    public NewDecl visit(NewDecl newDecl) {
+    public TypeCheckResult typeCheck(WhileStmt whileStmt) {
         return null;
     }
 
     @Override
-    public MethodCall visit(MethodCall methodCall) {
+    public TypeCheckResult typeCheck(ReturnStmt returnStmt) {
         return null;
     }
 
     @Override
-    public Unary visit(Unary unary) {
+    public TypeCheckResult typeCheck(LocalVarDecl localVarDecl) {
         return null;
     }
 
     @Override
-    public This visit(This aThis) {
+    public TypeCheckResult typeCheck(IfStmt ifStmt) {
         return null;
     }
 
     @Override
-    public Null visit(Null aNull) {
+    public TypeCheckResult typeCheck(Block block) {
         return null;
     }
 
     @Override
-    public LocalOrFieldVar visit(LocalOrFieldVar localOrFieldVar) {
+    public TypeCheckResult typeCheck(NewDecl newDecl) {
         return null;
     }
 
     @Override
-    public IntegerExpr visit(IntegerExpr integerExpr) {
+    public TypeCheckResult typeCheck(MethodCall methodCall) {
         return null;
     }
 
     @Override
-    public InstVar visit(InstVar instVar) {
+    public TypeCheckResult typeCheck(Unary unary) {
         return null;
     }
 
     @Override
-    public CharExpr visit(CharExpr charExpr) {
+    public TypeCheckResult typeCheck(This aThis) {
         return null;
     }
 
     @Override
-    public BoolExpr visit(BoolExpr boolExpr) {
+    public TypeCheckResult typeCheck(Null aNull) {
         return null;
     }
 
     @Override
-    public Binary visit(Binary binary) {
+    public TypeCheckResult typeCheck(LocalOrFieldVar localOrFieldVar) {
+        return null;
+    }
+
+    @Override
+    public TypeCheckResult typeCheck(IntegerExpr integerExpr) {
+        return null;
+    }
+
+    @Override
+    public TypeCheckResult typeCheck(InstVar instVar) {
+        return null;
+    }
+
+    @Override
+    public TypeCheckResult typeCheck(CharExpr charExpr) {
+        return null;
+    }
+
+    @Override
+    public TypeCheckResult typeCheck(BoolExpr boolExpr) {
+        return null;
+    }
+
+    @Override
+    public TypeCheckResult typeCheck(Binary binary) {
         return null;
     }
 }

@@ -1,11 +1,12 @@
 package syntaxtree.statementexpression;
 
 import common.Type;
-import syntaxtree.expressions.Binary;
+import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
 import common.PrintableVector;
+import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -60,8 +61,8 @@ public class MethodCall implements IStatementExpression{
     }
 
     @Override
-    public Binary accept(SemanticVisitor visitor) {
-        return visitor.visit(this);
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override
