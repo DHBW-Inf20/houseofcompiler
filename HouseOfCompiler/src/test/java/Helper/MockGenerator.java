@@ -282,7 +282,7 @@ public abstract class MockGenerator {
         PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
 
         Block block = getBlock(
-                new Assign(new InstVar(new This("MethodCall"), "i"), new MethodCall(new ReferenceType("MethodCall"),new This("MethodCall"), "foo", getArguments())));
+                new Assign(new InstVar(new BaseType(Primitives.INT),new This("MethodCall"), "i"), new MethodCall(new BaseType(Primitives.INT),new This("MethodCall"), "foo", getArguments())));
         constructors.add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
 
         Block fooBlock = getBlock(new ReturnStmt(new BaseType(Primitives.INT),new IntegerExpr(1)));
