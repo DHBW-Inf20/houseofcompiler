@@ -23,33 +23,10 @@ public class StatementExpressionAdapter {
             return new Assign(lExpression, rExpression);
         }
         else if (stmtExprContext.newDecl() != null) {
-            var arguments = new PrintableVector<IExpression>();
-            stmtExprContext.newDecl().argumentList().expression().forEach(
-                    a -> arguments.add(ExpressionAdapter.adapt(a))
-            );
-            return new NewDecl(
-                    stmtExprContext.newDecl().Identifier().getText(),
-                    arguments
-                    );
+            return NewDeclAdapter.adapt(stmtExprContext.newDecl());
         }
         else { //methodCall
-//            IExpression reciever;
-//            if (stmtExprContext.methodCall().reciever() != null)
-//                reciever = new InstVar();
-//            return new MethodCall(
-//                    stmtExprContext.methodCall().Identifier().getText(),
-//
-//                    );
-            return null;
+            return MethodCallAdapter.adapt(stmtExprContext.methodCall());
         }
     }
-
-    //FIXME method call reciever rekursiv aufbauen
-
-//    private static IExpression generateRecieverExpression(
-//            List<TerminalNode> contexts,
-//            List<JavaSubsetParser.ArgumentListContext> arguments,
-//            int position) {
-//        if (contexts)
-//    }
 }
