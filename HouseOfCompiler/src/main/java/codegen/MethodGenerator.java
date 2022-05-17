@@ -52,13 +52,14 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(ConstructorDecl constructorDecl) {
-        constructorDecl.getParameterDeclarations().forEach(parameter -> localVars.push(parameter.getIdentifier()));
         PrintableVector<Type> parameterTypes = constructorDecl.getParameterDeclarations().stream().map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
 
         mv = cw.visitMethod(GenUtils.resolveAccessModifier(constructorDecl.getAccessModifier()), "<init>", GenUtils.generateDescriptor(parameterTypes, constructorDecl.getType()), null, null);
         mv.visitCode();
 
         localVars.push("this");
+        constructorDecl.getParameterDeclarations().forEach(parameter -> localVars.push(parameter.getIdentifier()));
+
         mv.visitVarInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
         constructorDecl.getBlock().accept(this);
@@ -70,13 +71,14 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(MethodDecl methodDecl) {
-        methodDecl.getParameters().forEach(parameter -> localVars.push(parameter.getIdentifier()));
         PrintableVector<Type> parameterTypes = methodDecl.getParameters().stream().map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
 
         mv = cw.visitMethod(GenUtils.resolveAccessModifier(methodDecl.getAccessModifier()), methodDecl.getIdentifier(), GenUtils.generateDescriptor(parameterTypes, methodDecl.getType()), null, null);
         mv.visitCode();
 
         localVars.push("this");
+        methodDecl.getParameters().forEach(parameter -> localVars.push(parameter.getIdentifier()));
+
         methodDecl.getBlock().accept(this);
         mv.visitInsn(Opcodes.RETURN); // Temp
 

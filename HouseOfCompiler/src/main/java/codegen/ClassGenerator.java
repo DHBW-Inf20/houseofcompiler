@@ -3,6 +3,7 @@ package codegen;
 import context.Context;
 import codegen.utils.GenUtils;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
@@ -44,7 +45,9 @@ public class ClassGenerator implements ClassCodeVisitor {
 
     @Override
     public void visit(FieldDecl field) {
+        System.out.println("Field: " + field.getIdentifier() + " " + field.getAccessModifier() + " " + GenUtils.generateDescriptor(field.getType()));
         cw.visitField(GenUtils.resolveAccessModifier(field.getAccessModifier()), field.getIdentifier(),
-                GenUtils.generateDescriptor(field.getType()), null, null);
+                GenUtils.generateDescriptor(field.getType()), null, null).visitEnd();
+
     }
 }
