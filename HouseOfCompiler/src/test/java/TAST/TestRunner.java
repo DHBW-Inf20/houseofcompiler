@@ -126,5 +126,14 @@ public class TestRunner {
         assertEquals(expectedTast, generatedTast);
     }
 
+    @Test
+    @DisplayName("MethodCall")
+    void methodCall() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getMethodCallAst());
+
+        Program expectedTast = MockGenerator.getMethodCallTast();
+
+        assertEquals(expectedTast, generatedTast);
+    }
 
 }

@@ -222,4 +222,23 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("MethodCall")
+    void methodCall(){
+        Program tast = MockGenerator.getMethodCallTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("MethodCall");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var m = loader.getMethod("MethodCall", "foo");
+            m.invoke(o);
+            assertEquals("foo", m.getName());
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
+
+    }
+
 }

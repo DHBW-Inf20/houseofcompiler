@@ -146,6 +146,15 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("MethodCall")
+    void methodCall(){
+        Program generatedAst = Resources.getProgram("SimpleTests/MethodCall.java");
+        Program expectedAst = MockGenerator.getMethodCallAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
     
 
 

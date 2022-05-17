@@ -216,6 +216,9 @@ public abstract class MockGenerator {
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
 
+        FieldDecl i = new FieldDecl(new BaseType(Primitives.INT), "i");
+
+        classDecl.getFieldDelcarations().add(i);
         Assign assignStmt = new Assign(new InstVar(new This(), "i"), new LocalOrFieldVar("i"));
         Block block = getBlock(assignStmt);
 
@@ -260,11 +263,10 @@ public abstract class MockGenerator {
         fields.add(new FieldDecl(new BaseType(Primitives.INT), "i"));
         PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
 
-        Block block = getBlock(new Assign(new InstVar(new This("MethodCall"), "i"), new MethodCall(new This("MethodCall"), "foo", getArguments() )));
+        Block block = getBlock(new Assign(new InstVar(new This(), "i"), new MethodCall(new This(), "foo", getArguments() )));
         constructors.add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
 
         Block fooBlock = getBlock(new ReturnStmt(new IntegerExpr(1)));
-        fooBlock.setType(Primitives.INT);
         PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
         methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo", getEmptyParameters(), fooBlock));
 
