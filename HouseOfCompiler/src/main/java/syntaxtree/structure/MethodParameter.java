@@ -3,6 +3,7 @@ package syntaxtree.structure;
 import common.BaseType;
 import common.Primitives;
 import common.Type;
+import semantic.SemanticCheck;
 
 import java.util.Objects;
 
@@ -49,4 +50,5 @@ public class MethodParameter {
     public int hashCode() {
         return Objects.hash(type, identifier);
     }
+
 }

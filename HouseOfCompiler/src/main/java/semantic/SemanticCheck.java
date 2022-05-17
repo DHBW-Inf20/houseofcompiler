@@ -1,13 +1,14 @@
 package semantic;
 
-import codegen.context.Context;
 import common.BaseType;
 import common.Primitives;
 import common.ReferenceType;
 import common.Type;
+import context.Context;
 import semantic.exceptions.AlreadyDefinedException;
 import semantic.exceptions.InvalidASTException;
 import semantic.exceptions.TypeMismatchException;
+import semantic.exceptions.TypeUnkown;
 import syntaxtree.expressions.*;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
@@ -20,7 +21,7 @@ import visitor.SemanticVisitor;
 public class SemanticCheck implements SemanticVisitor {
     private Context context;
 
-    public static Program generateTast(Program program){
+    public static Program generateTast(Program program) {
         SemanticCheck semanticCheck = new SemanticCheck();
         program.accept(semanticCheck);
         return program;
@@ -35,7 +36,7 @@ public class SemanticCheck implements SemanticVisitor {
 
     private Tuple<Type, Type> typeAssign(IExpression expression1, IExpression expression2) { //where to set type of these ?
 
-       Type typedExpression1 = expression1.getType(); //set type
+        Type typedExpression1 = expression1.getType(); //set type
         Type typedExpression2 = expression2.getType(); // set type
         if (!(typedExpression1 instanceof LocalOrFieldVar || typedExpression1 instanceof InstVar)) { //what here
             throw new InvalidASTException("Left side of the assign is not assignable");
@@ -46,8 +47,6 @@ public class SemanticCheck implements SemanticVisitor {
         }
         return new Tuple<>(typedExpression1, typedExpression2);
     }
-
-
 
 
     @Override
@@ -101,7 +100,16 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(MethodDecl toCheck) {
-        return null;
+        var valid = true;
+
+        for (var parameter: toCheck.getParameters()){
+            var result = parameter.accept(this);
+            valid = valid && result.isValid();
+        }
+        var params = toCheck.getParameters();
+        var methodBody = toCheck.getBlock();
+        var result = methodBody.accept(this);
+        return new TypeCheckResult(valid, result.getType());
     }
 
     @Override
@@ -113,12 +121,22 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(MethodParameter toCheck) {
-        return null;
+        if (TypeHelper.typeExists(toCheck.getType(),this.context))
+            return new TypeCheckResult(true, toCheck.getType());
+
+        throw new TypeUnkown("type Unkown in parameter");
     }
 
     @Override
     public TypeCheckResult typeCheck(WhileStmt whileStmt) {
-        return null;
+        var condResult = whileStmt.getBlock().accept(this);
+        if (!TypeHelper.isBool(condResult.getType())){
+            throw new TypeMismatchException("Bool excepted");
+        }
+        var blockResult = whileStmt.getBlock().accept(this);
+
+        var valid = condResult.isValid() && blockResult.isValid() && TypeHelper.isBool(condResult.getType());
+        return new TypeCheckResult(valid, blockResult.getType());
     }
 
     @Override
@@ -141,7 +159,7 @@ public class SemanticCheck implements SemanticVisitor {
         var statements = block.getStatements();
         Type blockType = TypeHelper.voidType;
         var valid = true;
-        for (var statement: statements) {
+        for (var statement : statements) {
             var result = statement.accept(this);
             valid = valid && result.isValid();
             //blockvoid
@@ -150,14 +168,15 @@ public class SemanticCheck implements SemanticVisitor {
             }
             //block
             try {
-                blockType = getUpperBound(blockType, result.getType());
-            } catch (hasNoUpperBoundException e){
+                blockType = result.getType();
+            } catch (TypeMismatchException e) {
                 valid = false;
-               throw new TypeMismatchException("inconsistent type");
+                throw new TypeMismatchException("inconsistent type");
             }
         }
         return new TypeCheckResult(valid, blockType);
     }
+
 
     @Override
     public TypeCheckResult typeCheck(NewDecl newDecl) {
