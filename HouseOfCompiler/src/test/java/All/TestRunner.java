@@ -21,7 +21,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("Empty Class")
-    void main() throws Exception {
+    void emptyClass() throws Exception {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(ast);

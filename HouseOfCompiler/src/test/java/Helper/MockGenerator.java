@@ -47,7 +47,7 @@ public abstract class MockGenerator {
     public static Block getEmptyBlock() {
         return new Block();
     }
-    
+
     public static PrintableVector<IExpression> getArguments(IExpression... expressions) {
         PrintableVector<IExpression> arguments = new PrintableVector<>();
         for (IExpression expression : expressions) {
@@ -60,7 +60,7 @@ public abstract class MockGenerator {
         return new PrintableVector<>();
     }
 
-    public static PrintableVector<MethodParameter> getParameters(MethodParameter... parameters){
+    public static PrintableVector<MethodParameter> getParameters(MethodParameter... parameters) {
         PrintableVector<MethodParameter> parametersVector = new PrintableVector<>();
         for (MethodParameter parameter : parameters) {
             parametersVector.add(parameter);
@@ -71,8 +71,6 @@ public abstract class MockGenerator {
     public static Program getClassFieldsTast() {
         return getClassFieldsAst();
     }
-
-
 
     public static Program getClassFieldsAst() {
         Program expectedAst = getEmptyProgram("ClassFields");
@@ -91,6 +89,7 @@ public abstract class MockGenerator {
 
         return expectedAst;
     }
+
     public static Program getAutoClassFieldAst() {
         Program expectedAst = getEmptyProgram("AutoAccessModifierField");
 
@@ -101,7 +100,7 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
-    public static Program getAutoClassFieldTast(){
+    public static Program getAutoClassFieldTast() {
         return getAutoClassFieldAst();
     }
 
@@ -149,7 +148,7 @@ public abstract class MockGenerator {
 
     }
 
-    public static Program getConstructorThisDotTast(){
+    public static Program getConstructorThisDotTast() {
         Program expectedTast = getEmptyProgram("ConstructorThisDot");
 
         FieldDecl i = new FieldDecl("i", AccessModifier.PUBLIC);
@@ -165,7 +164,7 @@ public abstract class MockGenerator {
         var thisi = new InstVar("i", new This());
         thisi.setType(Primitives.INT);
 
-        Assign assign = new Assign( thisi, new IntegerExpr(5));
+        Assign assign = new Assign(thisi, new IntegerExpr(5));
         assign.setType(Primitives.VOID);
         block.getStatements().add(assign);
         block.setType(Primitives.VOID);
@@ -176,23 +175,23 @@ public abstract class MockGenerator {
         return expectedTast;
     }
 
-    public static Program getVoidMethodAst(){
+    public static Program getVoidMethodAst() {
         Program expectedAst = getEmptyProgram("VoidMethod");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
 
         PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
-        MethodDecl foo = new MethodDecl(new BaseType(Primitives.VOID), "foo",getEmptyParameters(), getEmptyBlock());
+        MethodDecl foo = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), getEmptyBlock());
         methods.add(foo);
 
         return expectedAst;
     }
 
-    public static Program getVoidMethodTast(){
+    public static Program getVoidMethodTast() {
         return getVoidMethodAst();
     }
 
-    public static Program getRealMethodAst(){
+    public static Program getRealMethodAst() {
         Program expectedAst = getEmptyProgram("RealMethod");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
@@ -205,13 +204,13 @@ public abstract class MockGenerator {
         parameters.add(new MethodParameter(Primitives.INT, "i"));
 
         PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
-        MethodDecl foo = new MethodDecl(new BaseType(Primitives.INT), "foo",parameters, block);
+        MethodDecl foo = new MethodDecl(new BaseType(Primitives.INT), "foo", parameters, block);
         methods.add(foo);
 
         return expectedAst;
     }
 
-    public static Program getRealConstructorAst(){
+    public static Program getRealConstructorAst() {
         Program expectedAst = getEmptyProgram("RealConstructor");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
@@ -228,25 +227,23 @@ public abstract class MockGenerator {
         ConstructorDecl constructor = new ConstructorDecl(AccessModifier.PUBLIC, parameters, block);
         constructors.add(constructor);
 
-
         return expectedAst;
     }
 
-    public static Program getRealConstructorTast(){
+    public static Program getRealConstructorTast() {
         String className = "RealConstructor";
         Program expectedTast = getEmptyProgram(className);
 
         ClassDecl classDecl = expectedTast.getClasses().firstElement();
-        FieldDecl i = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "i");
+        FieldDecl i = new FieldDecl(AccessModifier.PUBLIC, new BaseType(Primitives.INT), "i");
 
         classDecl.getFieldDelcarations().add(i);
-        Assign assignStmt = new Assign(new InstVar(className, new This(
-                className), "i"), new LocalOrFieldVar(new ReferenceType(className),"i"));
+        Assign assignStmt = new Assign(new InstVar(new BaseType(Primitives.INT), new This(
+                className), "i"), new LocalOrFieldVar(new BaseType(Primitives.INT), "i"));
 
-        assignStmt.setType(className);
+        assignStmt.setType(new BaseType(Primitives.INT));
 
         Block block = getBlock(assignStmt);
-        block.setType(Primitives.VOID);
 
         var parameters = getParameters(new MethodParameter(Primitives.INT, "i"));
 
@@ -257,7 +254,7 @@ public abstract class MockGenerator {
         return expectedTast;
     }
 
-    public static Program getMethodCallAst(){
+    public static Program getMethodCallAst() {
         Program expectedAst = getEmptyProgram("MethodCall");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
@@ -265,7 +262,8 @@ public abstract class MockGenerator {
         fields.add(new FieldDecl(new BaseType(Primitives.INT), "i"));
         PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
 
-        Block block = getBlock(new Assign(new InstVar(new This(), "i"), new MethodCall(new This(), "foo", getArguments() )));
+        Block block = getBlock(
+                new Assign(new InstVar(new This(), "i"), new MethodCall(new This(), "foo", getArguments())));
         constructors.add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
 
         Block fooBlock = getBlock(new ReturnStmt(new IntegerExpr(1)));
@@ -275,7 +273,7 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
-    public static Program getMethodCallTast(){
+    public static Program getMethodCallTast() {
         Program expectedTast = getEmptyProgram("MethodCall");
 
         ClassDecl classDecl = expectedTast.getClasses().firstElement();
@@ -293,6 +291,5 @@ public abstract class MockGenerator {
 
         return expectedTast;
     }
-
 
 }
