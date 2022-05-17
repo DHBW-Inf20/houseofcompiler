@@ -1,5 +1,6 @@
 package codegen.context;
 
+import codegen.utils.GenUtils;
 import common.AccessModifier;
 import common.PrintableVector;
 import common.Type;
@@ -33,8 +34,12 @@ public class ConstructorContext {
         return parameterTypes;
     }
 
+    public String getDescriptor() {
+        return GenUtils.generateDescriptor(parameterTypes, type);
+    }
+
     @Override
     public String toString() {
-        return accessModifier + " " + type;
+        return accessModifier + " " + getDescriptor();
     }
 }
