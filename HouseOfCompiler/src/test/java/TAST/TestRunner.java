@@ -1,11 +1,8 @@
 package TAST;
 
 import Helper.MockGenerator;
-import Helper.ReflectLoader;
-import Helper.Resources;
 import common.AccessModifier;
 import common.Compiler;
-import jdk.jfr.Label;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import syntaxtree.structure.ClassDecl;
@@ -118,5 +115,16 @@ public class TestRunner {
 
         assertEquals(expectedTast, generatedTast);
     }
+
+    @Test
+    @DisplayName("RealConstructor")
+    void realConstructor(){
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getRealConstructorAst());
+
+        Program expectedTast = MockGenerator.getRealConstructorTast();
+
+        assertEquals(expectedTast, generatedTast);
+    }
+
 
 }

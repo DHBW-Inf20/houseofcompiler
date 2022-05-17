@@ -2,6 +2,7 @@ package syntaxtree.statementexpression;
 
 import common.BaseType;
 import common.Primitives;
+import common.ReferenceType;
 import common.Type;
 import syntaxtree.expressions.IExpression;
 import visitor.SemanticVisitor;
@@ -35,6 +36,10 @@ public class Assign implements IStatementExpression{
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setType(String className) {
+        this.type = new ReferenceType(className);
     }
 
     public void setType(Primitives type){

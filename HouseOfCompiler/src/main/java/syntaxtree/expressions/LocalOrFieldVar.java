@@ -15,6 +15,11 @@ public class LocalOrFieldVar implements IExpression{
         this.identifier = identifier;
     }
 
+    public LocalOrFieldVar(Type type, String identifier) {
+        this.identifier = identifier;
+        this.type = type;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

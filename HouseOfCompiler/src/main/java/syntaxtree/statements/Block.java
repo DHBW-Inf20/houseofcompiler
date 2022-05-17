@@ -6,6 +6,7 @@ import common.Type;
 
 import java.util.Objects;
 import common.PrintableVector;
+import common.ReferenceType;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -38,6 +39,10 @@ public class Block implements IStatement, Visitable {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setType(String className) {
+        this.type = new ReferenceType(className);
     }
 
     @Override

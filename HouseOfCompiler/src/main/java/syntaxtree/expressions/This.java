@@ -1,5 +1,6 @@
 package syntaxtree.expressions;
 
+import common.ReferenceType;
 import common.Type;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -10,13 +11,27 @@ public class This implements IExpression{
 
     private Type type;
 
+    public This() {
+    }
+
+    public This(String className){
+        this.type = new ReferenceType(className);
+    }
+
     public Type getType() {
         return type;
     }
 
+
     public void setType(Type type) {
         this.type = type;
     }
+
+    public void setType(String className) {
+        this.type = new ReferenceType(className);
+    }
+
+    
 
     @Override
     public void accept(MethodCodeVisitor visitor) {

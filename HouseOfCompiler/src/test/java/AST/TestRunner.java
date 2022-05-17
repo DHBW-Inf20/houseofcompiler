@@ -128,5 +128,16 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("RealConstructor")
+    void realConstructor(){
+        Program generatedAst = Resources.getProgram("SimpleTests/RealConstructor.java");
+        Program expectedAst = MockGenerator.getRealConstructorAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    
+
 
 }

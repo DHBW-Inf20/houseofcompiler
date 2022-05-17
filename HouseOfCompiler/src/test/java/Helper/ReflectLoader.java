@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.Compiler;
+import syntaxtree.structure.Program;
+
 public class ReflectLoader extends ClassLoader {
     private byte[] byteCode;
         private Map<String, byte[]> byteCodes;
@@ -14,6 +17,18 @@ public class ReflectLoader extends ClassLoader {
     public ReflectLoader(byte[] byteCode) {
             byteCodes = new HashMap<>();
         this.byteCode = byteCode;
+    }
+
+    public ReflectLoader(String fileName){
+        Program program = Resources.getProgram(fileName);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        this.byteCodes = bc;
+    }
+
+    public static Class<?> getClass(String fileName, String className) throws Exception {
+        ReflectLoader loader = new ReflectLoader(fileName);
+        return loader.findClass(className);
     }
 
     public ReflectLoader(Map<String, byte[]> byteCodes) {

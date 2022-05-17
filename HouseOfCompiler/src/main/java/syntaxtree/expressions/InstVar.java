@@ -25,6 +25,12 @@ public class InstVar implements IExpression{
         this.expression = expression;
     }
 
+    public InstVar(Type type, String identifier, IExpression expression) {
+        this.identifier = identifier;
+        this.expression = expression;
+        this.type = type;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

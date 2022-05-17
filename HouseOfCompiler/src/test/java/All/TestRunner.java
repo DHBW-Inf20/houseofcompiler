@@ -10,6 +10,8 @@ import Helper.ReflectLoader;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Date;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -161,6 +163,25 @@ public class TestRunner {
             assertEquals("foo", voidMethod.getName());
         } catch (Exception e) {
             
+            fail(e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("RealConstructor - params&this-assigns")
+    void realConstructor(){
+        Program program = Resources.getProgram("SimpleTests/RealConstructor.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("RealConstructor");
+        try {
+            int randomI = new Random(new Date().getTime()).nextInt(0, 200);
+            Object o = c.getDeclaredConstructor(int.class).newInstance(randomI);
+            var i = loader.getField("RealConstructor", "i");
+            var ivalue = i.get(o);
+            assertEquals(randomI, ivalue);
+        } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
     }

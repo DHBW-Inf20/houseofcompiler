@@ -11,6 +11,8 @@ import syntaxtree.structure.Program;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Date;
+import java.util.Random;
 
 import common.PrintableVector;
 
@@ -200,6 +202,24 @@ public class TestRunner {
             fail(e.getLocalizedMessage());
         }
 
+    }
+
+    @Test
+    @DisplayName("RealConstructor")
+    void realConstructor(){
+        Program tast = MockGenerator.getRealConstructorTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("RealConstructor");
+        try {
+            int randomI = new Random(new Date().getTime()).nextInt(0, 200);
+            Object o = c.getDeclaredConstructor(int.class).newInstance(randomI);
+            var i = loader.getField("RealConstructor", "i");
+            var ivalue = i.get(o);
+            assertEquals(randomI, ivalue);
+        } catch (Exception e) {
+            fail(e.getLocalizedMessage());
+        }
     }
 
 }
