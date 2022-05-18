@@ -56,4 +56,9 @@ public class This implements IExpression {
         return Objects.hash(type);
     }
 
+    @Override
+    public String toString() {
+        return "this(" + type + ")";
+    }
+
 }

@@ -55,4 +55,9 @@ public class IntegerExpr implements IExpression {
     public int hashCode() {
         return Objects.hash(value, type);
     }
+
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

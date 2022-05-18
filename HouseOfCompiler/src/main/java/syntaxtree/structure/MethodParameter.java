@@ -60,4 +60,9 @@ public class MethodParameter implements Visitable {
         return visitor.typeCheck(this);
     }
 
+    @Override
+    public String toString() {
+        return type + " " + identifier;
+    }
+
 }

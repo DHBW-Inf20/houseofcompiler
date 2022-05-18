@@ -1,14 +1,14 @@
 package syntaxtree.structure;
 
+import java.util.Objects;
+
 import common.AccessModifier;
+import common.PrintableVector;
 import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.statements.Block;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
-
-import java.util.Objects;
-import common.PrintableVector;
 import visitor.codevisitor.MethodCodeVisitor;
 
 public class MethodDecl implements Visitable {
@@ -19,14 +19,16 @@ public class MethodDecl implements Visitable {
     private Block block;
     private AccessModifier accessModifier;
 
-    public MethodDecl(String identifier, PrintableVector<MethodParameter> parameters, Block statement, AccessModifier accessModifier) {
+    public MethodDecl(String identifier, PrintableVector<MethodParameter> parameters, Block statement,
+            AccessModifier accessModifier) {
         this.identifier = identifier;
         this.parameters = parameters;
         this.block = statement;
         this.accessModifier = accessModifier;
     }
 
-    public MethodDecl(AccessModifier accessModifier,Type type, String identifier, PrintableVector<MethodParameter> parameters, Block block){
+    public MethodDecl(AccessModifier accessModifier, Type type, String identifier,
+            PrintableVector<MethodParameter> parameters, Block block) {
         this.type = type;
         this.identifier = identifier;
         this.parameters = parameters;
@@ -34,7 +36,7 @@ public class MethodDecl implements Visitable {
         this.block = block;
     }
 
-    public MethodDecl(Type type, String identifier, PrintableVector<MethodParameter> parameters, Block block){
+    public MethodDecl(Type type, String identifier, PrintableVector<MethodParameter> parameters, Block block) {
         this.type = type;
         this.identifier = identifier;
         this.parameters = parameters;
@@ -68,10 +70,14 @@ public class MethodDecl implements Visitable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         MethodDecl that = (MethodDecl) o;
-        return identifier.equals(that.identifier) && Objects.equals(type, that.type) && parameters.equals(that.parameters) && block.equals(that.block) && accessModifier == that.accessModifier;
+        return identifier.equals(that.identifier) && Objects.equals(type, that.type)
+                && parameters.equals(that.parameters) && block.equals(that.block)
+                && accessModifier == that.accessModifier;
     }
 
     @Override
@@ -92,7 +98,7 @@ public class MethodDecl implements Visitable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
-        sb.append(accessModifier).append(" ").append(type).append("\n");
+        sb.append(accessModifier).append(" ").append(type).append(identifier).append(" ").append("\n");
         sb.append("\t\tparams:").append(parameters).append("\n");
         sb.append("\t\tblock:").append(block).append("\n");
         return sb.toString();

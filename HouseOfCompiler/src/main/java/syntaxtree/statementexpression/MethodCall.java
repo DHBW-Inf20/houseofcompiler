@@ -1,15 +1,15 @@
 package syntaxtree.statementexpression;
 
+import java.util.Objects;
+
+import common.PrintableVector;
 import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
-
-import java.util.Objects;
-import common.PrintableVector;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
-public class MethodCall implements IStatementExpression{
+public class MethodCall implements IStatementExpression {
 
     public String identifier;
     public IExpression receiver;
@@ -22,7 +22,7 @@ public class MethodCall implements IStatementExpression{
         this.arguments = arguments;
     }
 
-    public MethodCall(IExpression receiver, String identifier,  PrintableVector<IExpression> arguments) {
+    public MethodCall(IExpression receiver, String identifier, PrintableVector<IExpression> arguments) {
         this.identifier = identifier;
         this.receiver = receiver;
         this.arguments = arguments;
@@ -73,14 +73,29 @@ public class MethodCall implements IStatementExpression{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         MethodCall that = (MethodCall) o;
-        return identifier.equals(that.identifier) && receiver.equals(that.receiver) && arguments.equals(that.arguments) && Objects.equals(type, that.type);
+        return identifier.equals(that.identifier) && receiver.equals(that.receiver) && arguments.equals(that.arguments)
+                && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(identifier, receiver, arguments, type);
+    }
+
+    public String printTypes() {
+        String returnString = "(";
+        for (var expression : arguments) {
+            returnString += expression.getType().toString() + ", ";
+        }
+        // delete the last ", "
+        returnString = returnString.substring(0, returnString.length() - 2);
+        returnString += ")";
+        return returnString;
+
     }
 }

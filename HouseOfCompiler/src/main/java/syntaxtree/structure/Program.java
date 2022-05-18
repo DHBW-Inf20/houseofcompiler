@@ -1,16 +1,15 @@
 package syntaxtree.structure;
 
+import java.util.Objects;
+
+import common.PrintableVector;
 import semantic.TypeCheckResult;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
-
-import java.util.Objects;
-import common.PrintableVector;
 import visitor.codevisitor.ProgramCodeVisitor;
 
 public class Program implements Visitable {
     private PrintableVector<ClassDecl> classes;
-
 
     public Program(PrintableVector<ClassDecl> classes) {
         this.classes = classes;
@@ -22,8 +21,10 @@ public class Program implements Visitable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Program program = (Program) o;
         return classes.equals(program.classes);
     }

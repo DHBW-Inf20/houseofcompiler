@@ -160,13 +160,12 @@ public abstract class MockGenerator {
 
         Block block = getEmptyBlock();
 
-        var thisi = new InstVar("i", new This());
+        var thisi = new InstVar("i", new This("ConstructorThisDot"));
         thisi.setType(Primitives.INT);
 
         Assign assign = new Assign(thisi, new IntegerExpr(5));
-        assign.setType(Primitives.VOID);
+        assign.setType(Primitives.INT);
         block.getStatements().add(assign);
-        block.setType(Primitives.VOID);
 
         classDecl.getConstructorDeclarations()
                 .add(new ConstructorDecl(AccessModifier.PUBLIC, getEmptyParameters(), block));
@@ -234,7 +233,7 @@ public abstract class MockGenerator {
         Program expectedTast = getEmptyProgram(className);
 
         ClassDecl classDecl = expectedTast.getClasses().firstElement();
-        FieldDecl i = new FieldDecl(AccessModifier.PUBLIC, new BaseType(Primitives.INT), "i");
+        FieldDecl i = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "i");
 
         classDecl.getFieldDelcarations().add(i);
         Assign assignStmt = new Assign(new InstVar(new BaseType(Primitives.INT), new This(
@@ -281,11 +280,13 @@ public abstract class MockGenerator {
         PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
 
         Block block = getBlock(
-                new Assign(new InstVar(new BaseType(Primitives.INT),new This("MethodCall"), "i"), new MethodCall(new BaseType(Primitives.INT),new This("MethodCall"), "foo", getArguments())));
+                new Assign(new BaseType(
+                        Primitives.INT), new InstVar(new BaseType(Primitives.INT), new This("MethodCall"), "i"),
+                        new MethodCall(new BaseType(Primitives.INT), new This("MethodCall"), "foo", getArguments())));
         constructors.add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
 
-        Block fooBlock = getBlock(new ReturnStmt(new BaseType(Primitives.INT),new IntegerExpr(1)));
-        fooBlock.setType(Primitives.VOID);
+        Block fooBlock = getBlock(new ReturnStmt(new BaseType(Primitives.INT), new IntegerExpr(1)));
+        fooBlock.setType(Primitives.INT);
         PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
         methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo", getEmptyParameters(), fooBlock));
 

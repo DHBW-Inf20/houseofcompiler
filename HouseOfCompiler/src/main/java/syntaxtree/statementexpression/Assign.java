@@ -23,6 +23,12 @@ public class Assign implements IStatementExpression {
         this.rExpression = rExpression;
     }
 
+    public Assign(Type type, IExpression lExpression, IExpression rExpression) {
+        this.lExpression = lExpression;
+        this.rExpression = rExpression;
+        this.type = type;
+    }
+
     public IExpression getlExpression() {
         return lExpression;
     }
@@ -71,5 +77,10 @@ public class Assign implements IStatementExpression {
     @Override
     public int hashCode() {
         return Objects.hash(lExpression, rExpression, type);
+    }
+
+    @Override
+    public String toString() {
+        return this.type + ": " + lExpression + " = " + rExpression + ";\n";
     }
 }

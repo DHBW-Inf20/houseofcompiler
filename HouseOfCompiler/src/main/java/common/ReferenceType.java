@@ -1,9 +1,8 @@
 package common;
 
-
 public class ReferenceType implements Type {
 
-   private String identifier;
+    private String identifier;
 
     public ReferenceType(String identifier) {
         this.identifier = identifier;
@@ -12,8 +11,6 @@ public class ReferenceType implements Type {
     public String getIdentifier() {
         return (String) identifier;
     }
-
-
 
     @Override
     public int hashCode() {
@@ -40,5 +37,9 @@ public class ReferenceType implements Type {
         return true;
     }
 
-   
+    @Override
+    public String toString() {
+        return identifier;
+    }
+
 }

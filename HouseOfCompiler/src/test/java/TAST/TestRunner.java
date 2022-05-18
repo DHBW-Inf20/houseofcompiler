@@ -1,22 +1,27 @@
 package TAST;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.FileNotFoundException;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import Helper.MockGenerator;
 import Helper.Resources;
 import common.AccessModifier;
+import common.BaseType;
 import common.Compiler;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import common.Primitives;
+import common.PrintableVector;
+import semantic.exceptions.AlreadyDefinedException;
+import semantic.exceptions.TypeMismatchException;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
 import syntaxtree.structure.Program;
-
-import java.io.FileNotFoundException;
-import common.PrintableVector;
-import semantic.exceptions.TypeMismatchException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Typed Abstract Syntax Generation")
 public class TestRunner {
@@ -44,10 +49,11 @@ public class TestRunner {
 
         Program expectedAst = MockGenerator.getEmptyProgram("ClassFields");
 
-        FieldDecl autoAccess = new FieldDecl("autoAccess", null);
-        FieldDecl privateField = new FieldDecl("private", AccessModifier.PRIVATE);
-        FieldDecl publicField = new FieldDecl("public", AccessModifier.PUBLIC);
-        FieldDecl protectedField = new FieldDecl("protected", AccessModifier.PROTECTED);
+        FieldDecl autoAccess = new FieldDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT),
+                "autoAccess");
+        FieldDecl privateField = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "private");
+        FieldDecl publicField = new FieldDecl(AccessModifier.PUBLIC, new BaseType(Primitives.INT), "public");
+        FieldDecl protectedField = new FieldDecl(AccessModifier.PROTECTED, new BaseType(Primitives.INT), "protected");
 
         PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
         fields.add(autoAccess);
@@ -75,7 +81,7 @@ public class TestRunner {
     void emptyClassWithConstructor() {
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),constructors,
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(), constructors,
                 new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
@@ -109,7 +115,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("VoidMethod")
-    void voidMethod(){
+    void voidMethod() {
         Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getVoidMethodAst());
 
         Program expectedTast = MockGenerator.getVoidMethodTast();
@@ -119,7 +125,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("RealConstructor")
-    void realConstructor(){
+    void realConstructor() {
         Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getRealConstructorAst());
 
         Program expectedTast = MockGenerator.getRealConstructorTast();
@@ -139,26 +145,25 @@ public class TestRunner {
 
     @Test
     @DisplayName("MultipleFields")
+    @Tag("expectfail")
     void multipleFields() {
         Program program = Resources.getProgram("FailTests/MultiFieldDecl.java");
-        Compiler.getFactory().getTastAdapter().getTast(program);
-
+        assertThrows(
+                AlreadyDefinedException.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected AlreadyDefinedException to be thrown");
     }
 
     @Test
     @DisplayName("MismatchingReturnType")
+    @Tag("expectfail")
     void mismatchingReturnType() {
         Program program = Resources.getProgram("FailTests/MismatchingReturnType.java");
-        boolean thrown = false;
-        try {
-            Compiler.getFactory().getTastAdapter().getTast(program);
-        } catch (TypeMismatchException e) {
-            if (e.getMessage().equals("Function: foo with type CHAR has unmatching return Type")) {
-                thrown = true;
-            }
-        } finally {
-            assertTrue(thrown);
-        }
+        assertThrows(
+                TypeMismatchException.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected TypeMismatchException to be thrown");
+
     }
 
     @Test

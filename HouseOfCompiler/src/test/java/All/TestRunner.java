@@ -108,7 +108,7 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("Comments");
         Field lorem = loader.getField(c.getName(), "lorem");
-        assertEquals("Comments", lorem.getType());
+        assertEquals("int", lorem.getType().toString());
     }
 
     @Test
@@ -120,10 +120,10 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("ConstructorParams");
         try {
-            Object o = c.getDeclaredConstructor(int.class, String.class).newInstance(1);
+            Object o = c.getDeclaredConstructor(int.class).newInstance(1);
             assertEquals("ConstructorParams", o.getClass().getName());
         } catch (Exception e) {
-            fail(e.getLocalizedMessage());
+            fail(e.getMessage());
         }
     }
 
@@ -180,6 +180,40 @@ public class TestRunner {
             assertEquals(randomI, ivalue);
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("MethodCall")
+    void methodCall() {
+        ReflectLoader loader = new ReflectLoader("SimpleTests/MethodCall.java");
+        Class<?> c = loader.findClass("MethodCall");
+        Object o = null;
+        int value = 1;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var i = loader.getField("MethodCall", "i");
+            int ivalue = (int) i.get(o);
+            assertEquals(value, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("MethodCallWithParameters")
+    void methodCallParams() {
+        ReflectLoader loader = new ReflectLoader("SimpleTests/MethodCallParams.java");
+        Class<?> c = loader.findClass("MethodCallParams");
+        Object o = null;
+        int value = 5;
+        try {
+            o = c.getDeclaredConstructor(int.class).newInstance(value);
+            var i = loader.getField("MethodCallParams", "i");
+            int ivalue = (int) i.get(o);
+            assertEquals(value, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
     }
 

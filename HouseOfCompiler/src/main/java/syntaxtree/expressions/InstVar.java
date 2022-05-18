@@ -90,4 +90,9 @@ public class InstVar implements IExpression {
         return Objects.hash(identifier, expression, type);
     }
 
+    @Override
+    public String toString() {
+        return expression + "." + identifier + "(" + type + ")";
+    }
+
 }
