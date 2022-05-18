@@ -7,6 +7,8 @@ import common.Type;
 import java.util.Objects;
 import common.PrintableVector;
 import common.ReferenceType;
+import semantic.TypeCheckResult;
+import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -73,7 +75,7 @@ public class Block implements IStatement, Visitable {
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 }

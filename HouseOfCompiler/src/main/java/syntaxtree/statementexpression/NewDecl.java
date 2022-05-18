@@ -1,11 +1,13 @@
 package syntaxtree.statementexpression;
 
 import common.Type;
+import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
 
 import java.util.Objects;
 import common.PrintableVector;
 import common.ReferenceType;
+import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -44,8 +46,8 @@ public class NewDecl implements IStatementExpression{
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package syntaxtree.structure;
 
+import semantic.TypeCheckResult;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 
@@ -53,8 +54,8 @@ public class ClassDecl implements Visitable {
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-        visitor.visit(this);
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override

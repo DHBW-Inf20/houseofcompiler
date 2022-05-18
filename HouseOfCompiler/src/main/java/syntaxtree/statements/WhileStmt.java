@@ -1,7 +1,9 @@
 package syntaxtree.statements;
 
 import common.Type;
+import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
+import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
@@ -40,8 +42,8 @@ public class WhileStmt implements IStatement{
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override

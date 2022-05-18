@@ -2,7 +2,7 @@ package syntaxtree.structure;
 
 import common.AccessModifier;
 import common.Type;
-import syntaxtree.expressions.IExpression;
+import semantic.TypeCheckResult;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 import visitor.codevisitor.ClassCodeVisitor;
@@ -63,8 +63,8 @@ public class FieldDecl implements Visitable {
     }
 
     @Override
-    public void accept(SemanticVisitor visitor) {
-        visitor.visit(this);
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
     @Override

@@ -1,0 +1,7 @@
+class EmptyClassWithConstructor{
+
+    public EmptyClassWithConstructor(){
+
+    }
+
+}

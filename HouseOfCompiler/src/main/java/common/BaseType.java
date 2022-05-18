@@ -31,51 +31,6 @@ public class BaseType implements Type {
 
 
 
-    @Override
-    public void visit(Program program) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-
-    @Override
-    public void visit(ClassDecl clazz) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-
-    @Override
-    public void visit(FieldDecl field) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-
-    @Override
-    public void visit(ConstructorDecl constructor) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-
-    @Override
-    public void visit(MethodDecl method) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-
-    @Override
-    public void accept(SemanticVisitor v) {
-        // TODO Auto-generated method stub
-        
-    }
 
 
 
@@ -104,4 +59,5 @@ public class BaseType implements Type {
             return false;
         return true;
     }
+
 }

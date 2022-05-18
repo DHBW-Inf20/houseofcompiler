@@ -2,6 +2,9 @@ package All;
 
 import Helper.Resources;
 import common.Compiler;
+import semantic.exceptions.TypeMismatchException;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import syntaxtree.structure.*;
@@ -14,10 +17,13 @@ import java.util.Date;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @DisplayName("All")
 public class TestRunner {
+
 
     @Test
     @DisplayName("Empty Class")
@@ -185,5 +191,31 @@ public class TestRunner {
             fail(e.getLocalizedMessage());
         }
     }
+
+    @Test
+    @DisplayName("MultipleFields")
+    void multipleFields(){
+        Program program = Resources.getProgram("FailTests/MultiFieldDecl.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        
+    }
+
+
+    @Test
+    @DisplayName("MismatchingReturnType")
+    void mismatchingReturnType(){
+        Program program = Resources.getProgram("FailTests/MismatchingReturnType.java");
+        boolean thrown = false;
+        try{
+            Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        }catch (TypeMismatchException e){
+            if (e.getMessage().equals("Function: foo with type CHAR has unmatching return Type")){
+                thrown = true;
+            }
+        }finally{
+            assertTrue(thrown);
+        }
+    }
+
 
 }
