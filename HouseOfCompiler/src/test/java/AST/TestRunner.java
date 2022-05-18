@@ -1,25 +1,34 @@
 package AST;
 
-import common.*;
-import common.Compiler;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.InputStream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import syntaxtree.structure.*;
+
 import Helper.MockGenerator;
 import Helper.Resources;
-import java.io.InputStream;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import common.AccessModifier;
+import common.BaseType;
+import common.Compiler;
+import common.Primitives;
+import common.PrintableVector;
+import syntaxtree.structure.ClassDecl;
+import syntaxtree.structure.ConstructorDecl;
+import syntaxtree.structure.FieldDecl;
+import syntaxtree.structure.Program;
 
 @DisplayName("Abstract Syntax Tree Generation")
 public class TestRunner {
 
     @Test
     @DisplayName("Control Test")
-    void controlTest(){
+    void controlTest() {
         var first = MockGenerator.getConstructorParameterAst();
         var second = MockGenerator.getConstructorParameterAst();
 
-        assertEquals(first , second);
+        assertEquals(first, second);
     }
 
     @Test
@@ -28,7 +37,8 @@ public class TestRunner {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
 
-        ClassDecl classDecl = new ClassDecl("EmptyClass", new PrintableVector<>(),new PrintableVector<>(),new PrintableVector<>());
+        ClassDecl classDecl = new ClassDecl("EmptyClass", new PrintableVector<>(), new PrintableVector<>(),
+                new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var generatedAst = new Program(classDecls);
@@ -39,22 +49,24 @@ public class TestRunner {
 
     @Test
     @DisplayName("EmptyClassWithConstructor")
-    void emptyClassWithConstructor(){
+    void emptyClassWithConstructor() {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClassWithConstructor.java");
         Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),constructors,new PrintableVector<>());
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(), constructors,
+                new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var ast = new Program(classDecls);
         assertEquals(ast, generatedAst);
-        
+
     }
+
     @Test
     @DisplayName("ClassFields")
-    void classFields(){
+    void classFields() {
         Program generatedAst = Resources.getProgram("SimpleTests/ClassFields.java");
 
         Program expectedAst = MockGenerator.getClassFieldsAst();
@@ -64,7 +76,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("ClassField without AccessModifier")
-    void classFieldWithoutAccessModifier(){
+    void classFieldWithoutAccessModifier() {
         Program generatedAst = Resources.getProgram("SimpleTests/AutoAccessModifierField.java");
 
         Program expectedAst = MockGenerator.getAutoClassFieldAst();
@@ -74,7 +86,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("Comments")
-    void commentTest(){
+    void commentTest() {
         InputStream file = Resources.getFileAsStream("SimpleTests/Comments.java");
         Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
@@ -99,7 +111,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("Constructor With Parameters")
-    void constructorWithParameters(){
+    void constructorWithParameters() {
         Program generatedAst = Resources.getProgram("SimpleTests/ConstructorParams.java");
         Program expectedAst = MockGenerator.getConstructorParameterAst();
 
@@ -108,17 +120,16 @@ public class TestRunner {
 
     @Test
     @DisplayName("Constructor With this. assign body")
-    void constructorWithThisAssignBody(){
+    void constructorWithThisAssignBody() {
         Program generatedAst = Resources.getProgram("SimpleTests/ConstructorThisDot.java");
         Program expectedAst = MockGenerator.getConstructorThisDotAst();
-
 
         assertEquals(expectedAst, generatedAst);
     }
 
     @Test
     @DisplayName("VoidMethod")
-    void voidMethod(){
+    void voidMethod() {
         Program generatedAst = Resources.getProgram("SimpleTests/VoidMethod.java");
         Program expectedAst = MockGenerator.getVoidMethodAst();
 
@@ -127,7 +138,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("RealConstructor")
-    void realConstructor(){
+    void realConstructor() {
         Program generatedAst = Resources.getProgram("SimpleTests/RealConstructor.java");
         Program expectedAst = MockGenerator.getRealConstructorAst();
 
@@ -136,14 +147,29 @@ public class TestRunner {
 
     @Test
     @DisplayName("MethodCall")
-    void methodCall(){
+    void methodCall() {
         Program generatedAst = Resources.getProgram("SimpleTests/MethodCall.java");
         Program expectedAst = MockGenerator.getMethodCallAst();
 
         assertEquals(expectedAst, generatedAst);
     }
 
-    
+    @Test
+    @DisplayName("MethodCallWithParameters")
+    void methodCallWithParameters() {
+        Program generatedAst = Resources.getProgram("SimpleTests/MethodCallParams.java");
+        Program expectedAst = MockGenerator.getMethodCallWithParameterAst();
 
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("CharArgument")
+    void charArgument() {
+        Program generatedAst = Resources.getProgram("SimpleTests/CharArgument.java");
+        Program expectedAst = MockGenerator.getCharArgumentAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
 
 }

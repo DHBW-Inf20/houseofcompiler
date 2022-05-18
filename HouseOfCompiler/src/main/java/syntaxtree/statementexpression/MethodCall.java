@@ -90,12 +90,23 @@ public class MethodCall implements IStatementExpression {
     public String printTypes() {
         String returnString = "(";
         for (var expression : arguments) {
-            returnString += expression.getType().toString() + ", ";
+            returnString += expression.getType() + ", ";
         }
         // delete the last ", "
         returnString = returnString.substring(0, returnString.length() - 2);
         returnString += ")";
         return returnString;
 
+    }
+
+    @Override
+    public String toString() {
+        String returnString = "";
+        if (receiver != null) {
+            returnString += receiver.toString() + ".";
+        }
+        returnString += identifier;
+        returnString += "( " + arguments.toString() + " )";
+        return returnString;
     }
 }

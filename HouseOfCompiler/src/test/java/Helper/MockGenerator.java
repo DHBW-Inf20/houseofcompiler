@@ -4,6 +4,7 @@ import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
 import common.PrintableVector;
+import syntaxtree.expressions.CharExpr;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;
@@ -291,6 +292,50 @@ public abstract class MockGenerator {
         methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo", getEmptyParameters(), fooBlock));
 
         return expectedTast;
+    }
+
+    public static Program getMethodCallWithParameterAst() {
+        Program expectedAst = getEmptyProgram("MethodCallParams");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+        var fields = classDecl.getFieldDelcarations();
+        fields.add(new FieldDecl(new BaseType(Primitives.INT), "i"));
+        PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
+
+        Block block = getBlock(
+                new Assign(new InstVar(new This(), "i"),
+                        new MethodCall(new This(), "foo", getArguments(new LocalOrFieldVar("i")))));
+        constructors.add(new ConstructorDecl(AccessModifier.PUBLIC,
+                getParameters(new MethodParameter(Primitives.INT, "i")), block));
+
+        Block fooBlock = getBlock(new ReturnStmt(new LocalOrFieldVar("i")));
+        PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
+        methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo",
+                getParameters(new MethodParameter(Primitives.INT, "i")), fooBlock));
+
+        return expectedAst;
+    }
+
+    public static Program getCharArgumentAst() {
+        Program expectedAst = getEmptyProgram("MethodCallParams");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+        var fields = classDecl.getFieldDelcarations();
+        fields.add(new FieldDecl(new BaseType(Primitives.CHAR), "c"));
+        PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
+
+        Block block = getBlock(
+                new Assign(new InstVar(new This(), "c"),
+                        new MethodCall(new This(), "foo", getArguments(new CharExpr('a')))));
+        constructors.add(new ConstructorDecl(AccessModifier.PUBLIC,
+                getParameters(), block));
+
+        Block fooBlock = getBlock(new ReturnStmt(new LocalOrFieldVar("c")));
+        PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
+        methods.add(new MethodDecl(new BaseType(Primitives.CHAR), "foo",
+                getParameters(new MethodParameter(Primitives.CHAR, "c")), fooBlock));
+
+        return expectedAst;
     }
 
 }

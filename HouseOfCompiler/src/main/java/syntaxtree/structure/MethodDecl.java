@@ -98,7 +98,7 @@ public class MethodDecl implements Visitable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
-        sb.append(accessModifier).append(" ").append(type).append(identifier).append(" ").append("\n");
+        sb.append(accessModifier).append(" ").append(type).append(" ").append(identifier).append("\n");
         sb.append("\t\tparams:").append(parameters).append("\n");
         sb.append("\t\tblock:").append(block).append("\n");
         return sb.toString();

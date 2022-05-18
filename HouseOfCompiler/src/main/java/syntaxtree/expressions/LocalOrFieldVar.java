@@ -57,4 +57,9 @@ public class LocalOrFieldVar implements IExpression {
     public int hashCode() {
         return Objects.hash(identifier, type);
     }
+
+    @Override
+    public String toString() {
+        return type + " " + identifier;
+    }
 }

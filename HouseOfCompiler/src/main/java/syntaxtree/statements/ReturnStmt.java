@@ -58,4 +58,9 @@ public class ReturnStmt implements IStatement {
     public int hashCode() {
         return Objects.hash(expression, type);
     }
+
+    @Override
+    public String toString() {
+        return "return " + expression + "(" + type + ")";
+    }
 }

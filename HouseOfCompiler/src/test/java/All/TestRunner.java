@@ -55,9 +55,7 @@ public class TestRunner {
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> c = loader.findClass("ClassFields");
         try {
-            Object o = c.getDeclaredConstructor().newInstance();
             var autoAccess = loader.getField("ClassFields", "privateAccess");
 
             assertEquals(Modifier.PRIVATE, autoAccess.getModifiers());
@@ -88,9 +86,7 @@ public class TestRunner {
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> c = loader.findClass("ClassFields");
         try {
-            Object o = c.getDeclaredConstructor().newInstance();
             var protectedAccess = loader.getField("ClassFields", "protectedAccess");
             assertEquals(Modifier.PROTECTED, protectedAccess.getModifiers());
         } catch (Exception e) {
@@ -211,6 +207,23 @@ public class TestRunner {
             o = c.getDeclaredConstructor(int.class).newInstance(value);
             var i = loader.getField("MethodCallParams", "i");
             int ivalue = (int) i.get(o);
+            assertEquals(value, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("CharArgument")
+    void charArgument() {
+        ReflectLoader loader = new ReflectLoader("SimpleTests/CharArgument.java");
+        Class<?> clazz = loader.findClass("CharArgument");
+        Object o = null;
+        char value = 'a';
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var cField = loader.getField("CharArgument", "c");
+            char ivalue = (char) cField.get(o);
             assertEquals(value, ivalue);
         } catch (Exception e) {
             fail(e.getMessage());
