@@ -280,18 +280,6 @@ public class JavaSubsetBaseListener implements JavaSubsetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseIfStmt(JavaSubsetParser.ElseIfStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitElseIfStmt(JavaSubsetParser.ElseIfStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterElseStmt(JavaSubsetParser.ElseStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}

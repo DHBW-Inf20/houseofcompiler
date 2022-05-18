@@ -14,7 +14,7 @@ public class StatementAdapter {
         else if (statementContext.whileStmt() != null)
             return WhileStmtAdapter.adapt(statementContext.whileStmt());
         else if (statementContext.ifElseStmt() != null)
-            return null; //FIXME implement if else statement
+            return IfStmtAdapter.adapt(statementContext.ifElseStmt());
         else //StatementExpression
             return StatementExpressionAdapter.adapt(statementContext.stmtExpr());
     }

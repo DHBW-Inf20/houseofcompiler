@@ -171,13 +171,6 @@ public class JavaSubsetBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElseIfStmt(JavaSubsetParser.ElseIfStmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitElseStmt(JavaSubsetParser.ElseStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
