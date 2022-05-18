@@ -20,7 +20,7 @@ public class TypeHelper {
     }
 
     public static boolean isBool(Type type) {
-        var boolType = Primitives.BOOL;
+        var boolType = new BaseType(Primitives.BOOL);
         return type.equals(boolType);
     }
 
@@ -28,5 +28,7 @@ public class TypeHelper {
 
         return null;
     }
+
+
 
 }
