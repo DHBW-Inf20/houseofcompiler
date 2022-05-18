@@ -133,6 +133,7 @@ public class MethodGenerator implements MethodCodeVisitor {
         if (expression == null) {
             mv.visitInsn(Opcodes.RETURN);
         } else {
+            expression.accept(this);
             if (expression.getType() instanceof BaseType) {
                 mv.visitInsn(Opcodes.IRETURN);
             } else {
@@ -184,7 +185,9 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(MethodCall methodCall) {
-
+        methodCall.target.accept(this);
+        methodCall.getArguments().forEach(parameter -> parameter.accept(this));
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, this.lastClassName, methodCall.getIdentifier(), "()I", false);
     }
 
     @Override

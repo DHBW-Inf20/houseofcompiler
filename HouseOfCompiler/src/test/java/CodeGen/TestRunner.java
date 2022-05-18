@@ -239,6 +239,10 @@ public class TestRunner {
             var m = loader.getMethod("MethodCall", "foo");
             m.invoke(o);
             assertEquals("foo", m.getName());
+
+            var i = loader.getField("MethodCall", "i");
+            int ivalue = (int) i.get(o);
+            assertEquals(1, ivalue);
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
