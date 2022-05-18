@@ -127,11 +127,12 @@ public class SemanticCheck implements SemanticVisitor {
             var result = parameter.accept(this);
             valid = valid && result.isValid();
         }
-        var methodBody = methodDecl.getBlock();
-        if(!methodBody.getType().equals(methodDecl.getType())){
+        var result = methodDecl.getBlock().accept(this);
+        System.out.println(methodDecl.getType());
+        System.out.println(result.getType());
+        if(!result.getType().equals(methodDecl.getType())){
             throw new TypeMismatchException("Function: " + methodDecl.getIdentifier() + " with type " + methodDecl.getType() + " has unmatching return Type" );
         }
-        var result = methodBody.accept(this);
         return new TypeCheckResult(valid, result.getType());
     }
 
