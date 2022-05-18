@@ -21,8 +21,6 @@ public interface SemanticVisitor {
 
     TypeCheckResult typeCheck(MethodDecl toCheck);
 
-
-
     TypeCheckResult typeCheck(Assign toCheck);
 
     TypeCheckResult typeCheck(MethodParameter toCheck);
@@ -59,4 +57,5 @@ public interface SemanticVisitor {
     TypeCheckResult typeCheck(BoolExpr boolExpr);
 
     TypeCheckResult typeCheck(Binary binary);
+
 }

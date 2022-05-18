@@ -4,10 +4,13 @@ import common.BaseType;
 import common.Primitives;
 import common.Type;
 import semantic.SemanticCheck;
+import semantic.TypeCheckResult;
+import visitor.SemanticVisitor;
+import visitor.Visitable;
 
 import java.util.Objects;
 
-public class MethodParameter {
+public class MethodParameter implements Visitable{
 
     private Type type;
     private String identifier;
@@ -49,6 +52,11 @@ public class MethodParameter {
     @Override
     public int hashCode() {
         return Objects.hash(type, identifier);
+    }
+
+    @Override
+    public TypeCheckResult accept(SemanticVisitor visitor) {
+        return visitor.typeCheck(this);
     }
 
 }

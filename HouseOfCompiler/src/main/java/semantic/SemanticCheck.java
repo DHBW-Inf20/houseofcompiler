@@ -95,7 +95,14 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(ConstructorDecl toCheck) {
-        return null;
+        boolean valid = true;
+        for (MethodParameter parameter: toCheck.getParameterDeclarations()){
+            var result = parameter.accept(this);
+            valid = valid && result.isValid();
+        }
+        var result = toCheck.getBlock().accept(this);
+        valid = result.isValid() && valid;
+        return new TypeCheckResult(valid, toCheck.getType());
     }
 
     @Override
