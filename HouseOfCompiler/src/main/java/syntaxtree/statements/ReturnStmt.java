@@ -18,6 +18,11 @@ public class ReturnStmt implements IStatement {
         this.expression = expression;
     }
 
+    public ReturnStmt(Type type, IExpression expression) {
+        this.expression = expression;
+        this.type = type;
+    }
+
     public IExpression getExpression() {
         return expression;
     }
