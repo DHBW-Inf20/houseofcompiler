@@ -125,6 +125,7 @@ public class TestRunner {
         Program generatedAst = Resources.getProgram("SimpleTests/ConstructorThisDot.java");
         Program expectedAst = MockGenerator.getConstructorThisDotAst();
 
+
         assertEquals(expectedAst, generatedAst);
     }
 

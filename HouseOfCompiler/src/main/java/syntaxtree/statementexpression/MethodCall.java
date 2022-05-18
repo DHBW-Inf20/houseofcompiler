@@ -28,6 +28,13 @@ public class MethodCall implements IStatementExpression{
         this.arguments = arguments;
     }
 
+    public MethodCall(Type type, IExpression target, String identifier, PrintableVector<IExpression> arguments) {
+        this.identifier = identifier;
+        this.target = target;
+        this.arguments = arguments;
+        this.type = type;
+    }
+
     public MethodCall(String identifier, PrintableVector<IExpression> arguments) {
         this.identifier = identifier;
         this.reciever = null;

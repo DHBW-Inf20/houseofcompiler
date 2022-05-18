@@ -212,13 +212,17 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("RealConstructor");
         try {
-            int randomI = new Random(new Date().getTime()).nextInt(0, 200);
-            Object o = c.getDeclaredConstructor(int.class).newInstance(randomI);
+            int randomI = 2;
+            var constructor = c.getDeclaredConstructor(int.class);
+            Object o = constructor.newInstance(randomI);
             var i = loader.getField("RealConstructor", "i");
-            var ivalue = i.get(o);
+            int ivalue = (int) i.get(o);
             assertEquals(randomI, ivalue);
-        } catch (Exception e) {
-            fail(e.getLocalizedMessage());
+        } catch (NoSuchFieldException e){
+            fail("No such field");
+        }
+        catch (Exception e) {
+            fail(e.getCause());
         }
     }
 
@@ -230,13 +234,14 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("MethodCall");
         Object o = null;
+        int value = 1;
         try {
             o = c.getDeclaredConstructor().newInstance();
-            var m = loader.getMethod("MethodCall", "foo");
-            m.invoke(o);
-            assertEquals("foo", m.getName());
+            var i = loader.getField("MethodCall", "i");
+            int ivalue = (int) i.get(o);
+            assertEquals(value, ivalue);
         } catch (Exception e) {
-            fail(e.getLocalizedMessage());
+            fail(e.getMessage());
         }
 
     }
