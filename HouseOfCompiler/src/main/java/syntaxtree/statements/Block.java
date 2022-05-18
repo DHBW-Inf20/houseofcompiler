@@ -24,7 +24,6 @@ public class Block implements IStatement, Visitable {
 
     public Block() {
         statements = new PrintableVector<>();
-        type = new BaseType(Primitives.VOID);
     }
 
     public Type getType() {
@@ -62,7 +61,7 @@ public class Block implements IStatement, Visitable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(type.toString());
+        final StringBuilder sb = new StringBuilder(type!=null ? type.toString() : "");
         sb.append("{");
         sb.append(statements);
         sb.append('}');

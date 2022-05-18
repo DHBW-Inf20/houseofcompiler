@@ -142,8 +142,8 @@ public abstract class MockGenerator {
         block.getStatements().add(assign);
 
         classDecl.getConstructorDeclarations()
-                .add(new ConstructorDecl(AccessModifier.PUBLIC, getEmptyParameters(), block));
-
+                .add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
+        System.out.println(classDecl);
         return expectedAst;
 
     }

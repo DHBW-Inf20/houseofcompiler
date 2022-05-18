@@ -234,17 +234,14 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("MethodCall");
         Object o = null;
+        int value = 1;
         try {
             o = c.getDeclaredConstructor().newInstance();
-            var m = loader.getMethod("MethodCall", "foo");
-            m.invoke(o);
-            assertEquals("foo", m.getName());
-
             var i = loader.getField("MethodCall", "i");
             int ivalue = (int) i.get(o);
-            assertEquals(1, ivalue);
+            assertEquals(value, ivalue);
         } catch (Exception e) {
-            fail(e.getLocalizedMessage());
+            fail(e.getMessage());
         }
 
     }
