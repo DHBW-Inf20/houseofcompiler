@@ -9,7 +9,6 @@ public class ParameterAdapter {
                 TypeAdapter.adapt(parameterContext.type()),
                 parameterContext.Identifier().getText()
         );
-        parameter.setType(TypeAdapter.adapt(parameterContext.type()));
         return parameter;
     }
 }
