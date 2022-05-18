@@ -24,14 +24,14 @@ public class ConstructorDecl implements Visitable {
         this.accessModifier = accessModifier;
         this.parameterDeclarations = parameterDeclarations;
         this.block = statement;
-        type = new BaseType(Primitives.VOID);
+        this.type = new BaseType(Primitives.VOID);
     }
 
     public ConstructorDecl() {
         this.accessModifier = AccessModifier.PUBLIC;
         this.parameterDeclarations = new PrintableVector<>();
         this.block = new Block();
-        type = new BaseType(Primitives.VOID);
+        this.type = new BaseType(Primitives.VOID);
     }
 
     public Type getType() {

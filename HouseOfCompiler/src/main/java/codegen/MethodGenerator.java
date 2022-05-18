@@ -185,7 +185,7 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(MethodCall methodCall) {
-        methodCall.target.accept(this);
+        methodCall.receiver.accept(this);
         methodCall.getArguments().forEach(parameter -> parameter.accept(this));
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, this.lastClassName, methodCall.getIdentifier(), GenUtils.generateDescriptor(GenUtils.expressionsToTypes(methodCall.getArguments()), methodCall.getType()), false);
     }

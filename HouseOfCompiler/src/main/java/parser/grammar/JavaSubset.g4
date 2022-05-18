@@ -24,7 +24,7 @@ subExpression: Identifier | instVar | value | stmtExpr | unaryExpr | OpenRoundBr
 //methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
 //reciever: (instVar | Identifier Dot | methodCall Dot)
 //reciever kann (fast beliebige) expression sein (methodenaufrufe mit dot in reciever auslagern)
-methodCall: reciever? revievingMethod* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
+methodCall: receiver? receivingMethod* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 //int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
 statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | ifElseStmt | stmtExpr Semicolon;
 //a = expr, new Object(), method(param1)
@@ -48,8 +48,8 @@ ifStmt: If OpenRoundBracket expression ClosedRoundBracket statement;
 elseStmt: Else statement;
 assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
-reciever: ((instVar | newDecl | Identifier) Dot);
-revievingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?
+receiver: ((instVar | newDecl | Identifier) Dot);
+receivingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?
 type: Int | Boolean | Char | Identifier;
 value: IntValue | BooleanValue | CharValue;
 
