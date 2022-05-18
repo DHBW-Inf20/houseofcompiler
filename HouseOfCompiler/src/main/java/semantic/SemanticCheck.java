@@ -69,23 +69,17 @@ public class SemanticCheck implements SemanticVisitor {
     @Override
     public TypeCheckResult typeCheck(ClassDecl toCheck) {
         var valid = true;
-        System.out.println("ClassDecl");
 
         PrintableVector<String> identifiers = new PrintableVector<>();
         
 
         for (FieldDecl field : toCheck.getFieldDelcarations()) {
             var result = field.accept(this);
-            System.out.println(field.getIdentifier());
             valid = valid && result.isValid();
             identifiers.add(field.getIdentifier());
         }
 
         LinkedHashSet<String> identifierSet = new LinkedHashSet<>(identifiers);
-   
-        System.out.println(identifiers.size());
-        System.out.println(identifierSet.size());
-
 
         if(identifierSet.size() != identifiers.size()){
             throw new AlreadyDefinedException("Multiple FieldDeclaration of same identifier");
@@ -126,14 +120,17 @@ public class SemanticCheck implements SemanticVisitor {
     }
 
     @Override
-    public TypeCheckResult typeCheck(MethodDecl toCheck) {
+    public TypeCheckResult typeCheck(MethodDecl methodDecl) {
         var valid = true;
 
-        for (var parameter: toCheck.getParameters()){
+        for (var parameter: methodDecl.getParameters()){
             var result = parameter.accept(this);
             valid = valid && result.isValid();
         }
-        var methodBody = toCheck.getBlock();
+        var methodBody = methodDecl.getBlock();
+        if(!methodBody.getType().equals(methodDecl.getType())){
+            throw new TypeMismatchException("Function: " + methodDecl.getIdentifier() + " with type " + methodDecl.getType() + " has unmatching return Type" );
+        }
         var result = methodBody.accept(this);
         return new TypeCheckResult(valid, result.getType());
     }
@@ -167,7 +164,11 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(ReturnStmt returnStmt) {
-        return null;
+
+        var returnExpression = returnStmt.getExpression().accept(this);
+        returnStmt.setType(returnExpression.getType());
+
+        return new TypeCheckResult(true, returnStmt.getType());
     }
 
     @Override
@@ -183,24 +184,24 @@ public class SemanticCheck implements SemanticVisitor {
     @Override
     public TypeCheckResult typeCheck(Block block) {
         var statements = block.getStatements();
-        Type blockType = TypeHelper.voidType;
         var valid = true;
+        Type returnType = null;
         for (var statement : statements) {
             var result = statement.accept(this);
+            if(statement instanceof ReturnStmt){
+                if(returnType == null){
+                    returnType = result.getType();
+                }else{
+                    if(returnType != result.getType()){
+                        throw new TypeMismatchException("Wrong return type");
+                    }
+                }
+            }
             valid = valid && result.isValid();
-            //blockvoid
-            if (result.getType() == TypeHelper.voidType) {
-                continue;
-            }
-            //block
-            try {
-                blockType = result.getType();
-            } catch (TypeMismatchException e) {
-                valid = false;
-                throw new TypeMismatchException("inconsistent type");
-            }
+            
         }
-        return new TypeCheckResult(valid, blockType);
+        block.setType(returnType);
+        return new TypeCheckResult(valid, returnType);
     }
 
 
@@ -236,7 +237,7 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(IntegerExpr integerExpr) {
-        return null;
+        return new TypeCheckResult(true, new BaseType(Primitives.INT));
     }
 
     @Override

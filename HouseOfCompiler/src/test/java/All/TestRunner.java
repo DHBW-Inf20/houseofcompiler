@@ -174,4 +174,14 @@ public class TestRunner {
     }
 
 
+    @Test
+    @DisplayName("MismatchingReturnType")
+    void mismatchingReturnType(){
+        Program program = Resources.getProgram("FailTests/MismatchingReturnType.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        
+    }
+
+
+
 }
