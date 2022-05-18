@@ -5,11 +5,9 @@ import syntaxtree.expressions.IExpression;
 
 public class ExpressionAdapter {
     public static IExpression adapt(JavaSubsetParser.ExpressionContext expressionContext){
-        if (expressionContext.binaryExpr() != null){
+        if (expressionContext.binaryExpr() != null)
             return SubExpressionAdapter.adapt(expressionContext.subExpression());
-        }
-        else {
+        else
             return BinaryExpressionAdapter.adapt(expressionContext.binaryExpr());
-        }
     }
 }

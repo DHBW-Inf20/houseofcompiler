@@ -47,7 +47,7 @@ elseStmt: Else block;
 assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 reciever: ((instVar | newDecl | Identifier) Dot);
-revievingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot;
+revievingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?
 type: Int | Boolean | Char | Identifier;
 value: IntValue | BooleanValue | CharValue;
 

@@ -12,10 +12,7 @@ public class StatementAdapter {
         else if (statementContext.block() != null)
             return BlockAdapter.adapt(statementContext.block());
         else if (statementContext.whileStmt() != null)
-            return new WhileStmt(
-                    ExpressionAdapter.adapt(statementContext.whileStmt().expression()),
-                    BlockAdapter.adapt(statementContext.whileStmt().block())
-            );
+            return WhileStmtAdapter.adapt(statementContext.whileStmt());
         else if (statementContext.ifElseStmt() != null)
             return null; //FIXME implement if else statement
         else //StatementExpression
