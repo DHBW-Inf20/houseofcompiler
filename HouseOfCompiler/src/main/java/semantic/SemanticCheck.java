@@ -128,11 +128,14 @@ public class SemanticCheck implements SemanticVisitor {
     @Override
     public TypeCheckResult typeCheck(ConstructorDecl toCheck) {
         boolean valid = true;
+        currentLocalScope.pushScope();
         for (MethodParameter parameter : toCheck.getParameterDeclarations()) {
             var result = parameter.accept(this);
             valid = valid && result.isValid();
+            currentLocalScope.addLocalVar(parameter);
         }
         var result = toCheck.getBlock().accept(this);
+        currentLocalScope.popScope();
         valid = result.isValid() && valid;
         return new TypeCheckResult(valid, toCheck.getType());
     }
@@ -148,6 +151,7 @@ public class SemanticCheck implements SemanticVisitor {
             currentLocalScope.addLocalVar(parameter);
         }
         var result = methodDecl.getBlock().accept(this);
+        currentLocalScope.popScope();
         var resultType = result.getType();
         if (resultType == null) {
             resultType = new BaseType(Primitives.VOID);
@@ -283,7 +287,22 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(NewDecl newDecl) {
-        return null;
+        var valid = true;
+
+        var newClass = newDecl.getType();
+
+        if (!TypeHelper.typeExists(newClass, this.context)) {
+            throw new TypeUnkown("Type: " + newClass + " is unknown");
+        }
+
+        for (var arguments : newDecl.getArguments()) {
+            var result = arguments.accept(this);
+            valid = valid && result.isValid();
+        }
+
+        var constructor = TypeHelper.getConstructor(newDecl, this.context);
+
+        return new TypeCheckResult(valid, newDecl.getType());
     }
 
     @Override

@@ -60,6 +60,6 @@ public class LocalOrFieldVar implements IExpression {
 
     @Override
     public String toString() {
-        return type + " " + identifier;
+        return identifier + " (" + type + ")[lofv]";
     }
 }

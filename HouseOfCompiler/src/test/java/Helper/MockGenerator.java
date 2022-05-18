@@ -338,4 +338,29 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    public static Program getGetterFunctionAst() {
+        Program expectedAst = getEmptyProgram("GetterFunction");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        FieldDecl i = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "i");
+
+        classDecl.getFieldDelcarations().add(i);
+        Assign assignStmt = new Assign(new InstVar(new This(), "i"), new LocalOrFieldVar("i"));
+        Block block = getBlock(assignStmt);
+
+        var parameters = getParameters(new MethodParameter(Primitives.INT, "i"));
+
+        PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
+        ConstructorDecl constructor = new ConstructorDecl(AccessModifier.PUBLIC, parameters, block);
+        constructors.add(constructor);
+
+        var getI = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.INT), "getI", getParameters(),
+                getBlock(new ReturnStmt(new InstVar(new This(), "i"))));
+
+        classDecl.getMethodDeclarations().add(getI);
+
+        return expectedAst;
+    }
+
 }

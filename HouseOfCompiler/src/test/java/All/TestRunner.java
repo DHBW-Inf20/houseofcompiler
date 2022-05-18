@@ -230,4 +230,30 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("MultClasses")
+    void multClasses() {
+        Program program = Resources.getProgram("SimpleTests/MultClassesReference.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        if (bc.size() != 2) {
+            fail("Bytecode map should hold 2 Classes but got " + bc.size());
+            return;
+        }
+        var loader = new ReflectLoader(bc);
+        int value = 5;
+        try {
+            var clazz1 = loader.findClass("MultClassesReference2");
+            Object multclassref2 = null;
+            multclassref2 = clazz1.getDeclaredConstructor(int.class).newInstance(value);
+            var testMethod = loader.getMethod("MultClassesReference2", "test");
+            var ivalue = testMethod.invoke(multclassref2);
+            assertEquals(value, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
 }

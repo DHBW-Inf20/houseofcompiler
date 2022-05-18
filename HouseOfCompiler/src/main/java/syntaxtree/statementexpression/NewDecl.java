@@ -63,4 +63,16 @@ public class NewDecl implements IStatementExpression {
     public int hashCode() {
         return Objects.hash(arguments, type, identifier);
     }
+
+    public String printTypes() {
+        String returnString = "(";
+        for (var expression : arguments) {
+            returnString += expression.getType() + ", ";
+        }
+        // delete the last ", "
+        returnString = returnString.substring(0, returnString.length() - 2);
+        returnString += ")";
+        return returnString;
+
+    }
 }

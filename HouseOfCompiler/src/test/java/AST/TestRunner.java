@@ -164,6 +164,17 @@ public class TestRunner {
     }
 
     @Test
+    @DisplayName("GetterFunction")
+    void getterFunction() {
+        Program generatedAst = Resources.getProgram("SimpleTests/GetterFunction.java");
+        Program expectedAst = MockGenerator.getGetterFunctionAst();
+
+        System.out.println(generatedAst);
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
     @DisplayName("CharArgument")
     void charArgument() {
         Program generatedAst = Resources.getProgram("SimpleTests/CharArgument.java");

@@ -6,11 +6,13 @@ import common.BaseType;
 import common.Primitives;
 import common.ReferenceType;
 import common.Type;
+import context.ConstructorContext;
 import context.Context;
 import context.FieldContext;
 import context.MethodContext;
 import semantic.exceptions.TypeMismatchException;
 import syntaxtree.statementexpression.MethodCall;
+import syntaxtree.statementexpression.NewDecl;
 
 public class TypeHelper {
     public static final Type voidType = null;
@@ -87,6 +89,31 @@ public class TypeHelper {
         } else {
             throw new TypeMismatchException("Base Type " + type + " does not have Methods");
         }
+    }
+
+    public static ConstructorContext getConstructor(NewDecl newDecl, Context context) {
+        var objectClass = (ReferenceType) newDecl.getType();
+        var declaredClassnames = context.getClasses();
+        var classContext = declaredClassnames.get(objectClass.getIdentifier());
+        var constructors = classContext.getConstructors();
+        for (var constructor : constructors) {
+            if (constructor.getParameterTypes().size() == newDecl.getArguments().size()) {
+                boolean isSame = true;
+                for (int i = 0; i < constructor.getParameterTypes().size(); i++) {
+                    var parameterType = constructor.getParameterTypes().get(i);
+                    var argument = newDecl.getArguments().get(i);
+                    if (!parameterType.equals(argument.getType())) {
+                        isSame = false;
+                        break;
+                    }
+                }
+                if (isSame) {
+                    return constructor;
+                }
+            }
+        }
+        throw new TypeMismatchException("No declared Constructor with Arguments: " + newDecl.printTypes() + " in Type "
+                + newDecl.getType());
     }
 
 }
