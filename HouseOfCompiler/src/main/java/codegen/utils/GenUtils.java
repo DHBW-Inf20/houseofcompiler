@@ -7,6 +7,10 @@ import common.Type;
 import org.objectweb.asm.Opcodes;
 
 import common.PrintableVector;
+import syntaxtree.expressions.IExpression;
+import syntaxtree.structure.MethodParameter;
+
+import java.util.stream.Collectors;
 
 public class GenUtils {
 
@@ -30,6 +34,10 @@ public class GenUtils {
         builder.append(')');
         builder.append(getTypeTerm(returnType));
         return builder.toString();
+    }
+
+    public static PrintableVector<Type> expressionsToTypes(PrintableVector<IExpression> expressions) {
+        return expressions.stream().map(IExpression::getType).collect(Collectors.toCollection(PrintableVector::new));
     }
 
     private static String getTypeTerm(Type type) {
