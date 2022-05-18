@@ -4,7 +4,6 @@ import common.BaseType;
 import common.Primitives;
 import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 

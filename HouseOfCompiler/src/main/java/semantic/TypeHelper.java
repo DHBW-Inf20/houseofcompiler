@@ -7,14 +7,14 @@ import common.Type;
 import context.Context;
 
 public class TypeHelper {
-    public static  final Type voidType = null;
+    public static final Type voidType = null;
 
-    public static boolean typeExists(Type type, Context con){
+    public static boolean typeExists(Type type, Context con) {
 
-        if(type instanceof BaseType){
+        if (type instanceof BaseType) {
             return true;
         }
-        var objectClass = (ReferenceType)type;
+        var objectClass = (ReferenceType) type;
         var declaredClassnames = con.getClasses();
         return declaredClassnames.containsKey(objectClass.getIdentifier());
     }
@@ -28,7 +28,5 @@ public class TypeHelper {
 
         return null;
     }
-
-
 
 }

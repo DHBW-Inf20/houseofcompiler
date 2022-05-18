@@ -1,18 +1,17 @@
 package syntaxtree.statementexpression;
 
+import java.util.Objects;
+
 import common.BaseType;
 import common.Primitives;
 import common.ReferenceType;
 import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
-import java.util.Objects;
-
-public class Assign implements IStatementExpression{
+public class Assign implements IStatementExpression {
 
     // lExpression = rExpression
     private IExpression lExpression;
@@ -44,7 +43,7 @@ public class Assign implements IStatementExpression{
         this.type = new ReferenceType(className);
     }
 
-    public void setType(Primitives type){
+    public void setType(Primitives type) {
         this.type = new BaseType(type);
     }
 
@@ -60,10 +59,13 @@ public class Assign implements IStatementExpression{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Assign assign = (Assign) o;
-        return lExpression.equals(assign.lExpression) && rExpression.equals(assign.rExpression) && Objects.equals(type, assign.type);
+        return lExpression.equals(assign.lExpression) && rExpression.equals(assign.rExpression)
+                && Objects.equals(type, assign.type);
     }
 
     @Override

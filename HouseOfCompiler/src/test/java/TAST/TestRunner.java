@@ -1,6 +1,7 @@
 package TAST;
 
 import Helper.MockGenerator;
+import Helper.Resources;
 import common.AccessModifier;
 import common.Compiler;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +12,11 @@ import syntaxtree.structure.FieldDecl;
 import syntaxtree.structure.Program;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import common.PrintableVector;
+import semantic.exceptions.TypeMismatchException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Typed Abstract Syntax Generation")
 public class TestRunner {
@@ -134,6 +135,38 @@ public class TestRunner {
         Program expectedTast = MockGenerator.getMethodCallTast();
 
         assertEquals(expectedTast, generatedTast);
+    }
+
+    @Test
+    @DisplayName("MultipleFields")
+    void multipleFields() {
+        Program program = Resources.getProgram("FailTests/MultiFieldDecl.java");
+        Compiler.getFactory().getTastAdapter().getTast(program);
+
+    }
+
+    @Test
+    @DisplayName("MismatchingReturnType")
+    void mismatchingReturnType() {
+        Program program = Resources.getProgram("FailTests/MismatchingReturnType.java");
+        boolean thrown = false;
+        try {
+            Compiler.getFactory().getTastAdapter().getTast(program);
+        } catch (TypeMismatchException e) {
+            if (e.getMessage().equals("Function: foo with type CHAR has unmatching return Type")) {
+                thrown = true;
+            }
+        } finally {
+            assertTrue(thrown);
+        }
+    }
+
+    @Test
+    @DisplayName("WhileTest")
+    void whileTest() {
+        Program program = Resources.getProgram("SimpleTests/WhileTest.java");
+        Compiler.getFactory().getTastAdapter().getTast(program);
+
     }
 
 }

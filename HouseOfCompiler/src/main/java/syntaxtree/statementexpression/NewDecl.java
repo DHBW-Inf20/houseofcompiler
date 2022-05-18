@@ -1,17 +1,16 @@
 package syntaxtree.statementexpression;
 
+import java.util.Objects;
+
+import common.PrintableVector;
+import common.ReferenceType;
 import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
-
-import java.util.Objects;
-import common.PrintableVector;
-import common.ReferenceType;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
-public class NewDecl implements IStatementExpression{
+public class NewDecl implements IStatementExpression {
 
     private PrintableVector<IExpression> arguments;
     private Type type;
@@ -22,7 +21,6 @@ public class NewDecl implements IStatementExpression{
         this.identifier = identifier;
         this.type = new ReferenceType(identifier);
     }
-
 
     public PrintableVector<IExpression> getArguments() {
         return arguments;
@@ -52,10 +50,13 @@ public class NewDecl implements IStatementExpression{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         NewDecl newDecl = (NewDecl) o;
-        return arguments.equals(newDecl.arguments) && Objects.equals(type, newDecl.type) && Objects.equals(identifier, newDecl.identifier);
+        return arguments.equals(newDecl.arguments) && Objects.equals(type, newDecl.type)
+                && Objects.equals(identifier, newDecl.identifier);
     }
 
     @Override

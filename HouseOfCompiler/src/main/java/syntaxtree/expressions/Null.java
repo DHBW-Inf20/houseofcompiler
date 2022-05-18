@@ -1,12 +1,11 @@
 package syntaxtree.expressions;
 
+import java.util.Objects;
+
 import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
-
-import java.util.Objects;
 
 public class Null implements IExpression{
 

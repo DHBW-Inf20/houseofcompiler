@@ -1,14 +1,5 @@
 package common;
 
-import common.Primitives;
-import common.Type;
-import syntaxtree.structure.ClassDecl;
-import syntaxtree.structure.ConstructorDecl;
-import syntaxtree.structure.FieldDecl;
-import syntaxtree.structure.MethodDecl;
-import syntaxtree.structure.Program;
-import visitor.SemanticVisitor;
-
 public class BaseType implements Type {
    private Primitives identifier;
 

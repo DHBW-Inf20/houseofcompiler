@@ -1,13 +1,12 @@
 package syntaxtree.statements;
 
+import java.util.Objects;
+
 import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
-
-import java.util.Objects;
 
 public class ReturnStmt implements IStatement {
 
@@ -47,8 +46,10 @@ public class ReturnStmt implements IStatement {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         ReturnStmt that = (ReturnStmt) o;
         return expression.equals(that.expression) && Objects.equals(type, that.type);
     }

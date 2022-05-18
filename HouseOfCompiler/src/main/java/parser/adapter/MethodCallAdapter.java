@@ -1,15 +1,11 @@
 package parser.adapter;
 
 import common.PrintableVector;
-import org.antlr.v4.misc.EscapeSequenceParsing;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.generated.JavaSubsetParser;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.MethodCall;
-import syntaxtree.statementexpression.NewDecl;
-import visitor.SemanticVisitor;
 
 import java.util.List;
 

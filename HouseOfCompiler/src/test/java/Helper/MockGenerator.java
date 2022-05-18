@@ -4,7 +4,6 @@ import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
 import common.PrintableVector;
-import common.ReferenceType;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;

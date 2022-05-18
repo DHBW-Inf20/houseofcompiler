@@ -1,13 +1,12 @@
 package syntaxtree.expressions;
 
+import java.util.Objects;
+
 import common.Operator;
 import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
-
-import java.util.Objects;
 
 public class Binary implements IExpression {
 
@@ -61,10 +60,13 @@ public class Binary implements IExpression {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Binary binary = (Binary) o;
-        return lExpression.equals(binary.lExpression) && rExpression.equals(binary.rExpression) && operator == binary.operator && Objects.equals(type, binary.type);
+        return lExpression.equals(binary.lExpression) && rExpression.equals(binary.rExpression)
+                && operator == binary.operator && Objects.equals(type, binary.type);
     }
 
     @Override
@@ -72,4 +74,3 @@ public class Binary implements IExpression {
         return Objects.hash(lExpression, rExpression, operator, type);
     }
 }
-

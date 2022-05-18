@@ -11,9 +11,6 @@ import syntaxtree.structure.Program;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Date;
-import java.util.Random;
-
 import common.PrintableVector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -111,10 +108,7 @@ public class TestRunner {
         Program tast = MockGenerator.getAutoClassFieldAst();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> c = loader.findClass("AutoAccessModifierField");
-        Object o = null;
         try {
-            o = c.getDeclaredConstructor().newInstance();
             var autoAccess = loader.getField("AutoAccessModifierField", "autoAccess");
             System.out.println(autoAccess.getModifiers());
             assertEquals(0,autoAccess.getModifiers());
@@ -131,12 +125,8 @@ public class TestRunner {
         Program tast = MockGenerator.getClassFieldsTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> c = loader.findClass("ClassFields");
-        Object o = null;
         try {
-            o = c.getDeclaredConstructor().newInstance();
             var autoAccess = loader.getField("ClassFields", "privateAccess");
-            
             assertEquals(Modifier.PRIVATE,autoAccess.getModifiers());
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
@@ -150,12 +140,8 @@ public class TestRunner {
         Program tast = MockGenerator.getClassFieldsTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> c = loader.findClass("ClassFields");
-        Object o = null;
         try {
-            o = c.getDeclaredConstructor().newInstance();
             var autoAccess = loader.getField("ClassFields", "publicAccess");
-            
             assertEquals(Modifier.PUBLIC,autoAccess.getModifiers());
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
@@ -169,10 +155,7 @@ public class TestRunner {
         Program tast = MockGenerator.getClassFieldsTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> c = loader.findClass("ClassFields");
-        Object o = null;
         try {
-            o = c.getDeclaredConstructor().newInstance();
             var autoAccess = loader.getField("ClassFields", "protectedAccess");
             
             assertEquals(Modifier.PROTECTED,autoAccess.getModifiers());

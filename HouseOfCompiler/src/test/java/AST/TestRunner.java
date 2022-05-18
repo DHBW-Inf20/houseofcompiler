@@ -4,24 +4,11 @@ import common.*;
 import common.Compiler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import syntaxtree.expressions.BoolExpr;
-import syntaxtree.expressions.InstVar;
-import syntaxtree.expressions.IntegerExpr;
-import syntaxtree.expressions.LocalOrFieldVar;
-import syntaxtree.statementexpression.Assign;
-import syntaxtree.statements.Block;
-import syntaxtree.statements.IStatement;
 import syntaxtree.structure.*;
 import Helper.MockGenerator;
 import Helper.Resources;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Vector;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 @DisplayName("Abstract Syntax Tree Generation")
 public class TestRunner {

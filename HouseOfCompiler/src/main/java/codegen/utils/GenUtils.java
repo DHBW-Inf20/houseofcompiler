@@ -8,7 +8,6 @@ import org.objectweb.asm.Opcodes;
 
 import common.PrintableVector;
 import syntaxtree.expressions.IExpression;
-import syntaxtree.structure.MethodParameter;
 
 import java.util.stream.Collectors;
 

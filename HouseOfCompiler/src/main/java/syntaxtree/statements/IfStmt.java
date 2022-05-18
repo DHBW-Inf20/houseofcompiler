@@ -1,13 +1,12 @@
 package syntaxtree.statements;
 
+import java.util.Objects;
+
 import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
-
-import java.util.Objects;
 
 public class IfStmt implements IStatement {
 

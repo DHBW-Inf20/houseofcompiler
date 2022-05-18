@@ -1,7 +1,5 @@
 package common;
 
-import visitor.SemanticVisitor;
-
-public interface Type  {
+public interface Type {
     boolean equals(Object obj);
 }

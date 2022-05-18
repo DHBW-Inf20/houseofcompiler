@@ -1,19 +1,17 @@
 package syntaxtree.statements;
 
+import java.util.Objects;
+
 import common.BaseType;
 import common.Primitives;
-import common.Type;
-
-import java.util.Objects;
 import common.PrintableVector;
 import common.ReferenceType;
+import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
-import visitor.Visitable;
 import visitor.codevisitor.MethodCodeVisitor;
 
-public class Block implements IStatement, Visitable {
+public class Block implements IStatement {
 
     private Type type;
     private PrintableVector<IStatement> statements;
@@ -48,8 +46,10 @@ public class Block implements IStatement, Visitable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Block block1 = (Block) o;
         return Objects.equals(type, block1.type) && statements.equals(block1.statements);
     }
@@ -61,7 +61,7 @@ public class Block implements IStatement, Visitable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(type!=null ? type.toString() : "");
+        final StringBuilder sb = new StringBuilder(type != null ? type.toString() : "");
         sb.append("{");
         sb.append(statements);
         sb.append('}');

@@ -1,16 +1,15 @@
 package syntaxtree.expressions;
 
+import java.util.Objects;
+
 import common.BaseType;
 import common.Primitives;
 import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
-import java.util.Objects;
-
-public class IntegerExpr implements IExpression{
+public class IntegerExpr implements IExpression {
 
     private int value;
     private Type type;
@@ -44,8 +43,10 @@ public class IntegerExpr implements IExpression{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         IntegerExpr that = (IntegerExpr) o;
         return value == that.value && Objects.equals(type, that.type);
     }

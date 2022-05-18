@@ -11,15 +11,15 @@ import syntaxtree.structure.Program;
 
 public class ReflectLoader extends ClassLoader {
     private byte[] byteCode;
-        private Map<String, byte[]> byteCodes;
-        private Map<String, Class<?>> classes = new HashMap<>();
+    private Map<String, byte[]> byteCodes;
+    private Map<String, Class<?>> classes = new HashMap<>();
 
     public ReflectLoader(byte[] byteCode) {
-            byteCodes = new HashMap<>();
+        byteCodes = new HashMap<>();
         this.byteCode = byteCode;
     }
 
-    public ReflectLoader(String fileName){
+    public ReflectLoader(String fileName) {
         Program program = Resources.getProgram(fileName);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
@@ -36,20 +36,18 @@ public class ReflectLoader extends ClassLoader {
     }
 
     @Override
-    public Class findClass(String name) {
-        if(!byteCodes.containsKey(name)) {
-            if(byteCode != null) {
+    public Class<?> findClass(String name) {
+        if (!byteCodes.containsKey(name)) {
+            if (byteCode != null) {
                 byteCodes.put(name, byteCode);
                 byteCode = null;
-            }
-            else {
+            } else {
                 return null;
             }
         }
-        if(classes.containsKey(name)) {
+        if (classes.containsKey(name)) {
             return classes.get(name);
-        }
-        else {
+        } else {
             Class<?> clazz = defineClass(name, byteCodes.get(name), 0, byteCodes.get(name).length);
             classes.put(name, clazz);
             return clazz;
@@ -68,7 +66,7 @@ public class ReflectLoader extends ClassLoader {
         return field1;
     }
 
-    public Constructor getConstructor(String classname, Class<?>... parameterTyped) throws NoSuchMethodException {
+    public Constructor<?> getConstructor(String classname, Class<?>... parameterTyped) throws NoSuchMethodException {
         Constructor<?> constructor = findClass(classname).getDeclaredConstructor(parameterTyped);
         constructor.setAccessible(true);
         return constructor;

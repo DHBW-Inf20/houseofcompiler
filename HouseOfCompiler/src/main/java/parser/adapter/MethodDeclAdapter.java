@@ -2,7 +2,6 @@ package parser.adapter;
 
 import common.*;
 import parser.generated.JavaSubsetParser;
-import syntaxtree.statements.Block;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 

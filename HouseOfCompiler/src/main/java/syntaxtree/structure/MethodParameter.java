@@ -1,16 +1,15 @@
 package syntaxtree.structure;
 
+import java.util.Objects;
+
 import common.BaseType;
 import common.Primitives;
 import common.Type;
-import semantic.SemanticCheck;
 import semantic.TypeCheckResult;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
 
-import java.util.Objects;
-
-public class MethodParameter implements Visitable{
+public class MethodParameter implements Visitable {
 
     private Type type;
     private String identifier;
@@ -24,7 +23,7 @@ public class MethodParameter implements Visitable{
         this.identifier = identifier;
     }
 
-    public MethodParameter(Primitives type, String identifier){
+    public MethodParameter(Primitives type, String identifier) {
         this.type = new BaseType(type);
         this.identifier = identifier;
     }
@@ -43,8 +42,10 @@ public class MethodParameter implements Visitable{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         MethodParameter that = (MethodParameter) o;
         return Objects.equals(type, that.type) && identifier.equals(that.identifier);
     }

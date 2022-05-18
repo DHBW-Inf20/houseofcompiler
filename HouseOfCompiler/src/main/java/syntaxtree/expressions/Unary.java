@@ -1,15 +1,14 @@
 package syntaxtree.expressions;
 
+import java.util.Objects;
+
 import common.Operator;
 import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.structure.MethodDecl;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
 
-import java.util.Objects;
-
-public class Unary implements IExpression{
+public class Unary implements IExpression {
 
     private IExpression expression;
     private Operator operator;
@@ -48,8 +47,10 @@ public class Unary implements IExpression{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Unary unary = (Unary) o;
         return expression.equals(unary.expression) && operator == unary.operator && Objects.equals(type, unary.type);
     }
@@ -58,6 +59,5 @@ public class Unary implements IExpression{
     public int hashCode() {
         return Objects.hash(expression, operator, type);
     }
-
 
 }

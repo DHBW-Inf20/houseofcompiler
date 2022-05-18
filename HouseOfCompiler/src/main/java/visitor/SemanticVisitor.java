@@ -1,14 +1,29 @@
 package visitor;
 
-
-import common.Type;
 import semantic.TypeCheckResult;
-import syntaxtree.expressions.*;
+import syntaxtree.expressions.Binary;
+import syntaxtree.expressions.BoolExpr;
+import syntaxtree.expressions.CharExpr;
+import syntaxtree.expressions.InstVar;
+import syntaxtree.expressions.IntegerExpr;
+import syntaxtree.expressions.LocalOrFieldVar;
+import syntaxtree.expressions.Null;
+import syntaxtree.expressions.This;
+import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
-import syntaxtree.statements.*;
-import syntaxtree.structure.*;
+import syntaxtree.statements.Block;
+import syntaxtree.statements.IfStmt;
+import syntaxtree.statements.LocalVarDecl;
+import syntaxtree.statements.ReturnStmt;
+import syntaxtree.statements.WhileStmt;
+import syntaxtree.structure.ClassDecl;
+import syntaxtree.structure.ConstructorDecl;
+import syntaxtree.structure.FieldDecl;
+import syntaxtree.structure.MethodDecl;
+import syntaxtree.structure.MethodParameter;
+import syntaxtree.structure.Program;
 
 public interface SemanticVisitor {
     TypeCheckResult typeCheck(Program toCheck);
@@ -24,7 +39,6 @@ public interface SemanticVisitor {
     TypeCheckResult typeCheck(Assign toCheck);
 
     TypeCheckResult typeCheck(MethodParameter toCheck);
-
 
     TypeCheckResult typeCheck(WhileStmt whileStmt);
 
