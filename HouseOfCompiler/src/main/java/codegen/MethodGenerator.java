@@ -335,6 +335,7 @@ public class MethodGenerator implements MethodCodeVisitor {
                 mv.visitVarInsn(Opcodes.ALOAD, index);
             }
         } else { // field var
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
             mv.visitFieldInsn(Opcodes.GETFIELD, className, localOrFieldVar.getIdentifier(), GenUtils.generateDescriptor(localOrFieldVar.getType()));
         }
     }
