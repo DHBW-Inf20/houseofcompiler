@@ -1,7 +1,10 @@
 package semantic;
 
+import java.util.LinkedHashSet;
+
 import common.BaseType;
 import common.Primitives;
+import common.PrintableVector;
 import common.ReferenceType;
 import common.Type;
 import context.Context;
@@ -65,9 +68,29 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(ClassDecl toCheck) {
+        var valid = true;
         System.out.println("ClassDecl");
 
-        toCheck.getFieldDelcarations().forEach(field -> field.accept(this));
+        PrintableVector<String> identifiers = new PrintableVector<>();
+        
+
+        for (FieldDecl field : toCheck.getFieldDelcarations()) {
+            var result = field.accept(this);
+            System.out.println(field.getIdentifier());
+            valid = valid && result.isValid();
+            identifiers.add(field.getIdentifier());
+        }
+
+        LinkedHashSet<String> identifierSet = new LinkedHashSet<>(identifiers);
+   
+        System.out.println(identifiers.size());
+        System.out.println(identifierSet.size());
+
+
+        if(identifierSet.size() != identifiers.size()){
+            throw new AlreadyDefinedException("Multiple FieldDeclaration of same identifier");
+        }
+
 
         if (toCheck.getConstructorDeclarations().isEmpty()) {
             new ConstructorDecl().accept(this);
@@ -83,14 +106,11 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(FieldDecl toCheck) {
-        if (toCheck.getType() != null) toCheck.setType(toCheck.getType()); // ???
-        System.out.print(" ");
-        if (toCheck.getType() != null) {
-            //field.getIdentifier().accept(this);
-            throw new AlreadyDefinedException("The field variable " + toCheck.getType() + " has already been defined");
-        }
+        var valid = true;
+        valid = valid && TypeHelper.typeExists(toCheck.getType(), context);
 
-        return null;
+
+        return new TypeCheckResult(valid, toCheck.getType());
     }
 
     @Override
@@ -113,7 +133,6 @@ public class SemanticCheck implements SemanticVisitor {
             var result = parameter.accept(this);
             valid = valid && result.isValid();
         }
-        var params = toCheck.getParameters();
         var methodBody = toCheck.getBlock();
         var result = methodBody.accept(this);
         return new TypeCheckResult(valid, result.getType());

@@ -165,4 +165,13 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("MultipleFields")
+    void multipleFields(){
+        Program program = Resources.getProgram("FailTests/MultiFieldDecl.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        
+    }
+
+
 }
