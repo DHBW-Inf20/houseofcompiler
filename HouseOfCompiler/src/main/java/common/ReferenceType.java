@@ -20,39 +20,5 @@ public class ReferenceType implements Type {
         return (String) identifier;
     }
 
-    @Override
-    public void visit(Program program) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void visit(ClassDecl clazz) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void visit(FieldDecl field) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void visit(ConstructorDecl constructor) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void visit(MethodDecl method) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void accept(SemanticVisitor v) {
-        // TODO Auto-generated method stub
-        
-    }
+  
 }
