@@ -217,5 +217,12 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("WhileTest")
+    void whileTest(){
+        Program program = Resources.getProgram("SimpleTests/WhileTest.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        
+    }
 
 }
