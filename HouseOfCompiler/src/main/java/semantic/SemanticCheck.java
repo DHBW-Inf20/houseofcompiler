@@ -170,7 +170,7 @@ public class SemanticCheck implements SemanticVisitor {
 
         // check type in the while expression/condition
         var conditionBool = whileStmt.getExpression().accept(this);
-        
+
         if (!TypeHelper.isBool(conditionBool.getType())) {
             throw new TypeMismatchException("Bool excepted in while expression");
         }
@@ -271,7 +271,8 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(BoolExpr boolExpr) {
-        return null;
+
+        return new TypeCheckResult(true, boolExpr.getType());
     }
 
     @Override
