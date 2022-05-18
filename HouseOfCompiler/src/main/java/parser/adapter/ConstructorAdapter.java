@@ -12,9 +12,11 @@ import java.util.Locale;
 public class ConstructorAdapter {
     public static ConstructorDecl adapt(JavaSubsetParser.ConstuctorDeclContext constuctorDeclContext){
         PrintableVector<MethodParameter> parameters = new PrintableVector<MethodParameter>();
-        constuctorDeclContext.parameterList().parameter().forEach(parameterContext ->
-                parameters.add(ParameterAdapter.adapt(parameterContext))
-        );
+        if (constuctorDeclContext.parameterList() != null) {
+            constuctorDeclContext.parameterList().parameter().forEach(parameterContext ->
+                    parameters.add(ParameterAdapter.adapt(parameterContext))
+            );
+        }
         Block block = BlockAdapter.adapt(constuctorDeclContext.block());
         return new ConstructorDecl(
                 AccessModifier.valueOf(

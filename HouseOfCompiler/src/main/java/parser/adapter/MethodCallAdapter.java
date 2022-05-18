@@ -30,7 +30,9 @@ public class MethodCallAdapter {
                 reciever = new LocalOrFieldVar(methodCallContext.reciever().Identifier().getText());
             }
         }
-        if (methodCallContext.revievingMethod() != null){ //A.b.m().n()
+        System.out.println(reciever.toString());
+        if (methodCallContext.revievingMethod().size() > 0){ //A.b.m().n()
+            System.out.println(methodCallContext.revievingMethod().size());
             reciever = recursivelyAdaptRecievingMethods(methodCallContext.revievingMethod(), methodCallContext.revievingMethod().size()-1, reciever);
         }
         return new MethodCall(
@@ -41,7 +43,9 @@ public class MethodCallAdapter {
     }
 
     private static MethodCall recursivelyAdaptRecievingMethods(List<JavaSubsetParser.RevievingMethodContext> contexts, int index, IExpression rootReciever){
+        System.out.println("checkig recursively");
         if (index > 0){
+            System.out.println(index);
             var arguments = new PrintableVector<IExpression>();
             contexts.get(index-1).argumentList().expression().forEach(a -> arguments.add(ExpressionAdapter.adapt(a)));
             return new MethodCall(

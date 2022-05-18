@@ -89,6 +89,12 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStmtExpr(JavaSubsetParser.StmtExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#unaryExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExpr(JavaSubsetParser.UnaryExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#instVar}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

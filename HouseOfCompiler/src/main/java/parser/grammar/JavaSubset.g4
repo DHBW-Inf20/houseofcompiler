@@ -18,7 +18,8 @@ argumentList: expression? | expression (Comma expression)*?;
 expression: subExpression | binaryExpr; //FIXME unary Expressions fehlen noch
 
 //subExpression to dissolve left-recusion
-subExpression: Identifier | instVar | value | stmtExpr | OpenRoundBracket expression ClosedRoundBracket;
+subExpression: Identifier | instVar | value | stmtExpr | unaryExpr | OpenRoundBracket expression ClosedRoundBracket;
+
 //FIXME macht es mehr sinn den Methodenaufruf rekursiv umzusetzen? sodass vorstehende Methodenaufrufe als reciever gehandhabt werden?
 //methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
 //reciever: (instVar | Identifier Dot | methodCall Dot)
@@ -29,11 +30,13 @@ statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | i
 //a = expr, new Object(), method(param1)
 stmtExpr: assign | newDecl | methodCall;
 
+unaryExpr: Not expression;
+
 instVar: This Dot Identifier | (This Dot)? (Identifier Dot)+ Identifier;
 
 binaryExpr: subExpression operator expression;
 
-operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator;
+operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator | Not;
 
 //Statements
 returnStmt: Return expression;
@@ -76,6 +79,7 @@ GreaterEqual: '>=';
 LessEqual: '<=';
 Equal: '==';
 NotEqual: '!=';
+Not: '!';
 And: '&&';
 Or: '||';
 

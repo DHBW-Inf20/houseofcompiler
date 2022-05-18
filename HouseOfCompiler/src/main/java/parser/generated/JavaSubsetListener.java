@@ -138,6 +138,16 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitStmtExpr(JavaSubsetParser.StmtExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#unaryExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryExpr(JavaSubsetParser.UnaryExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#unaryExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryExpr(JavaSubsetParser.UnaryExprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#instVar}.
 	 * @param ctx the parse tree
 	 */

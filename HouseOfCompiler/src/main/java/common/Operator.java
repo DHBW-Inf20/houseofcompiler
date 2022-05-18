@@ -13,6 +13,7 @@ public enum Operator {
     LESSEQUAL,
     EQUAL,
     NOTEQUAL,
+    NOT,
     AND,
     OR
 }

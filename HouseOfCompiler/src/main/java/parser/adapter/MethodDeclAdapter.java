@@ -1,7 +1,6 @@
 package parser.adapter;
 
-import common.AccessModifier;
-import common.PrintableVector;
+import common.*;
 import parser.generated.JavaSubsetParser;
 import syntaxtree.statements.Block;
 import syntaxtree.structure.MethodDecl;
@@ -16,9 +15,15 @@ public class MethodDeclAdapter {
             );
         }
         var block = BlockAdapter.adapt(methodDeclContext.block());
-        var type = TypeAdapter.adapt(methodDeclContext.type());
+        Type type = new BaseType(Primitives.VOID);
+        if (methodDeclContext.type() != null)
+                type = TypeAdapter.adapt(methodDeclContext.type());
+        AccessModifier accessModifier = AccessModifier.PACKAGE_PRIVATE;
+        if (methodDeclContext.AccessModifier() != null){
+            accessModifier = AccessModifier.valueOf(methodDeclContext.AccessModifier().getText());
+        }
         var methodDecl = new MethodDecl(
-                AccessModifier.valueOf(methodDeclContext.AccessModifier().getText()),
+                accessModifier,
                 type,
                 methodDeclContext.Identifier().getText(),
                 parameters,

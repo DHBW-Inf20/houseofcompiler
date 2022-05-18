@@ -14,6 +14,8 @@ public class SubExpressionAdapter {
                 return InstVarAdapter.adapt(subExpressionContext.instVar());
         else if (subExpressionContext.value() != null)
                 return ValueAdapter.adapt(subExpressionContext.value());
+        else if (subExpressionContext.unaryExpr() != null)
+                return UnaryAdapter.adapt(subExpressionContext.unaryExpr());
         else if (subExpressionContext.stmtExpr() != null)
                 return StatementExpressionAdapter.adapt(subExpressionContext.stmtExpr());
         else //expression

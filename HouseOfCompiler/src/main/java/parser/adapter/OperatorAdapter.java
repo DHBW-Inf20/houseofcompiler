@@ -19,6 +19,7 @@ public class OperatorAdapter {
             case "<=": return Operator.LESSEQUAL;
             case "==": return Operator.EQUAL;
             case "!=": return Operator.NOTEQUAL;
+            case "!": return Operator.NOT;
             case "&&": return Operator.AND;
             default: return Operator.OR;
         }
