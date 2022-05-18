@@ -38,6 +38,8 @@ binaryExpr: subExpression operator expression;
 
 operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator | Not;
 
+BooleanValue: 'true'|'false';
+
 //Statements
 returnStmt: Return expression;
 localVarDecl: type Identifier (Assign expression)?;
@@ -109,7 +111,6 @@ fragment ValidIdentSymbols : Alpabetic|Numeric|'$'|'_';
 Identifier: Alpabetic ValidIdentSymbols*;
 
 //Values
-BooleanValue: 'true'|'false';
 CharValue: Alpabetic;
 IntValue: Minus? Numeric+;
 
