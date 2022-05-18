@@ -153,13 +153,16 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(WhileStmt whileStmt) {
-        var condResult = whileStmt.getBlock().accept(this);
-        if (!TypeHelper.isBool(condResult.getType())){
+
+        //check type in the while expression/condition
+        var conditionBool = whileStmt.getExpression().accept(this);
+        if (!TypeHelper.isBool(conditionBool.getType())){
             throw new TypeMismatchException("Bool excepted");
         }
+        //check block
         var blockResult = whileStmt.getBlock().accept(this);
 
-        var valid = condResult.isValid() && blockResult.isValid() && TypeHelper.isBool(condResult.getType());
+        var valid = conditionBool.isValid() && blockResult.isValid() && TypeHelper.isBool(conditionBool.getType());
         return new TypeCheckResult(valid, blockResult.getType());
     }
 
@@ -189,6 +192,7 @@ public class SemanticCheck implements SemanticVisitor {
         Type returnType = null;
         for (var statement : statements) {
             var result = statement.accept(this);
+
             if(statement instanceof ReturnStmt){
                 if(returnType == null){
                     returnType = result.getType();
