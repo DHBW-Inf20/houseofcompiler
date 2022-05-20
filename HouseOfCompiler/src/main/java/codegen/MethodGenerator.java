@@ -367,7 +367,15 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(CharExpr charExpr) {
-        mv.visitIntInsn(Opcodes.BIPUSH, charExpr.getValue());
+        char value = charExpr.getValue();
+
+        if (value <= Byte.MAX_VALUE) {
+            mv.visitIntInsn(Opcodes.BIPUSH, value);
+        } else if (value <= Short.MAX_VALUE) {
+            mv.visitIntInsn(Opcodes.SIPUSH, value);
+        } else {
+            mv.visitLdcInsn(value);
+        }
     }
 
     /**
@@ -375,7 +383,15 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(IntegerExpr integerExpr) {
-        mv.visitIntInsn(Opcodes.BIPUSH, integerExpr.getValue());
+        int value = integerExpr.getValue();
+
+        if (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) {
+            mv.visitIntInsn(Opcodes.BIPUSH, value);
+        } else if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) {
+            mv.visitIntInsn(Opcodes.SIPUSH, value);
+        } else {
+            mv.visitLdcInsn(value);
+        }
     }
 
     /**
