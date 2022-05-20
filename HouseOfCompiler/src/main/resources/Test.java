@@ -1,6 +1,6 @@
 class Test {
 
-    int voidMethod() {
+    void voidMethod() {
         return 1;
     }
 

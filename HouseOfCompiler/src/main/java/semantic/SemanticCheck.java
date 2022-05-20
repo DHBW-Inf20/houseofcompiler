@@ -67,11 +67,13 @@ public class SemanticCheck implements SemanticVisitor {
         if (result.isValid()) {
             return program;
         } else {
-            var errorString = "\n";
+            String ANSI_RESET = "\u001B[0m";
+            String ANSI_RED = "\u001B[31m";
+            var errorString = ANSI_RED;
             for (int i = semanticCheck.errors.size() - 1; i >= 0; i--) {
-                errorString += semanticCheck.errors.get(i).getMessage() + "\n\n";
+                errorString += semanticCheck.errors.get(i).getMessage() + "\n";
             }
-            throw new SemanticError(errorString);
+            throw new SemanticError(errorString + ANSI_RESET);
         }
     }
 

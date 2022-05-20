@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import codegen.ProgramGenerator;
+import semantic.exceptions.SemanticError;
 import syntaxtree.structure.Program;
 
 public class Compiler implements CompilerFactory {
@@ -64,7 +65,7 @@ public class Compiler implements CompilerFactory {
     }
 
     @Override
-    public void compileTest(InputStream inputStream) {
+    public void compileTest(InputStream inputStream) throws SemanticError {
         IAstAdapter astAdapter = this.getAstAdapter();
         ITastAdapter tastAdapter = this.getTastAdapter();
         IProgramGenerator programGenerator = this.getProgramGenerator();
@@ -126,7 +127,7 @@ public class Compiler implements CompilerFactory {
     }
 
     @Override
-    public void compile(InputStream inputStream, String outDir) {
+    public void compile(InputStream inputStream, String outDir) throws SemanticError {
         IAstAdapter astAdapter = this.getAstAdapter();
         ITastAdapter tastAdapter = this.getTastAdapter();
         IProgramGenerator programGenerator = this.getProgramGenerator();

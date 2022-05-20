@@ -31,7 +31,6 @@ public class AstAdapter implements IAstAdapter {
         JavaSubsetLexer lexer = new JavaSubsetLexer(charStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaSubsetParser parser = new JavaSubsetParser(tokens);
-
         return ProgramAdapter.adapt(parser.program());
     }
 }
