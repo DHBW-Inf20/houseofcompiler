@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Date;
-import java.util.Random;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -260,6 +258,116 @@ public class TestRunner {
             var testMethod = loader.getMethod("MultClassesReference2", "test");
             var ivalue = testMethod.invoke(multclassref2);
             assertEquals(value, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("IfStatement")
+    void ifStatement() {
+        Program program = Resources.getProgram("SimpleTests/IfStatement.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("IfStatement");
+        Object o = null;
+        int value = -1;
+        int result;
+        if (value == 1) {
+            result = 10;
+        } else {
+            result = 100;
+        }
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("IfStatement", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, value);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("IfElseStatement")
+    void ifElseStatement() {
+        Program program = Resources.getProgram("SimpleTests/IfElseStatement.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("IfElseStatement");
+        Object o = null;
+        int value = -1;
+        int result;
+        if (value == 1) {
+            result = 10;
+        } else {
+            result = 100;
+        }
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("IfElseStatement", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, value);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("IfElseIfStatement")
+    void ifElseIfStatement() {
+        Program program = Resources.getProgram("SimpleTests/IfElseIfStatement.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("IfElseIfStatement");
+        Object o = null;
+        int value = 3;
+        int result;
+        if (value == 1) {
+            result = 10;
+        } else if (value == 2) {
+            result = 127;
+        } else {
+            result = 128;
+        }
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("IfElseIfStatement", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, value);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("IfElseIfStatementWithoutReturn")
+    void ifElseIfStatementWithoutReturn() {
+        Program program = Resources.getProgram("SimpleTests/IfElseIfStatementWithoutReturn.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("IfElseIfStatementWithoutReturn");
+        Object o = null;
+        int value = 3;
+        int result;
+        if (value == 1) {
+            result = 10;
+        } else if (value == 2) {
+            result = 20;
+        } else {
+            result = 30;
+        }
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("IfElseIfStatementWithoutReturn", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, value);
+            assertEquals(result, ivalue);
         } catch (Exception e) {
             fail(e.getMessage());
         }

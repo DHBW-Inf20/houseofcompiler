@@ -1,6 +1,7 @@
 package semantic;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import common.BaseType;
 import common.Operator;
@@ -356,7 +357,46 @@ public class SemanticCheck implements SemanticVisitor {
      */
     @Override
     public TypeCheckResult typeCheck(IfStmt ifStmt) {
-        return null;
+
+        var valid = true;
+        // check the Condition
+        var conditionResult = ifStmt.getCondition().accept(this);
+        valid = valid && conditionResult.isValid();
+        if (!TypeHelper.isBool(conditionResult.getType())) {
+            errors.add(
+                    new TypeMismatchException(
+                            "If Condition expected " + Primitives.BOOL + " but got " + conditionResult.getType()
+                                    + TypeHelper.generateLocationString(ifStmt.line, ifStmt.column, fileName)));
+            valid = false;
+        }
+
+        // check the if block
+        var ifBlockResult = ifStmt.getBlockIf().accept(this);
+        valid = valid && ifBlockResult.isValid();
+
+        // check the else block
+        if (ifStmt.getBlockElse() != null) {
+            var elseBlockResult = ifStmt.getBlockElse().accept(this);
+            valid = valid && elseBlockResult.isValid();
+            var elseType = elseBlockResult.getType();
+            if (elseType == null) {
+                elseType = new BaseType(Primitives.VOID);
+            }
+
+            if (!Objects.equals(elseType, ifBlockResult.getType())) {
+                errors.add(new TypeMismatchException(
+                        "If and Else Blocks have different return-Types: " + ifBlockResult.getType() + " and "
+                                + elseType
+                                + TypeHelper.generateLocationString(ifStmt.line, ifStmt.column, fileName)));
+                valid = false;
+            } else {
+                ifStmt.setType(elseType);
+            }
+        } else {
+            ifStmt.setType(ifBlockResult.getType());
+        }
+
+        return new TypeCheckResult(valid, ifBlockResult.getType());
     }
 
     /**
@@ -377,8 +417,9 @@ public class SemanticCheck implements SemanticVisitor {
                 if (blockReturnType == null) { // Initiale setzen des Return type
                     blockReturnType = result.getType();
                 } else {
-                    if (blockReturnType != result.getType()) { // wenn es 2 verschiedene return types gibt, dann ist es
-                                                               // fehlerhaft
+                    if (!blockReturnType.equals(result.getType())) { // wenn es 2 verschiedene return types gibt, dann
+                                                                     // ist es
+                        // fehlerhaft
                         errors.add(new TypeMismatchException(
                                 "Return types are mismatching in a single Block, got:" + blockReturnType
                                         + " and " + result.getType()
@@ -612,27 +653,36 @@ public class SemanticCheck implements SemanticVisitor {
                         + lResult.getType() + ", " + rResult.getType()
                         + TypeHelper.generateLocationString(binary.line, binary.column, fileName));
 
+        // Following vars are there to determine the type of the binary expression
+        final Operator operator = binary.getOperator();
+
+        final boolean isCompareOperator = (binary.getOperator() == Operator.EQUAL
+                || operator == Operator.NOTEQUAL || operator == Operator.LESS
+                || operator == Operator.LESSEQUAL || operator == Operator.GREATER
+                || operator == Operator.GREATEREQUAL);
+
+        final boolean isLogicalOperator = (operator == Operator.AND || operator == Operator.OR);
+        final boolean isArithmeticOperator = (operator == Operator.PLUS || operator == Operator.MINUS
+                || operator == Operator.MULT || operator == Operator.DIV);
         // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
         // gleiche Typen
+        // TODO: Chars dürfen mit Ints verglichen werden
+        // TODO: ReferenceTypes dürfen mit Equal und NotEqual verglichen werden
         if (lResult.getType() instanceof ReferenceType || !lResult.getType().equals(rResult.getType())) {
             errors.add(errorToThrow);
             valid = false;
         } else {
             BaseType lType = (BaseType) lResult.getType();
+
             switch (lType.getIdentifier()) {
                 case BOOL -> {
-                    if (binary.getOperator() != Operator.AND || binary.getOperator() != Operator.OR
-                            || binary.getOperator() != Operator.EQUAL
-                            || binary.getOperator() != Operator.NOTEQUAL || binary.getOperator() != Operator.LESS
-                            || binary.getOperator() != Operator.LESSEQUAL || binary.getOperator() != Operator.GREATER
-                            || binary.getOperator() != Operator.GREATEREQUAL) {
+                    if (!isLogicalOperator && !isCompareOperator) {
                         errors.add(errorToThrow);
                         valid = false;
                     }
                 }
                 case INT -> {
-                    if (binary.getOperator() != Operator.PLUS && binary.getOperator() != Operator.MINUS
-                            && binary.getOperator() != Operator.MULT && binary.getOperator() != Operator.DIV) {
+                    if (!isArithmeticOperator && !isCompareOperator) {
                         errors.add(errorToThrow);
                         valid = false;
                     }
@@ -644,12 +694,19 @@ public class SemanticCheck implements SemanticVisitor {
             }
 
         }
+
+        if (valid) {
+            if (isLogicalOperator || isCompareOperator) {
+                binary.setType(new BaseType(Primitives.BOOL));
+            } else {
+                binary.setType(lResult.getType());
+            }
+        } else {
+            binary.setType(new BaseType(Primitives.VOID));
+        }
+
         valid = valid && lResult.isValid() && rResult.isValid();
 
-        if (valid)
-            binary.setType(lResult.getType());
-        else
-            binary.setType(new BaseType(Primitives.VOID));
         return new TypeCheckResult(valid, binary.getType());
     }
 }

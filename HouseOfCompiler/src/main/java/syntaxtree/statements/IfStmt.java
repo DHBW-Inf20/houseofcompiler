@@ -31,6 +31,14 @@ public class IfStmt implements IStatement {
         this.column = column;
     }
 
+    public IfStmt(IExpression condition, IStatement blockIf, int line, int column) {
+        this.condition = condition;
+        this.blockIf = blockIf;
+        this.blockElse = null;
+        this.line = line;
+        this.column = column;
+    }
+
     /**
      * @return IExpression
      */
