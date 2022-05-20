@@ -1,8 +1,9 @@
 package semantic;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 
 import common.BaseType;
+import common.Operator;
 import common.Primitives;
 import common.PrintableVector;
 import common.ReferenceType;
@@ -11,7 +12,7 @@ import context.Context;
 import context.ScopeContext;
 import semantic.exceptions.AlreadyDefinedException;
 import semantic.exceptions.FieldNotFoundException;
-import semantic.exceptions.InvalidASTException;
+import semantic.exceptions.SemanticError;
 import semantic.exceptions.TypeMismatchException;
 import semantic.exceptions.TypeUnkown;
 import semantic.exceptions.VariableNotDeclaredException;
@@ -45,12 +46,27 @@ public class SemanticCheck implements SemanticVisitor {
     private Context context;
     private ClassDecl currentClass;
 
+    private ArrayList<String> currentFields = new ArrayList<>();
+    private String currentMethod = "";
+    private Type currentMethodReturnType;
+    private Type currentAssignLeftType;
+    private String fileName;
     private ScopeContext currentLocalScope;
 
-    public static Program generateTast(Program program) {
+    public ArrayList<Exception> errors = new ArrayList<>();
+
+    public static Program generateTast(Program program) throws SemanticError {
         SemanticCheck semanticCheck = new SemanticCheck();
-        program.accept(semanticCheck);
-        return program;
+        var result = program.accept(semanticCheck);
+        if (result.isValid()) {
+            return program;
+        } else {
+            var errorString = "\n";
+            for (int i = semanticCheck.errors.size() - 1; i >= 0; i--) {
+                errorString += semanticCheck.errors.get(i).getMessage() + "\n\n";
+            }
+            throw new SemanticError(errorString);
+        }
     }
 
     private boolean compareTypes(Type type1, Type type2) {
@@ -60,66 +76,60 @@ public class SemanticCheck implements SemanticVisitor {
                         type2.equals(new BaseType(Primitives.CHAR)));
     }
 
-    private Tuple<Type, Type> typeAssign(IExpression expression1, IExpression expression2) { // where to set type of
-                                                                                             // these ?
-
-        Type typedExpression1 = expression1.getType(); // set type
-        Type typedExpression2 = expression2.getType(); // set type
-        if (!(typedExpression1 instanceof LocalOrFieldVar || typedExpression1 instanceof InstVar)) { // what here
-            throw new InvalidASTException("Left side of the assign is not assignable");
-        }
-        if (!compareTypes(typedExpression1, typedExpression2)) {
-            throw new TypeMismatchException("Type " + typedExpression2 + " cannot be assigned to " +
-                    typedExpression1);
-        }
-        return new Tuple<>(typedExpression1, typedExpression2);
-    }
-
     @Override
     public TypeCheckResult typeCheck(Program toCheck) {
 
         context = new Context(toCheck);
         currentLocalScope = new ScopeContext();
+        var valid = true;
         for (ClassDecl classDecl : toCheck.getClasses()) {
-            classDecl.accept(this);
+            valid = classDecl.accept(this).isValid() && valid;
         }
 
-        return null;
+        return new TypeCheckResult(valid, null);
     }
 
     @Override
     public TypeCheckResult typeCheck(ClassDecl toCheck) {
         var valid = true;
         this.currentClass = toCheck; // For the Class-Context
+        if (fileName == null) {
+            this.fileName = toCheck.getIdentifier() + ".java";
+        }
         PrintableVector<String> identifiers = new PrintableVector<>();
 
         for (FieldDecl field : toCheck.getFieldDelcarations()) {
             var result = field.accept(this);
             valid = valid && result.isValid();
-            identifiers.add(field.getIdentifier());
-        }
-
-        LinkedHashSet<String> identifierSet = new LinkedHashSet<>(identifiers);
-
-        if (identifierSet.size() != identifiers.size()) {
-            throw new AlreadyDefinedException("Multiple FieldDeclaration of same identifier");
+            if (valid)
+                identifiers.add(field.getIdentifier());
         }
 
         if (toCheck.getConstructorDeclarations().isEmpty()) {
             new ConstructorDecl().accept(this);
         } else {
-            toCheck.getConstructorDeclarations().forEach(constructor -> {
-                constructor.accept(this);
-            });
+            for (ConstructorDecl constructorDecl : toCheck.getConstructorDeclarations()) {
+                valid = constructorDecl.accept(this).isValid() && valid;
+            }
         }
-        toCheck.getMethodDeclarations().forEach(method -> method.accept(this));
+        for (MethodDecl methodDecl : toCheck.getMethodDeclarations()) {
+            valid = methodDecl.accept(this).isValid() && valid;
+        }
 
-        return null;
+        return new TypeCheckResult(valid, new ReferenceType(toCheck.getIdentifier()));
     }
 
     @Override
     public TypeCheckResult typeCheck(FieldDecl toCheck) {
         var valid = true;
+        if (currentFields.contains(toCheck.getIdentifier())) {
+            errors.add(new AlreadyDefinedException(
+                    "Field " + toCheck.getIdentifier() + " is already defined in class " + currentClass.getIdentifier()
+                            + TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
+            valid = false;
+        } else {
+            currentFields.add(toCheck.getIdentifier());
+        }
         valid = valid && TypeHelper.typeExists(toCheck.getType(), context);
 
         return new TypeCheckResult(valid, toCheck.getType());
@@ -134,8 +144,16 @@ public class SemanticCheck implements SemanticVisitor {
             valid = valid && result.isValid();
             currentLocalScope.addLocalVar(parameter);
         }
+        currentMethodReturnType = new BaseType(Primitives.VOID);
+        currentMethod = this.currentClass.getIdentifier();
         var result = toCheck.getBlock().accept(this);
         currentLocalScope.popScope();
+        if (result.getType() != null && result.getType() != new BaseType(Primitives.VOID)) {
+            errors.add(new TypeMismatchException(
+                    "The return-Type of a Constructor must always be void " +
+                            TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
+            valid = false;
+        }
         valid = result.isValid() && valid;
         return new TypeCheckResult(valid, toCheck.getType());
     }
@@ -150,24 +168,29 @@ public class SemanticCheck implements SemanticVisitor {
             valid = valid && result.isValid();
             currentLocalScope.addLocalVar(parameter);
         }
+        currentMethodReturnType = methodDecl.getType();
+        currentMethod = methodDecl.getIdentifier();
         var result = methodDecl.getBlock().accept(this);
+        valid = valid && result.isValid();
         currentLocalScope.popScope();
         var resultType = result.getType();
         if (resultType == null) {
             resultType = new BaseType(Primitives.VOID);
         }
         if (!resultType.equals(methodDecl.getType())) {
-            throw new TypeMismatchException("Function: " + methodDecl.getIdentifier() + " with type "
-                    + methodDecl.getType() + " has mismatching return Type: " + resultType);
+            errors.add(new TypeMismatchException("Method-Declaration " + methodDecl.getIdentifier() + " with type "
+                    + methodDecl.getType() + " has at least one Mismatching return Type:"
+                    + TypeHelper.generateLocationString(methodDecl.line, methodDecl.column, fileName)));
+            valid = false;
         }
         return new TypeCheckResult(valid, resultType);
     }
 
     @Override
     public TypeCheckResult typeCheck(Assign toCheck) {
-
         IExpression lExpression = toCheck.getlExpression();
         IExpression rExpression = toCheck.getrExpression();
+        var valid = true;
 
         // This check currently handles things like :
         /**
@@ -177,45 +200,58 @@ public class SemanticCheck implements SemanticVisitor {
          * }
          */
         if (lExpression.equals(rExpression)) {
-            throw new TypeMismatchException("Cannot assign to self");
+            errors.add(new TypeMismatchException("Cannot assign to self"
+                    + TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
+            valid = false;
         }
-        var valid = true;
 
         var lResult = lExpression.accept(this);
+        currentAssignLeftType = lResult.getType();
         var rResult = rExpression.accept(this);
 
         if (!lExpression.getType().equals(rExpression.getType())) {
-            throw new TypeMismatchException(
+            errors.add(new TypeMismatchException(
                     "Mismatch types in Assign-Statement got: \"" + lResult.getType() + "\" and \""
-                            + rResult.getType() + "\"");
+                            + rResult.getType() + "\""
+                            + TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
+            valid = false;
         } else {
             toCheck.setType(lExpression.getType());
         }
         valid = valid && lResult.isValid() && rResult.isValid();
-
+        currentAssignLeftType = null;
         return new TypeCheckResult(valid, null); // return type is null to get the return type sufficently
     }
 
     @Override
     public TypeCheckResult typeCheck(MethodParameter toCheck) {
-        if (TypeHelper.typeExists(toCheck.getType(), this.context))
+        if (TypeHelper.typeExists(toCheck.getType(), this.context)) {
             return new TypeCheckResult(true, toCheck.getType());
-        throw new TypeUnkown("Type: " + toCheck.getType() + " is unknown");
+        } else {
+            errors.add(new TypeUnkown("Type: " + toCheck.getType() + " is unknown"
+                    + TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
+            return new TypeCheckResult(false, toCheck.getType());
+        }
     }
 
     @Override
     public TypeCheckResult typeCheck(WhileStmt whileStmt) {
 
         // check type in the while expression/condition
+        var valid = true;
         var conditionBool = whileStmt.getExpression().accept(this);
-
+        valid = valid && conditionBool.isValid();
         if (!TypeHelper.isBool(conditionBool.getType())) {
-            throw new TypeMismatchException("While Condition expected type BOOL but got " + conditionBool.getType());
+            errors.add(
+                    new TypeMismatchException(
+                            "While Condition expected " + Primitives.BOOL + " but got " + conditionBool.getType()
+                                    + TypeHelper.generateLocationString(whileStmt.line, whileStmt.column, fileName)));
+            valid = false;
         }
         // check block
         var blockResult = whileStmt.getBlock().accept(this);
         whileStmt.setType(blockResult.getType());
-        var valid = conditionBool.isValid() && blockResult.isValid() && TypeHelper.isBool(conditionBool.getType());
+        valid = valid && conditionBool.isValid() && blockResult.isValid() && TypeHelper.isBool(conditionBool.getType());
         return new TypeCheckResult(valid, blockResult.getType());
     }
 
@@ -224,7 +260,13 @@ public class SemanticCheck implements SemanticVisitor {
 
         var returnExpression = returnStmt.getExpression().accept(this);
         returnStmt.setType(returnExpression.getType());
-
+        if (currentMethodReturnType != null && !currentMethodReturnType.equals(returnExpression.getType())) {
+            errors.add(
+                    new TypeMismatchException("Return-Type mismatch:  cannot convert from " + returnExpression.getType()
+                            + " to " + currentMethodReturnType
+                            + TypeHelper.generateLocationString(returnStmt.line, returnStmt.column, fileName)));
+            return new TypeCheckResult(false, returnExpression.getType());
+        }
         return new TypeCheckResult(true, returnStmt.getType());
     }
 
@@ -237,16 +279,24 @@ public class SemanticCheck implements SemanticVisitor {
             TypeCheckResult result = localVarDecl.getExpression().accept(this);
 
             var resultType = result.getType();
+            valid = result.isValid() && valid;
 
             if (!resultType.equals(localVarDecl.getType())) {
-                throw new TypeMismatchException("LocalVarDecl: " + localVarDecl.getIdentifier() + " with type "
-                        + localVarDecl.getType() + " has mismatching Initializer-Type : " + resultType);
+                errors.add(new TypeMismatchException(
+                        "Type mismatch: cannot convert from " + resultType + " to " + localVarDecl.getType()
+                                + TypeHelper.generateLocationString(localVarDecl.line, localVarDecl.column, fileName)));
+                valid = false;
             }
 
-            valid = result.isValid() && valid;
         }
 
-        currentLocalScope.addLocalVar(localVarDecl);
+        try {
+            currentLocalScope.addLocalVar(localVarDecl);
+        } catch (AlreadyDefinedException e) {
+            errors.add(new AlreadyDefinedException(e.getMessage() + TypeHelper.generateLocationString(localVarDecl.line,
+                    localVarDecl.column, fileName)));
+            valid = false;
+        }
         return new TypeCheckResult(valid, null);
     }
 
@@ -271,9 +321,11 @@ public class SemanticCheck implements SemanticVisitor {
                 } else {
                     if (blockReturnType != result.getType()) { // wenn es 2 verschiedene return types gibt, dann ist es
                                                                // fehlerhaft
-                        throw new TypeMismatchException(
+                        errors.add(new TypeMismatchException(
                                 "Return types are mismatching in a single Block, got:" + blockReturnType
-                                        + " and " + result.getType());
+                                        + " and " + result.getType()
+                                        + TypeHelper.generateLocationString(block.line, block.column, fileName)));
+                        valid = false;
                     }
                 }
             }
@@ -292,7 +344,9 @@ public class SemanticCheck implements SemanticVisitor {
         var newClass = newDecl.getType();
 
         if (!TypeHelper.typeExists(newClass, this.context)) {
-            throw new TypeUnkown("Type: " + newClass + " is unknown");
+            errors.add(new TypeUnkown("Type: " + newClass + " is unknown"
+                    + TypeHelper.generateLocationString(newDecl.line, newDecl.column, fileName)));
+            valid = false;
         }
 
         for (var arguments : newDecl.getArguments()) {
@@ -300,7 +354,13 @@ public class SemanticCheck implements SemanticVisitor {
             valid = valid && result.isValid();
         }
 
-        var constructor = TypeHelper.getConstructor(newDecl, this.context);
+        try {
+            var constructor = TypeHelper.getConstructor(newDecl, this.context);
+        } catch (TypeMismatchException e) {
+            errors.add(new SemanticError(e.getMessage() + TypeHelper.generateLocationString(newDecl.line,
+                    newDecl.column, fileName)));
+            valid = false;
+        }
 
         return new TypeCheckResult(valid, newDecl.getType());
     }
@@ -341,7 +401,15 @@ public class SemanticCheck implements SemanticVisitor {
 
     @Override
     public TypeCheckResult typeCheck(Null aNull) {
-        return null;
+        if (currentAssignLeftType != null) {
+            var assignType = currentAssignLeftType;
+            if (assignType != null) {
+                aNull.setType(assignType);
+            }
+        } else {
+            aNull.setType(null);
+        }
+        return new TypeCheckResult(true, aNull.getType());
     }
 
     @Override
@@ -365,8 +433,11 @@ public class SemanticCheck implements SemanticVisitor {
             return new TypeCheckResult(true, localVar);
         }
 
-        throw new VariableNotDeclaredException(
-                "Variable: " + localOrFieldVar.getIdentifier() + " is not declared in this scope");
+        errors.add(new VariableNotDeclaredException(
+                "Variable: " + localOrFieldVar.getIdentifier() + " is not declared in this scope"
+                        + TypeHelper.generateLocationString(localOrFieldVar.line, localOrFieldVar.column, fileName)));
+        return new TypeCheckResult(false, null);
+
     }
 
     @Override
@@ -378,8 +449,6 @@ public class SemanticCheck implements SemanticVisitor {
     public TypeCheckResult typeCheck(InstVar instVar) {
 
         var valid = true;
-
-        // TODO: Currently we only check the instVars of the current class i think!!!
 
         /**
          * Ein InstVar ist ja z.B. this.foo.bar...
@@ -396,14 +465,19 @@ public class SemanticCheck implements SemanticVisitor {
         var result = instVar.getExpression().accept(this); // Hier steht der typ drinne von dem der identifier ist...
         var type = result.getType();
         if (type instanceof BaseType) {
-            throw new TypeMismatchException(
-                    "Type: " + type + ", is a BaseType and does not offer any Instance Variables or Methods");
+            errors.add(new TypeMismatchException(
+                    "Type: " + type + ", is a BaseType and does not offer any Instance Variables or Methods"
+                            + TypeHelper.generateLocationString(instVar.line, instVar.column, fileName)));
+            valid = false;
         }
         var nextInstVar = TypeHelper.getFieldInType(instVar.getIdentifier(), type, this.context);
 
         // Check if the identifier exists in current Type
         if (nextInstVar == null) {
-            throw new FieldNotFoundException("Field: " + instVar.getIdentifier() + " not found in Class: " + type);
+            errors.add(
+                    new FieldNotFoundException("Field: " + instVar.getIdentifier() + " not found in Class: " + type
+                            + TypeHelper.generateLocationString(instVar.line, instVar.column, fileName)));
+            valid = false;
         }
         valid = valid && result.isValid();
         var newType = nextInstVar.getType();
@@ -431,17 +505,49 @@ public class SemanticCheck implements SemanticVisitor {
         var lResult = binary.getlExpression().accept(this);
         var rResult = binary.getrExpression().accept(this);
 
+        var errorToThrow = new TypeMismatchException(
+                "The Operator: " + binary.getOperator() + " is undefined for the argument types: "
+                        + lResult.getType() + ", " + rResult.getType()
+                        + TypeHelper.generateLocationString(binary.line, binary.column, fileName));
+
+        // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
+        // gleiche Typen
+        if (lResult.getType() instanceof ReferenceType || !lResult.getType().equals(rResult.getType())) {
+            errors.add(errorToThrow);
+            valid = false;
+        } else {
+            BaseType lType = (BaseType) lResult.getType();
+            switch (lType.getIdentifier()) {
+                case BOOL -> {
+                    if (binary.getOperator() != Operator.AND || binary.getOperator() != Operator.OR
+                            || binary.getOperator() != Operator.EQUAL
+                            || binary.getOperator() != Operator.NOTEQUAL || binary.getOperator() != Operator.LESS
+                            || binary.getOperator() != Operator.LESSEQUAL || binary.getOperator() != Operator.GREATER
+                            || binary.getOperator() != Operator.GREATEREQUAL) {
+                        errors.add(errorToThrow);
+                        valid = false;
+                    }
+                }
+                case INT -> {
+                    if (binary.getOperator() != Operator.PLUS && binary.getOperator() != Operator.MINUS
+                            && binary.getOperator() != Operator.MULT && binary.getOperator() != Operator.DIV) {
+                        errors.add(errorToThrow);
+                        valid = false;
+                    }
+                }
+                default -> {
+                    errors.add(errorToThrow);
+                }
+
+            }
+
+        }
         valid = valid && lResult.isValid() && rResult.isValid();
 
-        if (!lResult.getType().equals(rResult.getType())) {
-            throw new TypeMismatchException(
-                    "Mismatch types in Binary-Statement got: \"" + lResult.getType() + "\" and \""
-                            + rResult.getType() + "\"");
-        } else {
+        if (valid)
             binary.setType(lResult.getType());
-        }
-
-        binary.getlExpression();
-        return null;
+        else
+            binary.setType(new BaseType(Primitives.VOID));
+        return new TypeCheckResult(valid, binary.getType());
     }
 }

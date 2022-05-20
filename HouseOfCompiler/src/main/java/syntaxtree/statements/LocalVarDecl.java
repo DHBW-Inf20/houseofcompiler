@@ -33,6 +33,14 @@ public class LocalVarDecl implements IStatement {
         this.expression = expression;
     }
 
+    public LocalVarDecl(String identifier, IExpression expression, int line, int column) {
+        this.type = type;
+        this.identifier = identifier;
+        this.expression = expression;
+        this.line = line;
+        this.column = column;
+    }
+
     public LocalVarDecl(Type type, String identifier, IExpression expression, int line, int column) {
         this.type = type;
         this.identifier = identifier;

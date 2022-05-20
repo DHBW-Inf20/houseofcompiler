@@ -16,8 +16,7 @@ import common.BaseType;
 import common.Compiler;
 import common.Primitives;
 import common.PrintableVector;
-import semantic.exceptions.AlreadyDefinedException;
-import semantic.exceptions.TypeMismatchException;
+import semantic.exceptions.SemanticError;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
@@ -148,10 +147,11 @@ public class TestRunner {
     @Tag("expectfail")
     void multipleFields() {
         Program program = Resources.getProgram("FailTests/MultiFieldDecl.java");
-        assertThrows(
-                AlreadyDefinedException.class,
+        System.err.print(assertThrows(
+                SemanticError.class,
                 () -> Compiler.getFactory().getTastAdapter().getTast(program),
-                "Expected AlreadyDefinedException to be thrown");
+                "Expected SemanticError to be thrown").getMessage());
+
     }
 
     @Test
@@ -159,10 +159,10 @@ public class TestRunner {
     @Tag("expectfail")
     void mismatchingReturnType() {
         Program program = Resources.getProgram("FailTests/MismatchingReturnType.java");
-        assertThrows(
-                TypeMismatchException.class,
+        System.err.print(assertThrows(
+                SemanticError.class,
                 () -> Compiler.getFactory().getTastAdapter().getTast(program),
-                "Expected TypeMismatchException to be thrown");
+                "Expected SemanticError to be thrown").getMessage());
 
     }
 
@@ -174,4 +174,54 @@ public class TestRunner {
 
     }
 
+    @Test
+    @DisplayName("WhileFailTest")
+    void whileFailTest() {
+        Program program = Resources.getProgram("FailTests/WhileBool.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("ScopeFailTest")
+    void scopeFailTest() {
+        Program program = Resources.getProgram("FailTests/ScopeTest.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("AssignFailTest")
+    void assignFailTest() {
+        Program program = Resources.getProgram("FailTests/AssignFail.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("LocalVarDeclaration with wrong init-Type")
+    void localVarDeclInitFail() {
+        Program program = Resources.getProgram("FailTests/LocalVarWrongInit.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("ExplicitNullAssign")
+    void explicitNullAssign() {
+        Program program = Resources.getProgram("SimpleTests/ExplicitNullAssign.java");
+        Compiler.getFactory().getTastAdapter().getTast(program);
+    }
 }

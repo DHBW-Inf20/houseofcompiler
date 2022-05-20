@@ -116,4 +116,8 @@ public class TypeHelper {
                 + newDecl.getType());
     }
 
+    public static String generateLocationString(int row, int column, String fileName) {
+        return " (" + fileName + ":" + row + ":" + (column + 1) + ")";
+    }
+
 }

@@ -2,7 +2,7 @@ class ExplicitNullAssign {
 
     ExplicitNullAssign e;
 
-    ExplicitNullAssign() {
+    void test() {
         e = null;
     }
 }
