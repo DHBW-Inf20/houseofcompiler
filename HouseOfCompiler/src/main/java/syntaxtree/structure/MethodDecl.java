@@ -15,8 +15,8 @@ public class MethodDecl implements Visitable {
 
     private String identifier;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
     private PrintableVector<MethodParameter> parameters;
     private Block block;
     private AccessModifier accessModifier;
@@ -36,6 +36,17 @@ public int column;
         this.parameters = parameters;
         this.accessModifier = accessModifier;
         this.block = block;
+    }
+
+    public MethodDecl(AccessModifier accessModifier, Type type, String identifier,
+            PrintableVector<MethodParameter> parameters, Block block, int line, int column) {
+        this.type = type;
+        this.identifier = identifier;
+        this.parameters = parameters;
+        this.accessModifier = accessModifier;
+        this.block = block;
+        this.line = line;
+        this.column = column;
     }
 
     public MethodDecl(Type type, String identifier, PrintableVector<MethodParameter> parameters, Block block) {

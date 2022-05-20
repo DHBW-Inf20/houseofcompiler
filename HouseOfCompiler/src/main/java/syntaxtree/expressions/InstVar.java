@@ -15,12 +15,19 @@ public class InstVar implements IExpression {
     private String identifier;
     private IExpression expression;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
 
     public InstVar(String identifier, IExpression expression) {
         this.identifier = identifier;
         this.expression = expression;
+    }
+
+    public InstVar(String identifier, IExpression expression, int line, int column) {
+        this.identifier = identifier;
+        this.expression = expression;
+        this.line = line;
+        this.column = column;
     }
 
     public InstVar(IExpression expression, String identifier) {

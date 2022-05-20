@@ -11,14 +11,21 @@ import visitor.codevisitor.MethodCodeVisitor;
 public class WhileStmt implements IStatement {
 
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
     private IExpression expression;
     private Block block;
 
     public WhileStmt(IExpression expression, Block block) {
         this.expression = expression;
         this.block = block;
+    }
+
+    public WhileStmt(IExpression expression, Block block, int line, int column) {
+        this.expression = expression;
+        this.block = block;
+        this.line = line;
+        this.column = column;
     }
 
     public Type getType() {

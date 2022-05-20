@@ -1,34 +1,39 @@
 package parser.adapter;
 
+import java.util.List;
+
 import org.antlr.v4.runtime.tree.TerminalNode;
+
 import parser.generated.JavaSubsetParser;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.This;
 
-import java.util.List;
-
 public class InstVarAdapter {
-    public static InstVar adapt(JavaSubsetParser.InstVarContext instVarContext){
-        IExpression generated = generateInstVar(instVarContext.Identifier(),null,0);
 
-        if (generated instanceof LocalOrFieldVar){ //this
-            return new InstVar(((LocalOrFieldVar) generated).getIdentifier(),new This());
+    public static InstVar adapt(JavaSubsetParser.InstVarContext instVarContext) {
+        IExpression generated = generateInstVar(instVarContext.Identifier(), null, 0);
+        if (generated instanceof LocalOrFieldVar) { // this
+            return new InstVar(((LocalOrFieldVar) generated).getIdentifier(), new This(),
+                    instVarContext.start.getLine(), instVarContext.start.getCharPositionInLine());
         }
         return (InstVar) generated;
     }
 
-    private static IExpression generateInstVar(List<TerminalNode> identifiers, IExpression previous, int position){
+    private static IExpression generateInstVar(List<TerminalNode> identifiers, IExpression previous, int position) {
+        var identifier = identifiers.get(position);
 
-        if (previous == null){
-            previous = new LocalOrFieldVar(identifiers.get(position).getText());
+        if (previous == null) {
+            previous = new LocalOrFieldVar(identifier.getText(), identifier.getSymbol().getLine(),
+                    identifier.getSymbol().getCharPositionInLine());
         } else {
-            previous = new InstVar(identifiers.get(position).getText(), previous);
+            previous = new InstVar(identifier.getText(), previous, identifier.getSymbol().getLine(),
+                    identifier.getSymbol().getCharPositionInLine());
         }
 
-        if (position < identifiers.size()-1){
-            return generateInstVar(identifiers,previous,position+1);
+        if (position < identifiers.size() - 1) {
+            return generateInstVar(identifiers, previous, position + 1);
         }
         return previous;
     }

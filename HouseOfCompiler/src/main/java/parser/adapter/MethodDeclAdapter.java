@@ -45,6 +45,8 @@ public class MethodDeclAdapter {
                 type,
                 methodDeclContext.Identifier().getText(),
                 parameters,
-                block);
+                block,
+                methodDeclContext.start.getLine(),
+                methodDeclContext.start.getCharPositionInLine());
     }
 }

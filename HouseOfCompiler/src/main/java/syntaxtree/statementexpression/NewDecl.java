@@ -14,14 +14,22 @@ public class NewDecl implements IStatementExpression {
 
     private PrintableVector<IExpression> arguments;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
     private String identifier;
 
     public NewDecl(String identifier, PrintableVector<IExpression> arguments) {
         this.arguments = arguments;
         this.identifier = identifier;
         this.type = new ReferenceType(identifier);
+    }
+
+    public NewDecl(String identifier, PrintableVector<IExpression> arguments, int line, int column) {
+        this.arguments = arguments;
+        this.identifier = identifier;
+        this.type = new ReferenceType(identifier);
+        this.line = line;
+        this.column = column;
     }
 
     public PrintableVector<IExpression> getArguments() {

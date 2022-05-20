@@ -13,12 +13,19 @@ public class Unary implements IExpression {
     private IExpression expression;
     private Operator operator;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
 
     public Unary(IExpression expression, Operator operator) {
         this.expression = expression;
         this.operator = operator;
+    }
+
+    public Unary(IExpression expression, Operator operator, int line, int column) {
+        this.expression = expression;
+        this.operator = operator;
+        this.line = line;
+        this.column = column;
     }
 
     public IExpression getExpression() {

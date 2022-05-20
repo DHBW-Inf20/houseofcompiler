@@ -15,11 +15,22 @@ public class MethodCall implements IStatementExpression {
     public IExpression receiver;
     public PrintableVector<IExpression> arguments;
     public Type type;
+    public int line;
+    public int column;
 
     public MethodCall(String identifier, IExpression receiver, PrintableVector<IExpression> arguments) {
         this.identifier = identifier;
         this.receiver = receiver;
         this.arguments = arguments;
+    }
+
+    public MethodCall(String identifier, IExpression receiver, PrintableVector<IExpression> arguments, int line,
+            int column) {
+        this.identifier = identifier;
+        this.receiver = receiver;
+        this.arguments = arguments;
+        this.line = line;
+        this.column = column;
     }
 
     public MethodCall(IExpression receiver, String identifier, PrintableVector<IExpression> arguments) {

@@ -12,11 +12,17 @@ public class ReturnStmt implements IStatement {
 
     private IExpression expression;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
 
     public ReturnStmt(IExpression expression) {
         this.expression = expression;
+    }
+
+    public ReturnStmt(IExpression expression, int line, int column) {
+        this.expression = expression;
+        this.line = line;
+        this.column = column;
     }
 
     public ReturnStmt(Type type, IExpression expression) {

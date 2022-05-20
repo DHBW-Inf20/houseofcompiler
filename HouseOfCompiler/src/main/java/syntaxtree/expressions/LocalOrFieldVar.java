@@ -11,11 +11,17 @@ public class LocalOrFieldVar implements IExpression {
 
     private String identifier;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
 
     public LocalOrFieldVar(String identifier) {
         this.identifier = identifier;
+    }
+
+    public LocalOrFieldVar(String identifier, int line, int column) {
+        this.identifier = identifier;
+        this.line = line;
+        this.column = column;
     }
 
     public LocalOrFieldVar(Type type, String identifier) {

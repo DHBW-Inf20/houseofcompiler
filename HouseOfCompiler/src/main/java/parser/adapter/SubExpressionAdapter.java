@@ -8,7 +8,9 @@ import syntaxtree.expressions.ValueAdapter;
 public class SubExpressionAdapter {
         public static IExpression adapt(JavaSubsetParser.SubExpressionContext subExpressionContext) {
                 if (subExpressionContext.Identifier() != null)
-                        return new LocalOrFieldVar(subExpressionContext.Identifier().getText());
+                        return new LocalOrFieldVar(subExpressionContext.Identifier().getText(),
+                                        subExpressionContext.start.getLine(),
+                                        subExpressionContext.start.getCharPositionInLine());
                 else if (subExpressionContext.instVar() != null)
                         return InstVarAdapter.adapt(subExpressionContext.instVar());
                 else if (subExpressionContext.value() != null)

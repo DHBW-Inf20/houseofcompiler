@@ -33,8 +33,10 @@ public class OperatorAdapter {
                 return Operator.NOT;
             case "&&":
                 return Operator.AND;
-            default:
+            case "||":
                 return Operator.OR;
+            default:
+                return null;
         }
     }
 }

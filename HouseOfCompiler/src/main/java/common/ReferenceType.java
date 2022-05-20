@@ -4,8 +4,17 @@ public class ReferenceType implements Type {
 
     private String identifier;
 
+    public int line;
+    public int column;
+
     public ReferenceType(String identifier) {
         this.identifier = identifier;
+    }
+
+    public ReferenceType(String identifier, int line, int column) {
+        this.identifier = identifier;
+        this.line = line;
+        this.column = column;
     }
 
     public String getIdentifier() {

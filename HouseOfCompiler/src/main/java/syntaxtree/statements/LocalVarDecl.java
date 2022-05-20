@@ -14,14 +14,31 @@ public class LocalVarDecl implements IStatement {
     String identifier;
     IExpression expression;
 
+    public int line;
+    public int column;
+
     public LocalVarDecl(String identifier) {
         this.identifier = identifier;
+    }
+
+    public LocalVarDecl(String identifier, int line, int column) {
+        this.identifier = identifier;
+        this.line = line;
+        this.column = column;
     }
 
     public LocalVarDecl(Type type, String identifier, IExpression expression) {
         this.type = type;
         this.identifier = identifier;
         this.expression = expression;
+    }
+
+    public LocalVarDecl(Type type, String identifier, IExpression expression, int line, int column) {
+        this.type = type;
+        this.identifier = identifier;
+        this.expression = expression;
+        this.line = line;
+        this.column = column;
     }
 
     public Type getType() {
