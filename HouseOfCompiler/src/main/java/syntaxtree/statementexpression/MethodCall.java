@@ -52,36 +52,62 @@ public class MethodCall implements IStatementExpression {
         this.arguments = arguments;
     }
 
+    /**
+     * @return String
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getReceiver() {
         return receiver;
     }
 
+    /**
+     * @return PrintableVector<IExpression>
+     */
     public PrintableVector<IExpression> getArguments() {
         return arguments;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -93,11 +119,17 @@ public class MethodCall implements IStatementExpression {
                 && Objects.equals(type, that.type);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(identifier, receiver, arguments, type);
     }
 
+    /**
+     * @return String
+     */
     public String printTypes() {
         String returnString = "(";
         for (var expression : arguments) {
@@ -110,6 +142,9 @@ public class MethodCall implements IStatementExpression {
 
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         String returnString = "";

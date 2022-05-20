@@ -20,6 +20,9 @@ import syntaxtree.structure.Program;
 @DisplayName("All")
 public class TestRunner {
 
+    /**
+     * @throws Exception
+     */
     @Test
     @DisplayName("Empty Class")
     void emptyClass() throws Exception {
@@ -34,6 +37,9 @@ public class TestRunner {
         assertEquals("EmptyClass", o.getClass().getName());
     }
 
+    /**
+     * @throws Exception
+     */
     @Test
     @DisplayName("EmptyClassWithConstructor")
     void emptyClassWithConstructor() throws Exception {
@@ -94,6 +100,9 @@ public class TestRunner {
         }
     }
 
+    /**
+     * @throws Exception
+     */
     @Test
     @DisplayName("Comments")
     void comments() throws Exception {

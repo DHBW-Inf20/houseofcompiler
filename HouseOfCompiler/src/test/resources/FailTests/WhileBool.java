@@ -1,7 +1,7 @@
 class WhileBool {
-    int foo(){
+    int foo() {
         int x;
-        while (x == true){
+        while (x == true) {
             return 4324;
         }
 

@@ -1,31 +1,31 @@
 package common;
 
 public class BaseType implements Type {
-   private Primitives identifier;
+    private Primitives identifier;
 
     public BaseType(Primitives identifier) {
         this.identifier = identifier;
     }
 
-    
-    
-
+    /**
+     * @return Primitives
+     */
     public Primitives getIdentifier() {
         return (Primitives) this.identifier;
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder(identifier.toString());
         return sb.toString();
     }
 
-
-
-
-
-
-
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -34,9 +34,10 @@ public class BaseType implements Type {
         return result;
     }
 
-
-
-
+    /**
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

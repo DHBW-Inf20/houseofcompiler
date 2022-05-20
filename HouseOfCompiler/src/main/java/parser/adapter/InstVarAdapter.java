@@ -12,6 +12,10 @@ import syntaxtree.expressions.This;
 
 public class InstVarAdapter {
 
+    /**
+     * @param instVarContext
+     * @return InstVar
+     */
     public static InstVar adapt(JavaSubsetParser.InstVarContext instVarContext) {
         IExpression generated = generateInstVar(instVarContext.Identifier(), null, 0);
         if (generated instanceof LocalOrFieldVar) { // this
@@ -21,6 +25,12 @@ public class InstVarAdapter {
         return (InstVar) generated;
     }
 
+    /**
+     * @param identifiers
+     * @param previous
+     * @param position
+     * @return IExpression
+     */
     private static IExpression generateInstVar(List<TerminalNode> identifiers, IExpression previous, int position) {
         var identifier = identifiers.get(position);
 

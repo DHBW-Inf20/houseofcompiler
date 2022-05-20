@@ -60,6 +60,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         localVars = new LocalVarStack();
     }
 
+    /**
+     * @param constructorDecl
+     */
     @Override
     public void visit(ConstructorDecl constructorDecl) {
         PrintableVector<Type> parameterTypes = constructorDecl.getParameterDeclarations().stream()
@@ -81,6 +84,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitEnd();
     }
 
+    /**
+     * @param methodDecl
+     */
     @Override
     public void visit(MethodDecl methodDecl) {
         PrintableVector<Type> parameterTypes = methodDecl.getParameters().stream().map(MethodParameter::getType)
@@ -111,6 +117,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         localVars.endBlock();
     }
 
+    /**
+     * @param ifStmt
+     */
     @Override
     public void visit(IfStmt ifStmt) {
         Label falseLabel = new Label();
@@ -131,6 +140,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitLabel(end);
     }
 
+    /**
+     * @param localVarDecl
+     */
     @Override
     public void visit(LocalVarDecl localVarDecl) {
         localVarDecl.getExpression().accept(this);
@@ -141,6 +153,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param returnStmt
+     */
     @Override
     public void visit(ReturnStmt returnStmt) {
         IExpression expression = returnStmt.getExpression();
@@ -156,6 +171,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param whileStmt
+     */
     @Override
     public void visit(WhileStmt whileStmt) {
 
@@ -199,6 +217,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param methodCall
+     */
     @Override
     public void visit(MethodCall methodCall) {
         methodCall.receiver.accept(this);
@@ -208,6 +229,9 @@ public class MethodGenerator implements MethodCodeVisitor {
                 false);
     }
 
+    /**
+     * @param newDecl
+     */
     @Override
     public void visit(NewDecl newDecl) {
         this.lastClassName = newDecl.getIdentifier();
@@ -226,6 +250,9 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     }
 
+    /**
+     * @param binary
+     */
     @Override
     public void visit(Binary binary) {
         switch (binary.getOperator()) {
@@ -234,6 +261,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param binary
+     */
     private void visitBinaryArithmetic(Binary binary) {
         binary.getlExpression().accept(this);
         binary.getrExpression().accept(this);
@@ -246,6 +276,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param binary
+     */
     private void visitBoolLogic(Binary binary) {
 
         Label trueLabel = new Label();
@@ -318,6 +351,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitLabel(end);
     }
 
+    /**
+     * @param boolExpr
+     */
     @Override
     public void visit(BoolExpr boolExpr) {
         if (boolExpr.getValue()) {
@@ -327,16 +363,25 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param charExpr
+     */
     @Override
     public void visit(CharExpr charExpr) {
         mv.visitIntInsn(Opcodes.BIPUSH, charExpr.getValue());
     }
 
+    /**
+     * @param integerExpr
+     */
     @Override
     public void visit(IntegerExpr integerExpr) {
         mv.visitIntInsn(Opcodes.BIPUSH, integerExpr.getValue());
     }
 
+    /**
+     * @param instVar
+     */
     @Override
     public void visit(InstVar instVar) {
         IExpression expression = instVar.getExpression();
@@ -348,6 +393,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param localOrFieldVar
+     */
     @Override
     public void visit(LocalOrFieldVar localOrFieldVar) {
         int index = localVars.get(localOrFieldVar.getIdentifier());
@@ -363,11 +411,17 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param nullExpr
+     */
     @Override
     public void visit(Null nullExpr) {
         mv.visitInsn(Opcodes.ACONST_NULL);
     }
 
+    /**
+     * @param thisExpr
+     */
     @Override
     public void visit(This thisExpr) {
         this.lastClassName = className;

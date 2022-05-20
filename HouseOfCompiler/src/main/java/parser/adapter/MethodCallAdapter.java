@@ -10,6 +10,11 @@ import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.MethodCall;
 
 public class MethodCallAdapter {
+
+    /**
+     * @param methodCallContext
+     * @return MethodCall
+     */
     public static MethodCall adapt(JavaSubsetParser.MethodCallContext methodCallContext) {
         var arguments = new PrintableVector<IExpression>();
         IExpression receiver = new This();
@@ -38,6 +43,12 @@ public class MethodCallAdapter {
                 methodCallContext.start.getCharPositionInLine());
     }
 
+    /**
+     * @param contexts
+     * @param index
+     * @param rootReceiver
+     * @return MethodCall
+     */
     private static MethodCall recursivelyAdaptRecievingMethods(List<JavaSubsetParser.ReceivingMethodContext> contexts,
             int index, IExpression rootReceiver) {
         if (index > 0) {

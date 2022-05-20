@@ -4,6 +4,11 @@ import parser.generated.JavaSubsetParser;
 import syntaxtree.statements.WhileStmt;
 
 public class WhileStmtAdapter {
+
+    /**
+     * @param whileStmtContext
+     * @return WhileStmt
+     */
     public static WhileStmt adapt(JavaSubsetParser.WhileStmtContext whileStmtContext) {
         return new WhileStmt(
                 ExpressionAdapter.adapt(whileStmtContext.expression()),

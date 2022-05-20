@@ -17,10 +17,16 @@ public class ReferenceType implements Type {
         this.column = column;
     }
 
+    /**
+     * @return String
+     */
     public String getIdentifier() {
         return (String) identifier;
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -29,6 +35,10 @@ public class ReferenceType implements Type {
         return result;
     }
 
+    /**
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -46,6 +56,9 @@ public class ReferenceType implements Type {
         return true;
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return identifier;

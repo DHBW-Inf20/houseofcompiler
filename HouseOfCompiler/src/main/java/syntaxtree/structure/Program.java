@@ -15,10 +15,17 @@ public class Program implements Visitable {
         this.classes = classes;
     }
 
+    /**
+     * @return PrintableVector<ClassDecl>
+     */
     public PrintableVector<ClassDecl> getClasses() {
         return classes;
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -29,21 +36,34 @@ public class Program implements Visitable {
         return classes.equals(program.classes);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(classes);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(ProgramCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Program:\n");

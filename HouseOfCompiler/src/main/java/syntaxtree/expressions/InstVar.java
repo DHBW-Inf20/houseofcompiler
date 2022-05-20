@@ -53,36 +53,62 @@ public class InstVar implements IExpression {
         this.type = new ReferenceType(type);
     }
 
+    /**
+     * @return String
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getExpression() {
         return expression;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Primitives type) {
         this.type = new BaseType(type);
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -94,11 +120,17 @@ public class InstVar implements IExpression {
                 && Objects.equals(type, instVar.type);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(identifier, expression, type);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return expression + "." + identifier + "(" + type + ")";

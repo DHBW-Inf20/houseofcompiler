@@ -57,30 +57,52 @@ public class MethodDecl implements Visitable {
         this.block = block;
     }
 
+    /**
+     * @return String
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @return PrintableVector<MethodParameter>
+     */
     public PrintableVector<MethodParameter> getParameters() {
         return parameters;
     }
 
+    /**
+     * @return Block
+     */
     public Block getBlock() {
         return block;
     }
 
+    /**
+     * @return AccessModifier
+     */
     public AccessModifier getAccessModifier() {
         return accessModifier;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -93,21 +115,34 @@ public class MethodDecl implements Visitable {
                 && accessModifier == that.accessModifier;
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(identifier, type, parameters, block, accessModifier);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");

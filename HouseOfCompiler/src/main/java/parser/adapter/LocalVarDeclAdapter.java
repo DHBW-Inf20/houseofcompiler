@@ -5,6 +5,11 @@ import parser.generated.JavaSubsetParser;
 import syntaxtree.statements.LocalVarDecl;
 
 public class LocalVarDeclAdapter {
+
+    /**
+     * @param localVarDeclContext
+     * @return LocalVarDecl
+     */
     public static LocalVarDecl adapt(JavaSubsetParser.LocalVarDeclContext localVarDeclContext) {
         Type type = TypeAdapter.adapt(localVarDeclContext.type());
         LocalVarDecl localVarDecl;

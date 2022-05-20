@@ -1,9 +1,15 @@
 package codegen;
 
-import context.Context;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+
 import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
+import common.PrintableVector;
+import context.Context;
 import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;
 import syntaxtree.expressions.This;
@@ -14,14 +20,12 @@ import syntaxtree.structure.FieldDecl;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.Program;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import common.PrintableVector;
-
 public class Test {
 
+    /**
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         ProgramGenerator codeGen = new ProgramGenerator();
@@ -38,7 +42,7 @@ public class Test {
         var testField = new InstVar("testField", new This());
         testField.setType(Primitives.INT);
 
-        Assign assign = new Assign( testField, new IntegerExpr(6));
+        Assign assign = new Assign(testField, new IntegerExpr(6));
         assign.setType(Primitives.VOID);
         block.getStatements().add(assign);
 
@@ -53,7 +57,6 @@ public class Test {
 
         System.out.println(new Context(program).toString());
 
-
         HashMap<String, byte[]> bytecodeClasses = codeGen.generateBytecode(program);
 
         for (String clazz : bytecodeClasses.keySet()) {
@@ -61,7 +64,8 @@ public class Test {
             System.out.println("Klasse: " + clazz);
             System.out.println("Bytecode: " + new String(bytecodeClasses.get(clazz)));
             File file = new File("../" + clazz + ".class");
-            if (!file.exists()) file.createNewFile();
+            if (!file.exists())
+                file.createNewFile();
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(bytecodeClasses.get(clazz));
             }

@@ -1,8 +1,8 @@
 package context;
 
-import syntaxtree.structure.Program;
-
 import java.util.HashMap;
+
+import syntaxtree.structure.Program;
 
 public class Context {
 
@@ -13,10 +13,16 @@ public class Context {
         program.getClasses().forEach(clazz -> classes.put(clazz.getIdentifier(), new ClassContext(clazz)));
     }
 
+    /**
+     * @return HashMap<String, ClassContext>
+     */
     public HashMap<String, ClassContext> getClasses() {
         return classes;
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

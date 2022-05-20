@@ -6,6 +6,11 @@ import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.ValueAdapter;
 
 public class SubExpressionAdapter {
+
+        /**
+         * @param subExpressionContext
+         * @return IExpression
+         */
         public static IExpression adapt(JavaSubsetParser.SubExpressionContext subExpressionContext) {
                 if (subExpressionContext.Identifier() != null)
                         return new LocalOrFieldVar(subExpressionContext.Identifier().getText(),

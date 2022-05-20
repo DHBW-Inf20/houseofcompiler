@@ -49,32 +49,55 @@ public class LocalVarDecl implements IStatement {
         this.column = column;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @return String
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getExpression() {
         return expression;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -85,6 +108,9 @@ public class LocalVarDecl implements IStatement {
         return Objects.equals(type, that.type) && identifier.equals(that.identifier);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(type, identifier);

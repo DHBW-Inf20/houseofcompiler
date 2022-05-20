@@ -16,6 +16,10 @@ public class ScopeContext {
         localVars = new Stack<HashMap<String, Type>>();
     }
 
+    /**
+     * @param name
+     * @param type
+     */
     public void addLocalVar(String name, Type type) {
         if (this.contains(name)) {
             throw new AlreadyDefinedException("Variable " + name + " already exists in this scope");
@@ -35,6 +39,10 @@ public class ScopeContext {
         localVars.pop();
     }
 
+    /**
+     * @param name
+     * @return Type
+     */
     public Type getLocalVar(String name) {
         for (HashMap<String, Type> map : localVars) {
             if (map.containsKey(name)) {
@@ -44,6 +52,10 @@ public class ScopeContext {
         return null;
     }
 
+    /**
+     * @param name
+     * @return boolean
+     */
     public boolean contains(String name) {
         for (HashMap<String, Type> map : localVars) {
             if (map.containsKey(name)) {
@@ -53,10 +65,16 @@ public class ScopeContext {
         return false;
     }
 
+    /**
+     * @param localVarDecl
+     */
     public void addLocalVar(LocalVarDecl localVarDecl) {
         addLocalVar(localVarDecl.getIdentifier(), localVarDecl.getType());
     }
 
+    /**
+     * @param parameter
+     */
     public void addLocalVar(MethodParameter parameter) {
         addLocalVar(parameter.getIdentifier(), parameter.getType());
     }

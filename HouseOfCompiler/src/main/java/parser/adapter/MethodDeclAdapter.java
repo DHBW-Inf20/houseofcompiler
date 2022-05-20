@@ -10,6 +10,11 @@ import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 
 public class MethodDeclAdapter {
+
+    /**
+     * @param methodDeclContext
+     * @return MethodDecl
+     */
     public static MethodDecl adapt(JavaSubsetParser.MethodDeclContext methodDeclContext) {
         var parameters = new PrintableVector<MethodParameter>();
         var block = BlockAdapter.adapt(methodDeclContext.block());

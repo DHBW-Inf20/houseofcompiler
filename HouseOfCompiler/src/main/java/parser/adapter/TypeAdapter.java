@@ -7,6 +7,11 @@ import common.Type;
 import parser.generated.JavaSubsetParser;
 
 public class TypeAdapter {
+
+    /**
+     * @param typeContext
+     * @return Type
+     */
     public static Type adapt(JavaSubsetParser.TypeContext typeContext) {
         if (typeContext.Int() != null)
             return new BaseType(Primitives.INT);

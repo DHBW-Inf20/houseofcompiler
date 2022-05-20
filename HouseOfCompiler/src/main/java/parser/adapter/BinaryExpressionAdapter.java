@@ -6,6 +6,11 @@ import syntaxtree.expressions.Binary;
 import syntaxtree.expressions.IExpression;
 
 public class BinaryExpressionAdapter {
+
+        /**
+         * @param binaryExprContext
+         * @return Binary
+         */
         public static Binary adapt(JavaSubsetParser.BinaryExprContext binaryExprContext) {
                 IExpression leftExpression = SubExpressionAdapter.adapt(
                                 binaryExprContext.subExpression());
@@ -14,6 +19,7 @@ public class BinaryExpressionAdapter {
                 Operator operator = OperatorAdapter.adapt(binaryExprContext.operator());
                 return new Binary(leftExpression,
                                 rightExpression,
-                                operator, binaryExprContext.start.getLine(), binaryExprContext.start.getCharPositionInLine());
+                                operator, binaryExprContext.start.getLine(),
+                                binaryExprContext.start.getCharPositionInLine());
         }
 }

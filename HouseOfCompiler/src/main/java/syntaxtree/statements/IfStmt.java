@@ -31,36 +31,62 @@ public class IfStmt implements IStatement {
         this.column = column;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getCondition() {
         return condition;
     }
 
+    /**
+     * @return IStatement
+     */
     public IStatement getBlockIf() {
         return blockIf;
     }
 
+    /**
+     * @return IStatement
+     */
     public IStatement getBlockElse() {
         return blockElse;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -72,6 +98,9 @@ public class IfStmt implements IStatement {
                 && Objects.equals(blockElse, ifStmt.blockElse) && Objects.equals(type, ifStmt.type);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(condition, blockIf, blockElse, type);

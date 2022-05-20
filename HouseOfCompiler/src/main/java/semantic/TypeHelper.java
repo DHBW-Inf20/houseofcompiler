@@ -17,6 +17,11 @@ import syntaxtree.statementexpression.NewDecl;
 public class TypeHelper {
     public static final Type voidType = null;
 
+    /**
+     * @param type
+     * @param con
+     * @return boolean
+     */
     public static boolean typeExists(Type type, Context con) {
 
         if (type instanceof BaseType) {
@@ -27,16 +32,31 @@ public class TypeHelper {
         return declaredClassnames.containsKey(objectClass.getIdentifier());
     }
 
+    /**
+     * @param type
+     * @return boolean
+     */
     public static boolean isBool(Type type) {
         var boolType = new BaseType(Primitives.BOOL);
         return type.equals(boolType);
     }
 
+    /**
+     * @param blockType
+     * @param type
+     * @return Type
+     */
     private Type getUpperBound(Type blockType, Type type) {
 
         return null;
     }
 
+    /**
+     * @param identifier
+     * @param type
+     * @param context
+     * @return FieldContext
+     */
     public static FieldContext getFieldInType(String identifier, Type type, Context context) {
         if (type instanceof ReferenceType) {
             var objectClass = (ReferenceType) type;
@@ -50,6 +70,12 @@ public class TypeHelper {
 
     }
 
+    /**
+     * @param identifier
+     * @param type
+     * @param context
+     * @return ArrayList<MethodContext>
+     */
     public static ArrayList<MethodContext> getMethodsInType(String identifier, Type type, Context context) {
         if (type instanceof ReferenceType) {
             var objectClass = (ReferenceType) type;
@@ -62,6 +88,12 @@ public class TypeHelper {
         }
     }
 
+    /**
+     * @param methodCall
+     * @param type
+     * @param context
+     * @return MethodContext
+     */
     public static MethodContext getMethodInType(MethodCall methodCall, Type type, Context context) {
         if (type instanceof ReferenceType) {
             var objectClass = (ReferenceType) type;
@@ -91,6 +123,11 @@ public class TypeHelper {
         }
     }
 
+    /**
+     * @param newDecl
+     * @param context
+     * @return ConstructorContext
+     */
     public static ConstructorContext getConstructor(NewDecl newDecl, Context context) {
         var objectClass = (ReferenceType) newDecl.getType();
         var declaredClassnames = context.getClasses();
@@ -116,6 +153,12 @@ public class TypeHelper {
                 + newDecl.getType());
     }
 
+    /**
+     * @param row
+     * @param column
+     * @param fileName
+     * @return String
+     */
     public static String generateLocationString(int row, int column, String fileName) {
         return " (" + fileName + ":" + row + ":" + (column + 1) + ")";
     }

@@ -4,6 +4,11 @@ import parser.generated.JavaSubsetParser;
 import syntaxtree.statements.IfStmt;
 
 public class IfStmtAdapter {
+
+    /**
+     * @param ifElseStmtContext
+     * @return IfStmt
+     */
     public static IfStmt adapt(JavaSubsetParser.IfElseStmtContext ifElseStmtContext) {
         return new IfStmt(
                 ExpressionAdapter.adapt(ifElseStmtContext.ifStmt().expression()),

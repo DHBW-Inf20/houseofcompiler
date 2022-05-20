@@ -30,28 +30,48 @@ public class ReturnStmt implements IStatement {
         this.type = type;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getExpression() {
         return expression;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -62,11 +82,17 @@ public class ReturnStmt implements IStatement {
         return expression.equals(that.expression) && Objects.equals(type, that.type);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(expression, type);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return "return " + expression + "(" + type + ")";

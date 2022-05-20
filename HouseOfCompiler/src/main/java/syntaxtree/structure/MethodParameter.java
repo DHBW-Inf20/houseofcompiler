@@ -37,18 +37,31 @@ public class MethodParameter implements Visitable {
         this.identifier = identifier;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @return String
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -59,16 +72,26 @@ public class MethodParameter implements Visitable {
         return Objects.equals(type, that.type) && identifier.equals(that.identifier);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(type, identifier);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return type + " " + identifier;
