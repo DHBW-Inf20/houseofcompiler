@@ -1,9 +1,9 @@
 package context;
 
-import syntaxtree.structure.ClassDecl;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import syntaxtree.structure.ClassDecl;
 
 public class ClassContext {
 
@@ -17,7 +17,8 @@ public class ClassContext {
         methods = new HashMap<>();
 
         clazz.getFieldDelcarations().forEach(field -> fields.put(field.getIdentifier(), new FieldContext(field)));
-        clazz.getConstructorDeclarations().forEach(constructor -> constructors.add(new ConstructorContext(constructor)));
+        clazz.getConstructorDeclarations()
+                .forEach(constructor -> constructors.add(new ConstructorContext(constructor)));
         clazz.getMethodDeclarations().forEach(method -> {
             if (!methods.containsKey(method.getIdentifier())) {
                 methods.put(method.getIdentifier(), new ArrayList<>());
@@ -26,18 +27,30 @@ public class ClassContext {
         });
     }
 
+    /**
+     * @return HashMap<String, FieldContext>
+     */
     public HashMap<String, FieldContext> getFields() {
         return fields;
     }
 
+    /**
+     * @return ArrayList<ConstructorContext>
+     */
     public ArrayList<ConstructorContext> getConstructors() {
         return constructors;
     }
 
+    /**
+     * @return HashMap<String, ArrayList<MethodContext>>
+     */
     public HashMap<String, ArrayList<MethodContext>> getMethods() {
         return methods;
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

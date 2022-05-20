@@ -4,6 +4,11 @@ import common.Operator;
 import parser.generated.JavaSubsetParser;
 
 public class OperatorAdapter {
+
+    /**
+     * @param operatorContext
+     * @return Operator
+     */
     public static Operator adapt(JavaSubsetParser.OperatorContext operatorContext) {
         String operator = operatorContext.getText();
         switch (operator) {

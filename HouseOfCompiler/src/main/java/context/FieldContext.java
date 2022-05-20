@@ -15,18 +15,30 @@ public class FieldContext {
         type = field.getType();
     }
 
+    /**
+     * @return AccessModifier
+     */
     public AccessModifier getAccessModifier() {
         return accessModifier;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @return String
+     */
     public String getDescriptor() {
         return GenUtils.generateDescriptor(type);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return accessModifier + " " + getDescriptor();

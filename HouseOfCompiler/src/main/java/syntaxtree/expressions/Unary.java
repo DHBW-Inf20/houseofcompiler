@@ -28,32 +28,55 @@ public class Unary implements IExpression {
         this.column = column;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getExpression() {
         return expression;
     }
 
+    /**
+     * @return Operator
+     */
     public Operator getOperator() {
         return operator;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -64,6 +87,9 @@ public class Unary implements IExpression {
         return expression.equals(unary.expression) && operator == unary.operator && Objects.equals(type, unary.type);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(expression, operator, type);

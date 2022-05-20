@@ -3,6 +3,10 @@ package common;
 import java.util.Vector;
 
 public class PrintableVector<T> extends Vector<T> {
+
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");

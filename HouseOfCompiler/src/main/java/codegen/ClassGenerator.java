@@ -21,10 +21,16 @@ public class ClassGenerator implements ClassCodeVisitor {
         this.cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
     }
 
+    /**
+     * @return byte[]
+     */
     public byte[] getBytecode() {
         return cw.toByteArray();
     }
 
+    /**
+     * @param clazz
+     */
     @Override
     public void visit(ClassDecl clazz) {
         System.out.println("Class: " + clazz.getIdentifier());
@@ -45,6 +51,9 @@ public class ClassGenerator implements ClassCodeVisitor {
         cw.visitEnd();
     }
 
+    /**
+     * @param field
+     */
     @Override
     public void visit(FieldDecl field) {
         System.out.println("Field: " + field.getIdentifier() + " " + field.getAccessModifier() + " "

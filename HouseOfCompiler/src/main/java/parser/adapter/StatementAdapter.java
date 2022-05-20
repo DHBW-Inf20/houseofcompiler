@@ -5,6 +5,11 @@ import syntaxtree.statements.IStatement;
 import syntaxtree.statements.ReturnStmt;
 
 public class StatementAdapter {
+
+    /**
+     * @param statementContext
+     * @return IStatement
+     */
     public static IStatement adapt(JavaSubsetParser.StatementContext statementContext) {
         var line = statementContext.start.getLine();
         var column = statementContext.start.getCharPositionInLine();

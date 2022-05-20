@@ -24,6 +24,10 @@ import syntaxtree.structure.Program;
 
 public abstract class MockGenerator {
 
+    /**
+     * @param className
+     * @return Program
+     */
     public static Program getEmptyProgram(String className) {
 
         PrintableVector<ClassDecl> classes = new PrintableVector<>();
@@ -32,10 +36,18 @@ public abstract class MockGenerator {
         return new Program(classes);
     }
 
+    /**
+     * @param id
+     * @return ClassDecl
+     */
     public static ClassDecl getEmptyClass(String id) {
         return new ClassDecl(id, new PrintableVector<>(), new PrintableVector<>(), new PrintableVector<>());
     }
 
+    /**
+     * @param expressions
+     * @return Block
+     */
     public static Block getBlock(IStatement... expressions) {
         PrintableVector<IStatement> expressionsVector = new PrintableVector<>();
         for (IStatement expression : expressions) {
@@ -44,10 +56,17 @@ public abstract class MockGenerator {
         return new Block(expressionsVector);
     }
 
+    /**
+     * @return Block
+     */
     public static Block getEmptyBlock() {
         return new Block();
     }
 
+    /**
+     * @param expressions
+     * @return PrintableVector<IExpression>
+     */
     public static PrintableVector<IExpression> getArguments(IExpression... expressions) {
         PrintableVector<IExpression> arguments = new PrintableVector<>();
         for (IExpression expression : expressions) {
@@ -56,10 +75,17 @@ public abstract class MockGenerator {
         return arguments;
     }
 
+    /**
+     * @return PrintableVector<MethodParameter>
+     */
     public static PrintableVector<MethodParameter> getEmptyParameters() {
         return new PrintableVector<>();
     }
 
+    /**
+     * @param parameters
+     * @return PrintableVector<MethodParameter>
+     */
     public static PrintableVector<MethodParameter> getParameters(MethodParameter... parameters) {
         PrintableVector<MethodParameter> parametersVector = new PrintableVector<>();
         for (MethodParameter parameter : parameters) {
@@ -68,10 +94,16 @@ public abstract class MockGenerator {
         return parametersVector;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getClassFieldsTast() {
         return getClassFieldsAst();
     }
 
+    /**
+     * @return Program
+     */
     public static Program getClassFieldsAst() {
         Program expectedAst = getEmptyProgram("ClassFields");
 
@@ -90,6 +122,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getAutoClassFieldAst() {
         Program expectedAst = getEmptyProgram("AutoAccessModifierField");
 
@@ -100,14 +135,23 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getAutoClassFieldTast() {
         return getAutoClassFieldAst();
     }
 
+    /**
+     * @return Program
+     */
     public static Program getConstructorParameterTast() {
         return getConstructorParameterAst();
     }
 
+    /**
+     * @return Program
+     */
     public static Program getConstructorParameterAst() {
         Program expectedAst = getEmptyProgram("ConstructorParams");
 
@@ -124,6 +168,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getConstructorThisDotAst() {
 
         Program expectedAst = getEmptyProgram("ConstructorThisDot");
@@ -148,6 +195,9 @@ public abstract class MockGenerator {
 
     }
 
+    /**
+     * @return Program
+     */
     public static Program getConstructorThisDotTast() {
         Program expectedTast = getEmptyProgram("ConstructorThisDot");
 
@@ -174,6 +224,9 @@ public abstract class MockGenerator {
         return expectedTast;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getVoidMethodAst() {
         Program expectedAst = getEmptyProgram("VoidMethod");
 
@@ -186,10 +239,16 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getVoidMethodTast() {
         return getVoidMethodAst();
     }
 
+    /**
+     * @return Program
+     */
     public static Program getRealMethodAst() {
         Program expectedAst = getEmptyProgram("RealMethod");
 
@@ -209,6 +268,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getRealConstructorAst() {
         Program expectedAst = getEmptyProgram("RealConstructor");
 
@@ -229,6 +291,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getRealConstructorTast() {
         String className = "RealConstructor";
         Program expectedTast = getEmptyProgram(className);
@@ -253,6 +318,9 @@ public abstract class MockGenerator {
         return expectedTast;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getMethodCallAst() {
         Program expectedAst = getEmptyProgram("MethodCall");
 
@@ -272,6 +340,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getMethodCallTast() {
         Program expectedTast = getEmptyProgram("MethodCall");
 
@@ -294,6 +365,9 @@ public abstract class MockGenerator {
         return expectedTast;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getMethodCallWithParameterAst() {
         Program expectedAst = getEmptyProgram("MethodCallParams");
 
@@ -316,6 +390,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getCharArgumentAst() {
         Program expectedAst = getEmptyProgram("MethodCallParams");
 
@@ -338,6 +415,9 @@ public abstract class MockGenerator {
         return expectedAst;
     }
 
+    /**
+     * @return Program
+     */
     public static Program getGetterFunctionAst() {
         Program expectedAst = getEmptyProgram("GetterFunction");
 

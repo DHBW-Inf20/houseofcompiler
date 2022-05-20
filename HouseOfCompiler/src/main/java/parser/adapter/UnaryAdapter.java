@@ -5,6 +5,11 @@ import parser.generated.JavaSubsetParser;
 import syntaxtree.expressions.Unary;
 
 public class UnaryAdapter {
+
+    /**
+     * @param unaryExprContext
+     * @return Unary
+     */
     public static Unary adapt(JavaSubsetParser.UnaryExprContext unaryExprContext) {
         unaryExprContext.start.getLine();
         unaryExprContext.start.getCharPositionInLine();

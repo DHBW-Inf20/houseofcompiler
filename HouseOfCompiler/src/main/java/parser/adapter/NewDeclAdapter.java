@@ -6,6 +6,11 @@ import syntaxtree.expressions.IExpression;
 import syntaxtree.statementexpression.NewDecl;
 
 public class NewDeclAdapter {
+
+    /**
+     * @param newDeclContext
+     * @return NewDecl
+     */
     public static NewDecl adapt(JavaSubsetParser.NewDeclContext newDeclContext) {
         var arguments = new PrintableVector<IExpression>();
         if (newDeclContext.argumentList() != null) {

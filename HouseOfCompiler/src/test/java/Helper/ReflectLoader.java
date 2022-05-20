@@ -26,6 +26,12 @@ public class ReflectLoader extends ClassLoader {
         this.byteCodes = bc;
     }
 
+    /**
+     * @param fileName
+     * @param className
+     * @return Class<?>
+     * @throws Exception
+     */
     public static Class<?> getClass(String fileName, String className) throws Exception {
         ReflectLoader loader = new ReflectLoader(fileName);
         return loader.findClass(className);
@@ -35,6 +41,10 @@ public class ReflectLoader extends ClassLoader {
         this.byteCodes = byteCodes;
     }
 
+    /**
+     * @param name
+     * @return Class<?>
+     */
     @Override
     public Class<?> findClass(String name) {
         if (!byteCodes.containsKey(name)) {
@@ -54,18 +64,37 @@ public class ReflectLoader extends ClassLoader {
         }
     }
 
+    /**
+     * @param className
+     * @param method
+     * @param parameterTypes
+     * @return Method
+     * @throws NoSuchMethodException
+     */
     public Method getMethod(String className, String method, Class<?>... parameterTypes) throws NoSuchMethodException {
         Method method1 = findClass(className).getDeclaredMethod(method, parameterTypes);
         method1.setAccessible(true);
         return method1;
     }
 
+    /**
+     * @param className
+     * @param field
+     * @return Field
+     * @throws NoSuchFieldException
+     */
     public Field getField(String className, String field) throws NoSuchFieldException {
         Field field1 = findClass(className).getDeclaredField(field);
         field1.setAccessible(true);
         return field1;
     }
 
+    /**
+     * @param classname
+     * @param parameterTyped
+     * @return Constructor<?>
+     * @throws NoSuchMethodException
+     */
     public Constructor<?> getConstructor(String classname, Class<?>... parameterTyped) throws NoSuchMethodException {
         Constructor<?> constructor = findClass(classname).getDeclaredConstructor(parameterTyped);
         constructor.setAccessible(true);

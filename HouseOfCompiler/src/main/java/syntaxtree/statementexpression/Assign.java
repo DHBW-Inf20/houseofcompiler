@@ -17,8 +17,8 @@ public class Assign implements IStatementExpression {
     private IExpression lExpression;
     private IExpression rExpression;
     private Type type;
-public int line;
-public int column;
+    public int line;
+    public int column;
 
     public Assign(IExpression lExpression, IExpression rExpression) {
         this.lExpression = lExpression;
@@ -32,47 +32,75 @@ public int column;
         this.column = col;
     }
 
-
     public Assign(Type type, IExpression lExpression, IExpression rExpression) {
         this.lExpression = lExpression;
         this.rExpression = rExpression;
         this.type = type;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getlExpression() {
         return lExpression;
     }
 
+    /**
+     * @return IExpression
+     */
     public IExpression getrExpression() {
         return rExpression;
     }
 
+    /**
+     * @return Type
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(Type type) {
         this.type = type;
     }
 
+    /**
+     * @param className
+     */
     public void setType(String className) {
         this.type = new ReferenceType(className);
     }
 
+    /**
+     * @param type
+     */
     public void setType(Primitives type) {
         this.type = new BaseType(type);
     }
 
+    /**
+     * @param visitor
+     */
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);
     }
 
+    /**
+     * @param visitor
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult accept(SemanticVisitor visitor) {
         return visitor.typeCheck(this);
     }
 
+    /**
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -84,11 +112,17 @@ public int column;
                 && Objects.equals(type, assign.type);
     }
 
+    /**
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(lExpression, rExpression, type);
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return this.type + ": " + lExpression + " = " + rExpression + ";\n";

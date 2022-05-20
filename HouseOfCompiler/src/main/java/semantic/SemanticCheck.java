@@ -55,6 +55,11 @@ public class SemanticCheck implements SemanticVisitor {
 
     public ArrayList<Exception> errors = new ArrayList<>();
 
+    /**
+     * @param program
+     * @return Program
+     * @throws SemanticError
+     */
     public static Program generateTast(Program program) throws SemanticError {
         SemanticCheck semanticCheck = new SemanticCheck();
         var result = program.accept(semanticCheck);
@@ -69,6 +74,11 @@ public class SemanticCheck implements SemanticVisitor {
         }
     }
 
+    /**
+     * @param type1
+     * @param type2
+     * @return boolean
+     */
     private boolean compareTypes(Type type1, Type type2) {
         return (type1.equals(type2) ||
                 type1.equals(new ReferenceType("Object"))) ||
@@ -76,6 +86,10 @@ public class SemanticCheck implements SemanticVisitor {
                         type2.equals(new BaseType(Primitives.CHAR)));
     }
 
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(Program toCheck) {
 
@@ -89,6 +103,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, null);
     }
 
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(ClassDecl toCheck) {
         var valid = true;
@@ -119,6 +137,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, new ReferenceType(toCheck.getIdentifier()));
     }
 
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(FieldDecl toCheck) {
         var valid = true;
@@ -135,6 +157,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, toCheck.getType());
     }
 
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(ConstructorDecl toCheck) {
         boolean valid = true;
@@ -158,6 +184,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, toCheck.getType());
     }
 
+    /**
+     * @param methodDecl
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(MethodDecl methodDecl) {
         var valid = true;
@@ -186,6 +216,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, resultType);
     }
 
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(Assign toCheck) {
         IExpression lExpression = toCheck.getlExpression();
@@ -223,6 +257,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, null); // return type is null to get the return type sufficently
     }
 
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(MethodParameter toCheck) {
         if (TypeHelper.typeExists(toCheck.getType(), this.context)) {
@@ -234,6 +272,10 @@ public class SemanticCheck implements SemanticVisitor {
         }
     }
 
+    /**
+     * @param whileStmt
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(WhileStmt whileStmt) {
 
@@ -255,6 +297,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, blockResult.getType());
     }
 
+    /**
+     * @param returnStmt
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(ReturnStmt returnStmt) {
 
@@ -270,6 +316,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(true, returnStmt.getType());
     }
 
+    /**
+     * @param localVarDecl
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(LocalVarDecl localVarDecl) {
 
@@ -300,11 +350,19 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, null);
     }
 
+    /**
+     * @param ifStmt
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(IfStmt ifStmt) {
         return null;
     }
 
+    /**
+     * @param block
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(Block block) {
         var statements = block.getStatements();
@@ -337,6 +395,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, blockReturnType);
     }
 
+    /**
+     * @param newDecl
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(NewDecl newDecl) {
         var valid = true;
@@ -365,6 +427,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, newDecl.getType());
     }
 
+    /**
+     * @param methodCall
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(MethodCall methodCall) {
 
@@ -388,17 +454,29 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, null);
     }
 
+    /**
+     * @param unary
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(Unary unary) {
         return null;
     }
 
+    /**
+     * @param aThis
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(This aThis) {
         aThis.setType(currentClass.getIdentifier());
         return new TypeCheckResult(true, aThis.getType());
     }
 
+    /**
+     * @param aNull
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(Null aNull) {
         if (currentAssignLeftType != null) {
@@ -412,6 +490,10 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(true, aNull.getType());
     }
 
+    /**
+     * @param localOrFieldVar
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(LocalOrFieldVar localOrFieldVar) {
 
@@ -440,11 +522,19 @@ public class SemanticCheck implements SemanticVisitor {
 
     }
 
+    /**
+     * @param integerExpr
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(IntegerExpr integerExpr) {
         return new TypeCheckResult(true, integerExpr.getType());
     }
 
+    /**
+     * @param instVar
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(InstVar instVar) {
 
@@ -486,17 +576,29 @@ public class SemanticCheck implements SemanticVisitor {
         return new TypeCheckResult(valid, newType);
     }
 
+    /**
+     * @param charExpr
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(CharExpr charExpr) {
         return new TypeCheckResult(true, charExpr.getType());
 
     }
 
+    /**
+     * @param boolExpr
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(BoolExpr boolExpr) {
         return new TypeCheckResult(true, boolExpr.getType());
     }
 
+    /**
+     * @param binary
+     * @return TypeCheckResult
+     */
     @Override
     public TypeCheckResult typeCheck(Binary binary) {
 

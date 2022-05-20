@@ -25,6 +25,9 @@ import syntaxtree.structure.Program;
 @DisplayName("Typed Abstract Syntax Generation")
 public class TestRunner {
 
+    /**
+     * @throws FileNotFoundException
+     */
     @Test
     @DisplayName("EmptyClass")
     void emptyClass() throws FileNotFoundException {
