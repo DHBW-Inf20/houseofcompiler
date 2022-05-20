@@ -1,25 +1,33 @@
 package TAST;
 
-import Helper.MockGenerator;
-import common.AccessModifier;
-import common.Compiler;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.FileNotFoundException;
+
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import Helper.MockGenerator;
+import Helper.Resources;
+import common.AccessModifier;
+import common.BaseType;
+import common.Compiler;
+import common.Primitives;
+import common.PrintableVector;
+import semantic.exceptions.SemanticError;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
 import syntaxtree.structure.Program;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import common.PrintableVector;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 @DisplayName("Typed Abstract Syntax Generation")
 public class TestRunner {
 
+    /**
+     * @throws FileNotFoundException
+     */
     @Test
     @DisplayName("EmptyClass")
     void emptyClass() throws FileNotFoundException {
@@ -43,10 +51,11 @@ public class TestRunner {
 
         Program expectedAst = MockGenerator.getEmptyProgram("ClassFields");
 
-        FieldDecl autoAccess = new FieldDecl("autoAccess", null);
-        FieldDecl privateField = new FieldDecl("private", AccessModifier.PRIVATE);
-        FieldDecl publicField = new FieldDecl("public", AccessModifier.PUBLIC);
-        FieldDecl protectedField = new FieldDecl("protected", AccessModifier.PROTECTED);
+        FieldDecl autoAccess = new FieldDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT),
+                "autoAccess");
+        FieldDecl privateField = new FieldDecl(AccessModifier.PRIVATE, new BaseType(Primitives.INT), "private");
+        FieldDecl publicField = new FieldDecl(AccessModifier.PUBLIC, new BaseType(Primitives.INT), "public");
+        FieldDecl protectedField = new FieldDecl(AccessModifier.PROTECTED, new BaseType(Primitives.INT), "protected");
 
         PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
         fields.add(autoAccess);
@@ -74,7 +83,7 @@ public class TestRunner {
     void emptyClassWithConstructor() {
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),constructors,
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(), constructors,
                 new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
@@ -108,7 +117,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("VoidMethod")
-    void voidMethod(){
+    void voidMethod() {
         Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getVoidMethodAst());
 
         Program expectedTast = MockGenerator.getVoidMethodTast();
@@ -118,7 +127,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("RealConstructor")
-    void realConstructor(){
+    void realConstructor() {
         Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getRealConstructorAst());
 
         Program expectedTast = MockGenerator.getRealConstructorTast();
@@ -136,4 +145,86 @@ public class TestRunner {
         assertEquals(expectedTast, generatedTast);
     }
 
+    @Test
+    @DisplayName("MultipleFields")
+    @Tag("expectfail")
+    void multipleFields() {
+        Program program = Resources.getProgram("FailTests/MultiFieldDecl.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("MismatchingReturnType")
+    @Tag("expectfail")
+    void mismatchingReturnType() {
+        Program program = Resources.getProgram("FailTests/MismatchingReturnType.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("WhileTest")
+    void whileTest() {
+        Program program = Resources.getProgram("SimpleTests/WhileTest.java");
+        Compiler.getFactory().getTastAdapter().getTast(program);
+
+    }
+
+    @Test
+    @DisplayName("WhileFailTest")
+    void whileFailTest() {
+        Program program = Resources.getProgram("FailTests/WhileBool.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("ScopeFailTest")
+    void scopeFailTest() {
+        Program program = Resources.getProgram("FailTests/ScopeTest.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("AssignFailTest")
+    void assignFailTest() {
+        Program program = Resources.getProgram("FailTests/AssignFail.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("LocalVarDeclaration with wrong init-Type")
+    void localVarDeclInitFail() {
+        Program program = Resources.getProgram("FailTests/LocalVarWrongInit.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("ExplicitNullAssign")
+    void explicitNullAssign() {
+        Program program = Resources.getProgram("SimpleTests/ExplicitNullAssign.java");
+        Compiler.getFactory().getTastAdapter().getTast(program);
+    }
 }

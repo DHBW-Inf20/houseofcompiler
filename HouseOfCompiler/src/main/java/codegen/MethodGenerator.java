@@ -1,28 +1,41 @@
 package codegen;
 
-import context.Context;
-import codegen.utils.GenUtils;
-import codegen.utils.LocalVarStack;
-import common.BaseType;
-import common.ReferenceType;
-import common.Type;
+import java.util.stream.Collectors;
+
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import syntaxtree.expressions.*;
+
+import codegen.utils.GenUtils;
+import codegen.utils.LocalVarStack;
+import common.BaseType;
+import common.PrintableVector;
+import common.ReferenceType;
+import common.Type;
+import context.Context;
+import syntaxtree.expressions.Binary;
+import syntaxtree.expressions.BoolExpr;
+import syntaxtree.expressions.CharExpr;
+import syntaxtree.expressions.IExpression;
+import syntaxtree.expressions.InstVar;
+import syntaxtree.expressions.IntegerExpr;
+import syntaxtree.expressions.LocalOrFieldVar;
+import syntaxtree.expressions.Null;
+import syntaxtree.expressions.This;
+import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
-import syntaxtree.statements.*;
+import syntaxtree.statements.Block;
+import syntaxtree.statements.IfStmt;
+import syntaxtree.statements.LocalVarDecl;
+import syntaxtree.statements.ReturnStmt;
+import syntaxtree.statements.WhileStmt;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
-
-import common.PrintableVector;
 import visitor.codevisitor.MethodCodeVisitor;
-
-import java.util.stream.Collectors;
 
 public class MethodGenerator implements MethodCodeVisitor {
 
@@ -32,15 +45,12 @@ public class MethodGenerator implements MethodCodeVisitor {
     private final String className;
     private final Context context;
 
-
     private final ClassWriter cw;
     private MethodVisitor mv;
-
 
     private final LocalVarStack localVars;
 
     private String lastClassName;
-
 
     public MethodGenerator(String className, Context context, ClassWriter cw) {
         this.className = className;
@@ -50,11 +60,16 @@ public class MethodGenerator implements MethodCodeVisitor {
         localVars = new LocalVarStack();
     }
 
+    /**
+     * @param constructorDecl
+     */
     @Override
     public void visit(ConstructorDecl constructorDecl) {
-        PrintableVector<Type> parameterTypes = constructorDecl.getParameterDeclarations().stream().map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
+        PrintableVector<Type> parameterTypes = constructorDecl.getParameterDeclarations().stream()
+                .map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
 
-        mv = cw.visitMethod(GenUtils.resolveAccessModifier(constructorDecl.getAccessModifier()), "<init>", GenUtils.generateDescriptor(parameterTypes, constructorDecl.getType()), null, null);
+        mv = cw.visitMethod(GenUtils.resolveAccessModifier(constructorDecl.getAccessModifier()), "<init>",
+                GenUtils.generateDescriptor(parameterTypes, constructorDecl.getType()), null, null);
         mv.visitCode();
 
         localVars.push("this");
@@ -69,11 +84,16 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitEnd();
     }
 
+    /**
+     * @param methodDecl
+     */
     @Override
     public void visit(MethodDecl methodDecl) {
-        PrintableVector<Type> parameterTypes = methodDecl.getParameters().stream().map(MethodParameter::getType).collect(Collectors.toCollection(PrintableVector::new));
+        PrintableVector<Type> parameterTypes = methodDecl.getParameters().stream().map(MethodParameter::getType)
+                .collect(Collectors.toCollection(PrintableVector::new));
 
-        mv = cw.visitMethod(GenUtils.resolveAccessModifier(methodDecl.getAccessModifier()), methodDecl.getIdentifier(), GenUtils.generateDescriptor(parameterTypes, methodDecl.getType()), null, null);
+        mv = cw.visitMethod(GenUtils.resolveAccessModifier(methodDecl.getAccessModifier()), methodDecl.getIdentifier(),
+                GenUtils.generateDescriptor(parameterTypes, methodDecl.getType()), null, null);
         mv.visitCode();
 
         localVars.push("this");
@@ -97,6 +117,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         localVars.endBlock();
     }
 
+    /**
+     * @param ifStmt
+     */
     @Override
     public void visit(IfStmt ifStmt) {
         Label falseLabel = new Label();
@@ -117,6 +140,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitLabel(end);
     }
 
+    /**
+     * @param localVarDecl
+     */
     @Override
     public void visit(LocalVarDecl localVarDecl) {
         localVarDecl.getExpression().accept(this);
@@ -127,6 +153,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param returnStmt
+     */
     @Override
     public void visit(ReturnStmt returnStmt) {
         IExpression expression = returnStmt.getExpression();
@@ -142,6 +171,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param whileStmt
+     */
     @Override
     public void visit(WhileStmt whileStmt) {
 
@@ -162,7 +194,8 @@ public class MethodGenerator implements MethodCodeVisitor {
             String owner = this.lastClassName;
             rExpression.accept(this);
             // mv.visitInsn(Opcodes.DUP);
-            mv.visitFieldInsn(Opcodes.PUTFIELD, owner, ((InstVar) lExpression).getIdentifier(), GenUtils.generateDescriptor((lExpression).getType()));
+            mv.visitFieldInsn(Opcodes.PUTFIELD, owner, ((InstVar) lExpression).getIdentifier(),
+                    GenUtils.generateDescriptor((lExpression).getType()));
         } else if (lExpression instanceof LocalOrFieldVar) {
             int index = localVars.get(((LocalOrFieldVar) lExpression).getIdentifier());
             if (index >= 0) { // local var
@@ -178,23 +211,34 @@ public class MethodGenerator implements MethodCodeVisitor {
                 String owner = this.lastClassName;
                 rExpression.accept(this);
                 // mv.visitInsn(Opcodes.DUP);
-                mv.visitFieldInsn(Opcodes.PUTFIELD, owner, ((LocalOrFieldVar) lExpression).getIdentifier(), GenUtils.generateDescriptor((lExpression).getType()));
+                mv.visitFieldInsn(Opcodes.PUTFIELD, owner, ((LocalOrFieldVar) lExpression).getIdentifier(),
+                        GenUtils.generateDescriptor((lExpression).getType()));
             }
         }
     }
 
+    /**
+     * @param methodCall
+     */
     @Override
     public void visit(MethodCall methodCall) {
-        methodCall.target.accept(this);
+        methodCall.receiver.accept(this);
         methodCall.getArguments().forEach(parameter -> parameter.accept(this));
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, this.lastClassName, methodCall.getIdentifier(), GenUtils.generateDescriptor(GenUtils.expressionsToTypes(methodCall.getArguments()), methodCall.getType()), false);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, this.lastClassName, methodCall.getIdentifier(), GenUtils
+                .generateDescriptor(GenUtils.expressionsToTypes(methodCall.getArguments()), methodCall.getType()),
+                false);
     }
 
+    /**
+     * @param newDecl
+     */
     @Override
     public void visit(NewDecl newDecl) {
         this.lastClassName = newDecl.getIdentifier();
         mv.visitTypeInsn(Opcodes.NEW, newDecl.getIdentifier());
-        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, newDecl.getIdentifier(), "<init>", GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()), newDecl.getType()), false);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, newDecl.getIdentifier(), "<init>",
+                GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()), newDecl.getType()),
+                false);
     }
 
     /***************
@@ -206,6 +250,9 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     }
 
+    /**
+     * @param binary
+     */
     @Override
     public void visit(Binary binary) {
         switch (binary.getOperator()) {
@@ -214,6 +261,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param binary
+     */
     private void visitBinaryArithmetic(Binary binary) {
         binary.getlExpression().accept(this);
         binary.getrExpression().accept(this);
@@ -226,6 +276,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param binary
+     */
     private void visitBoolLogic(Binary binary) {
 
         Label trueLabel = new Label();
@@ -267,16 +320,18 @@ public class MethodGenerator implements MethodCodeVisitor {
             case EQUAL -> {
                 binary.getlExpression().accept(this);
                 binary.getrExpression().accept(this);
-                if (binary.getlExpression().getType()  instanceof BaseType && binary.getrExpression().getType() instanceof BaseType) {
+                if (binary.getlExpression().getType() instanceof BaseType
+                        && binary.getrExpression().getType() instanceof BaseType) {
                     mv.visitJumpInsn(Opcodes.IF_ICMPNE, falseLabel);
                 } else {
                     mv.visitJumpInsn(Opcodes.IF_ACMPNE, falseLabel);
                 }
             }
-            case NOTEQUAL ->  {
+            case NOTEQUAL -> {
                 binary.getlExpression().accept(this);
                 binary.getrExpression().accept(this);
-                if (binary.getlExpression().getType()  instanceof BaseType && binary.getrExpression().getType() instanceof BaseType) {
+                if (binary.getlExpression().getType() instanceof BaseType
+                        && binary.getrExpression().getType() instanceof BaseType) {
                     mv.visitJumpInsn(Opcodes.IF_ICMPEQ, falseLabel);
                 } else {
                     mv.visitJumpInsn(Opcodes.IF_ACMPEQ, falseLabel);
@@ -296,6 +351,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitLabel(end);
     }
 
+    /**
+     * @param boolExpr
+     */
     @Override
     public void visit(BoolExpr boolExpr) {
         if (boolExpr.getValue()) {
@@ -305,26 +363,39 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param charExpr
+     */
     @Override
     public void visit(CharExpr charExpr) {
         mv.visitIntInsn(Opcodes.BIPUSH, charExpr.getValue());
     }
 
+    /**
+     * @param integerExpr
+     */
     @Override
     public void visit(IntegerExpr integerExpr) {
         mv.visitIntInsn(Opcodes.BIPUSH, integerExpr.getValue());
     }
 
+    /**
+     * @param instVar
+     */
     @Override
     public void visit(InstVar instVar) {
         IExpression expression = instVar.getExpression();
         expression.accept(this);
         if (!(expression instanceof This)) {
             this.lastClassName = ((ReferenceType) expression.getType()).getIdentifier();
-            mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClassName, instVar.getIdentifier(), GenUtils.generateDescriptor(instVar.getType()));
+            mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClassName, instVar.getIdentifier(),
+                    GenUtils.generateDescriptor(instVar.getType()));
         }
     }
 
+    /**
+     * @param localOrFieldVar
+     */
     @Override
     public void visit(LocalOrFieldVar localOrFieldVar) {
         int index = localVars.get(localOrFieldVar.getIdentifier());
@@ -340,11 +411,17 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
+    /**
+     * @param nullExpr
+     */
     @Override
     public void visit(Null nullExpr) {
         mv.visitInsn(Opcodes.ACONST_NULL);
     }
 
+    /**
+     * @param thisExpr
+     */
     @Override
     public void visit(This thisExpr) {
         this.lastClassName = className;

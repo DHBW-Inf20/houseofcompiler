@@ -167,17 +167,17 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNewDecl(JavaSubsetParser.NewDeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavaSubsetParser#reciever}.
+	 * Visit a parse tree produced by {@link JavaSubsetParser#receiver}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReciever(JavaSubsetParser.RecieverContext ctx);
+	T visitReceiver(JavaSubsetParser.ReceiverContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavaSubsetParser#revievingMethod}.
+	 * Visit a parse tree produced by {@link JavaSubsetParser#receivingMethod}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx);
+	T visitReceivingMethod(JavaSubsetParser.ReceivingMethodContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#type}.
 	 * @param ctx the parse tree

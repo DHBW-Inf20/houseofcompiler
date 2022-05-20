@@ -268,25 +268,25 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitNewDecl(JavaSubsetParser.NewDeclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavaSubsetParser#reciever}.
+	 * Enter a parse tree produced by {@link JavaSubsetParser#receiver}.
 	 * @param ctx the parse tree
 	 */
-	void enterReciever(JavaSubsetParser.RecieverContext ctx);
+	void enterReceiver(JavaSubsetParser.ReceiverContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JavaSubsetParser#reciever}.
+	 * Exit a parse tree produced by {@link JavaSubsetParser#receiver}.
 	 * @param ctx the parse tree
 	 */
-	void exitReciever(JavaSubsetParser.RecieverContext ctx);
+	void exitReceiver(JavaSubsetParser.ReceiverContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavaSubsetParser#revievingMethod}.
+	 * Enter a parse tree produced by {@link JavaSubsetParser#receivingMethod}.
 	 * @param ctx the parse tree
 	 */
-	void enterRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx);
+	void enterReceivingMethod(JavaSubsetParser.ReceivingMethodContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JavaSubsetParser#revievingMethod}.
+	 * Exit a parse tree produced by {@link JavaSubsetParser#receivingMethod}.
 	 * @param ctx the parse tree
 	 */
-	void exitRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx);
+	void exitReceivingMethod(JavaSubsetParser.ReceivingMethodContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#type}.
 	 * @param ctx the parse tree

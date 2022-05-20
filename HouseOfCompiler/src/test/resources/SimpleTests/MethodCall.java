@@ -1,14 +1,13 @@
 class MethodCall {
-    
+
     int i;
 
-    public MethodCall(){
+    public MethodCall() {
         this.i = foo();
     }
 
     int foo() {
         return 1;
     }
-
 
 }

@@ -199,14 +199,14 @@ public class JavaSubsetBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReciever(JavaSubsetParser.RecieverContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReceiver(JavaSubsetParser.ReceiverContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRevievingMethod(JavaSubsetParser.RevievingMethodContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReceivingMethod(JavaSubsetParser.ReceivingMethodContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

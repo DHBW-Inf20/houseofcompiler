@@ -1,5 +1,7 @@
-class ConstructorParams{
+class ConstructorParams {
 
-    public ConstructorParams(int i){}
+    public ConstructorParams(int i) {
+
+    }
 
 }

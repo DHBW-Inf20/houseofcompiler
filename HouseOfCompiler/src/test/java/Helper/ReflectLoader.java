@@ -11,21 +11,27 @@ import syntaxtree.structure.Program;
 
 public class ReflectLoader extends ClassLoader {
     private byte[] byteCode;
-        private Map<String, byte[]> byteCodes;
-        private Map<String, Class<?>> classes = new HashMap<>();
+    private Map<String, byte[]> byteCodes;
+    private Map<String, Class<?>> classes = new HashMap<>();
 
     public ReflectLoader(byte[] byteCode) {
-            byteCodes = new HashMap<>();
+        byteCodes = new HashMap<>();
         this.byteCode = byteCode;
     }
 
-    public ReflectLoader(String fileName){
+    public ReflectLoader(String fileName) {
         Program program = Resources.getProgram(fileName);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         this.byteCodes = bc;
     }
 
+    /**
+     * @param fileName
+     * @param className
+     * @return Class<?>
+     * @throws Exception
+     */
     public static Class<?> getClass(String fileName, String className) throws Exception {
         ReflectLoader loader = new ReflectLoader(fileName);
         return loader.findClass(className);
@@ -35,42 +41,64 @@ public class ReflectLoader extends ClassLoader {
         this.byteCodes = byteCodes;
     }
 
+    /**
+     * @param name
+     * @return Class<?>
+     */
     @Override
-    public Class findClass(String name) {
-        if(!byteCodes.containsKey(name)) {
-            if(byteCode != null) {
+    public Class<?> findClass(String name) {
+        if (!byteCodes.containsKey(name)) {
+            if (byteCode != null) {
                 byteCodes.put(name, byteCode);
                 byteCode = null;
-            }
-            else {
+            } else {
                 return null;
             }
         }
-        if(classes.containsKey(name)) {
+        if (classes.containsKey(name)) {
             return classes.get(name);
-        }
-        else {
+        } else {
             Class<?> clazz = defineClass(name, byteCodes.get(name), 0, byteCodes.get(name).length);
             classes.put(name, clazz);
             return clazz;
         }
     }
 
+    /**
+     * @param className
+     * @param method
+     * @param parameterTypes
+     * @return Method
+     * @throws NoSuchMethodException
+     */
     public Method getMethod(String className, String method, Class<?>... parameterTypes) throws NoSuchMethodException {
         Method method1 = findClass(className).getDeclaredMethod(method, parameterTypes);
         method1.setAccessible(true);
         return method1;
     }
 
+    /**
+     * @param className
+     * @param field
+     * @return Field
+     * @throws NoSuchFieldException
+     */
     public Field getField(String className, String field) throws NoSuchFieldException {
         Field field1 = findClass(className).getDeclaredField(field);
         field1.setAccessible(true);
         return field1;
     }
 
-    public Constructor getConstructor(String classname, Class<?>... parameterTyped) throws NoSuchMethodException {
+    /**
+     * @param classname
+     * @param parameterTyped
+     * @return Constructor<?>
+     * @throws NoSuchMethodException
+     */
+    public Constructor<?> getConstructor(String classname, Class<?>... parameterTyped) throws NoSuchMethodException {
         Constructor<?> constructor = findClass(classname).getDeclaredConstructor(parameterTyped);
         constructor.setAccessible(true);
         return constructor;
     }
+
 }

@@ -1,68 +1,76 @@
 package parser.adapter;
 
+import java.util.List;
+
 import common.PrintableVector;
-import org.antlr.v4.misc.EscapeSequenceParsing;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.generated.JavaSubsetParser;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.MethodCall;
-import syntaxtree.statementexpression.NewDecl;
-import visitor.SemanticVisitor;
-
-import java.util.List;
 
 public class MethodCallAdapter {
-    public static MethodCall adapt(JavaSubsetParser.MethodCallContext methodCallContext){
-        var arguments = new PrintableVector<IExpression>();
-        methodCallContext.argumentList().expression().forEach(a -> arguments.add(ExpressionAdapter.adapt(a)));
-        IExpression reciever = new This();
 
-        if (methodCallContext.reciever() != null){ //explicit reciever
-            if (methodCallContext.reciever().instVar() != null){
-                reciever = InstVarAdapter.adapt(methodCallContext.reciever().instVar());
-            }
-            else if (methodCallContext.reciever().newDecl() != null){
-                reciever = NewDeclAdapter.adapt(methodCallContext.reciever().newDecl());
-            }
-            else if (methodCallContext.reciever().Identifier() != null){
-                reciever = new LocalOrFieldVar(methodCallContext.reciever().Identifier().getText());
+    /**
+     * @param methodCallContext
+     * @return MethodCall
+     */
+    public static MethodCall adapt(JavaSubsetParser.MethodCallContext methodCallContext) {
+        var arguments = new PrintableVector<IExpression>();
+        IExpression receiver = new This();
+        if (methodCallContext.argumentList() != null) {
+            methodCallContext.argumentList().expression().forEach(
+                    a -> arguments.add(ExpressionAdapter.adapt(a)));
+        }
+        if (methodCallContext.receiver() != null) { // explicit receiver
+            if (methodCallContext.receiver().instVar() != null) {
+                receiver = InstVarAdapter.adapt(methodCallContext.receiver().instVar());
+            } else if (methodCallContext.receiver().newDecl() != null) {
+                receiver = NewDeclAdapter.adapt(methodCallContext.receiver().newDecl());
+            } else if (methodCallContext.receiver().Identifier() != null) {
+                receiver = new LocalOrFieldVar(methodCallContext.receiver().Identifier().getText());
             }
         }
-        System.out.println(reciever.toString());
-        if (methodCallContext.revievingMethod().size() > 0){ //A.b.m().n()
-            System.out.println(methodCallContext.revievingMethod().size());
-            reciever = recursivelyAdaptRecievingMethods(methodCallContext.revievingMethod(), methodCallContext.revievingMethod().size()-1, reciever);
+        if (methodCallContext.receivingMethod().size() > 0) { // A.b.m().n()
+            receiver = recursivelyAdaptRecievingMethods(methodCallContext.receivingMethod(),
+                    methodCallContext.receivingMethod().size() - 1, receiver);
         }
         return new MethodCall(
                 methodCallContext.Identifier().getText(),
-                reciever,
-                arguments
-                );
+                receiver,
+                arguments,
+                methodCallContext.start.getLine(),
+                methodCallContext.start.getCharPositionInLine());
     }
 
-    private static MethodCall recursivelyAdaptRecievingMethods(List<JavaSubsetParser.RevievingMethodContext> contexts, int index, IExpression rootReciever){
-        System.out.println("checkig recursively");
-        if (index > 0){
-            System.out.println(index);
+    /**
+     * @param contexts
+     * @param index
+     * @param rootReceiver
+     * @return MethodCall
+     */
+    private static MethodCall recursivelyAdaptRecievingMethods(List<JavaSubsetParser.ReceivingMethodContext> contexts,
+            int index, IExpression rootReceiver) {
+        if (index > 0) {
             var arguments = new PrintableVector<IExpression>();
-            contexts.get(index-1).argumentList().expression().forEach(a -> arguments.add(ExpressionAdapter.adapt(a)));
+            var context = contexts.get(index - 1);
+            context.argumentList().expression().forEach(a -> arguments.add(ExpressionAdapter.adapt(a)));
             return new MethodCall(
-                    contexts.get(index-1).Identifier().getText(),
-                    recursivelyAdaptRecievingMethods(contexts, index, rootReciever),
-                    arguments
-            );
+                    context.Identifier().getText(),
+                    recursivelyAdaptRecievingMethods(contexts, index, rootReceiver),
+                    arguments,
+                    context.start.getLine(),
+                    context.start.getCharPositionInLine());
 
-        }
-        else{
+        } else {
             var arguments = new PrintableVector<IExpression>();
             contexts.get(0).argumentList().expression().forEach(a -> arguments.add(ExpressionAdapter.adapt(a)));
             return new MethodCall(
                     contexts.get(0).Identifier().getText(),
-                    rootReciever,
-                    arguments
-            );
+                    rootReceiver,
+                    arguments,
+                    contexts.get(0).start.getLine(),
+                    contexts.get(0).start.getCharPositionInLine());
         }
     }
 }

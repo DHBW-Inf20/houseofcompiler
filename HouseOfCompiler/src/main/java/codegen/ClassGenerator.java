@@ -1,10 +1,10 @@
 package codegen;
 
-import context.Context;
-import codegen.utils.GenUtils;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
+
+import codegen.utils.GenUtils;
+import context.Context;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
@@ -21,10 +21,16 @@ public class ClassGenerator implements ClassCodeVisitor {
         this.cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
     }
 
+    /**
+     * @return byte[]
+     */
     public byte[] getBytecode() {
         return cw.toByteArray();
     }
 
+    /**
+     * @param clazz
+     */
     @Override
     public void visit(ClassDecl clazz) {
         System.out.println("Class: " + clazz.getIdentifier());
@@ -35,17 +41,23 @@ public class ClassGenerator implements ClassCodeVisitor {
         if (clazz.getConstructorDeclarations().isEmpty()) {
             new ConstructorDecl().accept(new MethodGenerator(clazz.getIdentifier(), context, cw));
         } else {
-            clazz.getConstructorDeclarations().forEach(constructor -> constructor.accept(new MethodGenerator(clazz.getIdentifier(), context, cw)));
+            clazz.getConstructorDeclarations().forEach(
+                    constructor -> constructor.accept(new MethodGenerator(clazz.getIdentifier(), context, cw)));
         }
 
-        clazz.getMethodDeclarations().forEach(method -> method.accept(new MethodGenerator(clazz.getIdentifier(), context, cw)));
+        clazz.getMethodDeclarations()
+                .forEach(method -> method.accept(new MethodGenerator(clazz.getIdentifier(), context, cw)));
 
         cw.visitEnd();
     }
 
+    /**
+     * @param field
+     */
     @Override
     public void visit(FieldDecl field) {
-        System.out.println("Field: " + field.getIdentifier() + " " + field.getAccessModifier() + " " + GenUtils.generateDescriptor(field.getType()));
+        System.out.println("Field: " + field.getIdentifier() + " " + field.getAccessModifier() + " "
+                + GenUtils.generateDescriptor(field.getType()));
         cw.visitField(GenUtils.resolveAccessModifier(field.getAccessModifier()), field.getIdentifier(),
                 GenUtils.generateDescriptor(field.getType()), null, null).visitEnd();
 
