@@ -2,6 +2,7 @@ package codegen;
 
 import java.util.stream.Collectors;
 
+import common.*;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -9,10 +10,6 @@ import org.objectweb.asm.Opcodes;
 
 import codegen.utils.GenUtils;
 import codegen.utils.LocalVarStack;
-import common.BaseType;
-import common.PrintableVector;
-import common.ReferenceType;
-import common.Type;
 import context.Context;
 import syntaxtree.expressions.Binary;
 import syntaxtree.expressions.BoolExpr;
@@ -236,8 +233,10 @@ public class MethodGenerator implements MethodCodeVisitor {
     public void visit(NewDecl newDecl) {
         this.lastClassName = newDecl.getIdentifier();
         mv.visitTypeInsn(Opcodes.NEW, newDecl.getIdentifier());
+        mv.visitInsn(Opcodes.DUP);
+        newDecl.getArguments().forEach(expression -> expression.accept(this));
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, newDecl.getIdentifier(), "<init>",
-                GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()), newDecl.getType()),
+                GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()), new BaseType(Primitives.VOID)),
                 false);
     }
 
@@ -406,8 +405,8 @@ public class MethodGenerator implements MethodCodeVisitor {
                 mv.visitVarInsn(Opcodes.ALOAD, index);
             }
         } else { // field var
-            mv.visitFieldInsn(Opcodes.GETFIELD, className, localOrFieldVar.getIdentifier(),
-                    GenUtils.generateDescriptor(localOrFieldVar.getType()));
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+            mv.visitFieldInsn(Opcodes.GETFIELD, className, localOrFieldVar.getIdentifier(), GenUtils.generateDescriptor(localOrFieldVar.getType()));
         }
     }
 

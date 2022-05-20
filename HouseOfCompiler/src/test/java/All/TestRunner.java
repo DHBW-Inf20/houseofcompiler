@@ -178,7 +178,7 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("RealConstructor");
         try {
-            int randomI = new Random(new Date().getTime()).nextInt(0, 200);
+            int randomI = 2;
             Object o = c.getDeclaredConstructor(int.class).newInstance(randomI);
             var i = loader.getField("RealConstructor", "i");
             var ivalue = i.get(o);
