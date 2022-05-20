@@ -14,6 +14,6 @@ public class BinaryExpressionAdapter {
                 Operator operator = OperatorAdapter.adapt(binaryExprContext.operator());
                 return new Binary(leftExpression,
                                 rightExpression,
-                                operator);
+                                operator, binaryExprContext.start.getLine(), binaryExprContext.start.getCharPositionInLine());
         }
 }

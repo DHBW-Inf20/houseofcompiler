@@ -14,14 +14,19 @@ public class FieldDeclAdapter {
                             fieldDeclContext.AccessModifier().getText().toUpperCase(Locale.ROOT)
                     ),
                     TypeAdapter.adapt(fieldDeclContext.type()),
-                    fieldDeclContext.Identifier().getText()
+                    fieldDeclContext.Identifier().getText(),
+                    fieldDeclContext.start.getLine(),
+                    fieldDeclContext.start.getCharPositionInLine()                  
+                    
             );
         }
         else {
             return new FieldDecl(
                     AccessModifier.PACKAGE_PRIVATE,
                     TypeAdapter.adapt(fieldDeclContext.type()),
-                    fieldDeclContext.Identifier().getText()
+                    fieldDeclContext.Identifier().getText(),
+                    fieldDeclContext.start.getLine(),
+                    fieldDeclContext.start.getCharPositionInLine()
             );
         }
     }

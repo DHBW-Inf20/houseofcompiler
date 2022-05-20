@@ -13,6 +13,8 @@ public class BoolExpr implements IExpression{
 
     private boolean value;
     private Type type;
+public int line;
+public int column;
 
     public BoolExpr(boolean value) {
         this.value = value;

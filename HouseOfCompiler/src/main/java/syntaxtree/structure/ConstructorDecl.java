@@ -16,6 +16,8 @@ import visitor.codevisitor.MethodCodeVisitor;
 public class ConstructorDecl implements Visitable {
 
     private Type type;
+public int line;
+public int column;
     private PrintableVector<MethodParameter> parameterDeclarations;
     private AccessModifier accessModifier;
     private Block block;
@@ -25,6 +27,16 @@ public class ConstructorDecl implements Visitable {
         this.parameterDeclarations = parameterDeclarations;
         this.block = statement;
         this.type = new BaseType(Primitives.VOID);
+    }
+
+    public ConstructorDecl(AccessModifier accessModifier, PrintableVector<MethodParameter> parameterDeclarations, Block statement, int line, int col) {
+        this.accessModifier = accessModifier;
+        this.parameterDeclarations = parameterDeclarations;
+        this.block = statement;
+        this.type = new BaseType(Primitives.VOID);
+
+        this.line = line;
+        this.column = col;
     }
 
     public ConstructorDecl() {

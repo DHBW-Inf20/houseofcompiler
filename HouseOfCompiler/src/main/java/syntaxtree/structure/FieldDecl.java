@@ -15,16 +15,33 @@ public class FieldDecl implements Visitable {
     private String identifier;
     private AccessModifier accessModifier;
     private Type type;
+public int line;
+public int column;
 
     public FieldDecl(String identifier, AccessModifier accessModifier) {
         this.identifier = identifier;
         this.accessModifier = accessModifier;
     }
 
+    public FieldDecl(String identifier, AccessModifier accessModifier, int line, int col) {
+        this.identifier = identifier;
+        this.accessModifier = accessModifier;
+        this.column = col;
+        this.line = line;
+    }
+
     public FieldDecl(AccessModifier accessModifier, Type type, String identifier){
         this.identifier = identifier;
         this.accessModifier = accessModifier;
         this.type = type;
+    }
+
+    public FieldDecl(AccessModifier accessModifier, Type type, String identifier, int line, int col){
+        this.identifier = identifier;
+        this.accessModifier = accessModifier;
+        this.type = type;
+        this.line = line;
+        this.column = col;
     }
 
     public FieldDecl(Type type, String identifier){

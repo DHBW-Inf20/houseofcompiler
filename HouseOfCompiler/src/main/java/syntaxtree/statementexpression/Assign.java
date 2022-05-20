@@ -17,11 +17,21 @@ public class Assign implements IStatementExpression {
     private IExpression lExpression;
     private IExpression rExpression;
     private Type type;
+public int line;
+public int column;
 
     public Assign(IExpression lExpression, IExpression rExpression) {
         this.lExpression = lExpression;
         this.rExpression = rExpression;
     }
+
+    public Assign(IExpression lExpression, IExpression rExpression, int line, int col) {
+        this.lExpression = lExpression;
+        this.rExpression = rExpression;
+        this.line = line;
+        this.column = col;
+    }
+
 
     public Assign(Type type, IExpression lExpression, IExpression rExpression) {
         this.lExpression = lExpression;

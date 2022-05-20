@@ -10,6 +10,8 @@ import visitor.codevisitor.MethodCodeVisitor;
 public class Null implements IExpression{
 
     private Type type;
+public int line;
+public int column;
 
     public Type getType() {
         return type;

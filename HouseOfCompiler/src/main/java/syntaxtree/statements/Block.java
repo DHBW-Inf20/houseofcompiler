@@ -14,15 +14,31 @@ import visitor.codevisitor.MethodCodeVisitor;
 public class Block implements IStatement {
 
     private Type type;
+public int line;
+public int column;
     private PrintableVector<IStatement> statements;
 
     public Block(PrintableVector<IStatement> statements) {
         this.statements = statements;
     }
 
+
+    public Block(PrintableVector<IStatement> statements, int line, int col) {
+        this.statements = statements;
+        this.line = line;
+        this.column = col;
+    }
+
     public Block() {
         statements = new PrintableVector<>();
     }
+
+    public Block(int line, int col) {
+        statements = new PrintableVector<>();
+        this.line = line;
+        this.column = col;
+    }
+
 
     public Type getType() {
         return type;

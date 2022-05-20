@@ -13,6 +13,8 @@ public class IntegerExpr implements IExpression {
 
     private int value;
     private Type type;
+public int line;
+public int column;
 
     public IntegerExpr(int value) {
         this.value = value;

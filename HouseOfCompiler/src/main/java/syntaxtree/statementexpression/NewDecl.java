@@ -14,6 +14,8 @@ public class NewDecl implements IStatementExpression {
 
     private PrintableVector<IExpression> arguments;
     private Type type;
+public int line;
+public int column;
     private String identifier;
 
     public NewDecl(String identifier, PrintableVector<IExpression> arguments) {

@@ -12,6 +12,8 @@ import visitor.Visitable;
 public class MethodParameter implements Visitable {
 
     private Type type;
+public int line;
+public int column;
     private String identifier;
 
     public MethodParameter(String identifier) {

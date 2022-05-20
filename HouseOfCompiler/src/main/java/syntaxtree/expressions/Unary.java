@@ -13,6 +13,8 @@ public class Unary implements IExpression {
     private IExpression expression;
     private Operator operator;
     private Type type;
+public int line;
+public int column;
 
     public Unary(IExpression expression, Operator operator) {
         this.expression = expression;

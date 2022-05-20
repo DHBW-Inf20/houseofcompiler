@@ -23,7 +23,9 @@ public class ConstructorAdapter {
                         constuctorDeclContext.AccessModifier().getText().toUpperCase(Locale.ROOT)
                 ),
                 parameters,
-                block
+                block,
+                constuctorDeclContext.start.getLine(),
+                constuctorDeclContext.start.getCharPositionInLine()
         );
     }
 }

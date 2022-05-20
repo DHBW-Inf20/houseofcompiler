@@ -13,6 +13,8 @@ public class CharExpr implements IExpression {
 
     private char value;
     private Type type;
+public int line;
+public int column;
 
     public CharExpr(char value) {
         this.value = value;

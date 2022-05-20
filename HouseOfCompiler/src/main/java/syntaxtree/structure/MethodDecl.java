@@ -15,6 +15,8 @@ public class MethodDecl implements Visitable {
 
     private String identifier;
     private Type type;
+public int line;
+public int column;
     private PrintableVector<MethodParameter> parameters;
     private Block block;
     private AccessModifier accessModifier;

@@ -15,6 +15,8 @@ public class InstVar implements IExpression {
     private String identifier;
     private IExpression expression;
     private Type type;
+public int line;
+public int column;
 
     public InstVar(String identifier, IExpression expression) {
         this.identifier = identifier;

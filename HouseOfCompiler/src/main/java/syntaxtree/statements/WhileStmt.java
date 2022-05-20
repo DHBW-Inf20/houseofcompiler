@@ -11,6 +11,8 @@ import visitor.codevisitor.MethodCodeVisitor;
 public class WhileStmt implements IStatement {
 
     private Type type;
+public int line;
+public int column;
     private IExpression expression;
     private Block block;
 

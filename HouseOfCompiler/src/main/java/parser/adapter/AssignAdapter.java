@@ -13,6 +13,6 @@ public class AssignAdapter {
             lExpression = InstVarAdapter.adapt(assignContext.instVar());
         else
             lExpression = new LocalOrFieldVar(assignContext.Identifier().getText());
-        return new Assign(lExpression, rExpression);
+        return new Assign(lExpression, rExpression, assignContext.start.getLine(), assignContext.start.getCharPositionInLine());
     }
 }

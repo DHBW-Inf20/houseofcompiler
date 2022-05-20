@@ -11,8 +11,8 @@ public class BlockAdapter {
         var statements = new PrintableVector<IStatement>();
         blockContext.statement().forEach(statementContext -> statements.add(StatementAdapter.adapt(statementContext)));
         if (statements.isEmpty())
-            return new Block();
+            return new Block(blockContext.start.getLine(), blockContext.start.getCharPositionInLine());
         else
-            return new Block(statements);
+            return new Block(statements,blockContext.start.getLine(), blockContext.start.getCharPositionInLine());
     }
 }

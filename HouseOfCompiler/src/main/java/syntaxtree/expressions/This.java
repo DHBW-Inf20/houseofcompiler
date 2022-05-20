@@ -11,6 +11,8 @@ import visitor.codevisitor.MethodCodeVisitor;
 public class This implements IExpression {
 
     private Type type;
+public int line;
+public int column;
 
     public This() {
     }

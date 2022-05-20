@@ -14,6 +14,8 @@ public class Binary implements IExpression {
     private IExpression rExpression;
     private Operator operator;
     private Type type;
+public int line;
+public int column;
 
     public Binary(IExpression lExpression, IExpression rExpression, Operator operator) {
         this.lExpression = lExpression;
@@ -26,6 +28,15 @@ public class Binary implements IExpression {
         this.rExpression = rExpression;
         this.operator = operator;
         this.type = null;
+    }
+
+    public Binary(IExpression leftExpression, IExpression rightExpression, Operator operator, int line,
+            int col) {
+                this.lExpression = leftExpression;
+                this.rExpression = rightExpression;
+                this.operator = operator;
+                this.line = line;
+                this.column = col;
     }
 
     public IExpression getlExpression() {

@@ -14,6 +14,8 @@ public class IfStmt implements IStatement {
     private IStatement blockIf;
     private IStatement blockElse;
     private Type type;
+public int line;
+public int column;
 
     public IfStmt(IExpression condition, IStatement blockIf, IStatement blockElse) {
         this.condition = condition;
