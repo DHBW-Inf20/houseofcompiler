@@ -379,24 +379,33 @@ public class SemanticCheck implements SemanticVisitor {
             var elseBlockResult = ifStmt.getBlockElse().accept(this);
             valid = valid && elseBlockResult.isValid();
             var elseType = elseBlockResult.getType();
-            if (elseType == null) {
-                elseType = new BaseType(Primitives.VOID);
-            }
 
-            if (!Objects.equals(elseType, ifBlockResult.getType())) {
-                errors.add(new TypeMismatchException(
-                        "If and Else Blocks have different return-Types: " + ifBlockResult.getType() + " and "
-                                + elseType
-                                + TypeHelper.generateLocationString(ifStmt.line, ifStmt.column, fileName)));
-                valid = false;
-            } else {
+            // Folgendes if else ist für die Bestimmung des Rückgabetyps
+            if (ifBlockResult.getType() == null && elseType != null) { // Falls einer der Blöcke keinen return type hat,
+                                                                       // dann wird der Rückgabetyp des anderen gewählt
                 ifStmt.setType(elseType);
+            } else if (ifBlockResult.getType() != null && elseType == null) {
+                ifStmt.setType(ifBlockResult.getType());
+            } else if (ifBlockResult.getType() != null && elseType != null) { // Wenn beide ungleich null sind, dann
+                                                                              // müssen beide Typen übereinstimmen
+                                                                              // (Hätten wir vererbung müssten wir jetzt
+                                                                              // prüfen ob die Typen Unterklassen eines
+                                                                              // Obertyps sind...)
+                if (!Objects.equals(elseType, ifBlockResult.getType())) {
+                    errors.add(new TypeMismatchException(
+                            "Type mismatch: cannot convert from " + elseType + " to " + ifBlockResult.getType()
+                                    + TypeHelper.generateLocationString(ifStmt.line, ifStmt.column, fileName)));
+                    valid = false;
+                } else {
+                    ifStmt.setType(ifBlockResult.getType()); // Falls der Typ gleich ist, wähle einen der beiden Typen
+                                                             // als Rückgabetyp aus
+                }
             }
         } else {
             ifStmt.setType(ifBlockResult.getType());
         }
 
-        return new TypeCheckResult(valid, ifBlockResult.getType());
+        return new TypeCheckResult(valid, ifStmt.getType());
     }
 
     /**

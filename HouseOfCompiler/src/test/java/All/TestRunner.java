@@ -330,9 +330,9 @@ public class TestRunner {
         if (value == 1) {
             result = 10;
         } else if (value == 2) {
-            result = 127;
+            result = 40000;
         } else {
-            result = 128;
+            result = 42000;
         }
         try {
             o = clazz.getDeclaredConstructor().newInstance();
@@ -366,6 +366,35 @@ public class TestRunner {
         try {
             o = clazz.getDeclaredConstructor().newInstance();
             var foo = loader.getMethod("IfElseIfStatementWithoutReturn", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, value);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("IfElseIfStatementWithOneReturn")
+    void ifElseIfStatementWithOneReturn() {
+        Program program = Resources.getProgram("SimpleTests/IfElseIfStatementWithOneReturn.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("IfElseIfStatementWithOneReturn");
+        Object o = null;
+        int value = 3;
+        int result;
+        if (value == 1) {
+            result = 10;
+        } else if (value == 2) {
+            result = 20;
+        } else {
+            result = 30;
+        }
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("IfElseIfStatementWithOneReturn", "foo", int.class);
             var ivalue = (int) foo.invoke(o, value);
             assertEquals(result, ivalue);
         } catch (Exception e) {

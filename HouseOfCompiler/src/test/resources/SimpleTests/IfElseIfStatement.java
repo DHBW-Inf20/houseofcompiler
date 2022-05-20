@@ -4,9 +4,9 @@ class IfElseIfStatement {
         if (i == 1) {
             return 10;
         } else if (i == 2) {
-            return 127;
+            return 40000;
         } else {
-            return 128;
+            return 42000;
         }
     }
 
