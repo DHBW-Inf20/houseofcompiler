@@ -33,7 +33,6 @@ public class ClassGenerator implements ClassCodeVisitor {
      */
     @Override
     public void visit(ClassDecl clazz) {
-        System.out.println("Class: " + clazz.getIdentifier());
         cw.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC, clazz.getIdentifier(), null, "java/lang/Object", null);
 
         clazz.getFieldDelcarations().forEach(field -> field.accept(this));
@@ -56,8 +55,6 @@ public class ClassGenerator implements ClassCodeVisitor {
      */
     @Override
     public void visit(FieldDecl field) {
-        System.out.println("Field: " + field.getIdentifier() + " " + field.getAccessModifier() + " "
-                + GenUtils.generateDescriptor(field.getType()));
         cw.visitField(GenUtils.resolveAccessModifier(field.getAccessModifier()), field.getIdentifier(),
                 GenUtils.generateDescriptor(field.getType()), null, null).visitEnd();
 

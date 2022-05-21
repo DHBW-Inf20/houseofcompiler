@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

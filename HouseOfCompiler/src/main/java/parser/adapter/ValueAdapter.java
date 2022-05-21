@@ -15,7 +15,7 @@ public class ValueAdapter {
         else if (valueContext.CharValue() != null)
             return new CharExpr(valueContext.CharValue().getText().charAt(1));
         else if (valueContext.BooleanValue() != null) {
-            if (valueContext.BooleanValue().getText() == "true")
+            if (valueContext.BooleanValue().getText().equals("true"))
                 return new BoolExpr(true);
             else
                 return new BoolExpr(false);

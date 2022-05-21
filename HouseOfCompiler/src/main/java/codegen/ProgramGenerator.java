@@ -1,9 +1,14 @@
 package codegen;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 
 import common.IProgramGenerator;
 import context.Context;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceClassVisitor;
 import syntaxtree.structure.Program;
 import visitor.codevisitor.ProgramCodeVisitor;
 
@@ -32,7 +37,13 @@ public class ProgramGenerator implements ProgramCodeVisitor, IProgramGenerator {
      */
     public static HashMap<String, byte[]> generate(Program program) {
         ProgramGenerator pg = new ProgramGenerator();
-        return pg.generateBytecode(program);
+        pg.generateBytecode(program);
+        System.out.println(pg);
+        return pg.getBytecode();
+    }
+
+    public HashMap<String, byte[]> getBytecode() {
+        return classes;
     }
 
     /**
@@ -40,12 +51,26 @@ public class ProgramGenerator implements ProgramCodeVisitor, IProgramGenerator {
      */
     @Override
     public void visit(Program program) {
-        System.out.println("Program");
         classes.clear();
         program.getClasses().forEach(clazz -> {
             ClassGenerator classGen = new ClassGenerator(context);
             clazz.accept(classGen);
             classes.put(clazz.getIdentifier(), classGen.getBytecode());
         });
+    }
+
+
+    @Override
+    public String toString() {
+        StringWriter out    = new StringWriter();
+        PrintWriter  writer = new PrintWriter(out);
+
+        for (byte[] byteCode : classes.values()) {
+            TraceClassVisitor tcv = new TraceClassVisitor(null, new Textifier(), writer);
+            new ClassReader(byteCode).accept(tcv, ClassReader.SKIP_DEBUG);
+        }
+
+        writer.flush();
+        return out.toString();
     }
 }
