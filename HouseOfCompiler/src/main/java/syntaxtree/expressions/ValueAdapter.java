@@ -12,7 +12,7 @@ public class ValueAdapter {
         if (valueContext.IntValue() != null)
             return new IntegerExpr(Integer.parseInt(valueContext.IntValue().getText()));
         else if (valueContext.CharValue() != null)
-            return new CharExpr(valueContext.CharValue().getText().charAt(0));
+            return new CharExpr(valueContext.CharValue().getText().charAt(1));
         else if (valueContext.BooleanValue().getText() == "true") {
             return new BoolExpr(true);
         } else {

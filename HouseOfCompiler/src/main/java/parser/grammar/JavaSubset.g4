@@ -111,7 +111,7 @@ fragment ValidIdentSymbols : Alpabetic|Numeric|'$'|'_';
 Identifier: Alpabetic ValidIdentSymbols*;
 
 //Values
-CharValue: Alpabetic;
+CharValue: '\'' Alpabetic '\'';
 IntValue: Minus? Numeric+;
 
 //To be Ignored
