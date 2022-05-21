@@ -133,7 +133,7 @@ public class InstVar implements IExpression {
      */
     @Override
     public String toString() {
-        return expression + "." + identifier + "(" + type + ")";
+        return expression + "." + identifier + "(" + type + ")[instvar]";
     }
 
 }

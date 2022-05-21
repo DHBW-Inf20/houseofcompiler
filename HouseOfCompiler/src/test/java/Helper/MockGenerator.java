@@ -4,16 +4,20 @@ import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
 import common.PrintableVector;
+import common.ReferenceType;
 import syntaxtree.expressions.CharExpr;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;
 import syntaxtree.expressions.LocalOrFieldVar;
+import syntaxtree.expressions.Null;
 import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
+import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
 import syntaxtree.statements.IStatement;
+import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
@@ -73,6 +77,20 @@ public abstract class MockGenerator {
             arguments.add(expression);
         }
         return arguments;
+    }
+
+    /**
+     * @param constructors
+     * @return PrintableVector<ConstructorDecl>
+     */
+    public static PrintableVector<ConstructorDecl> getConstructors(ConstructorDecl... constructors) {
+        PrintableVector<ConstructorDecl> cons = new PrintableVector<>();
+        if (constructors.length == 0)
+            cons.add(new ConstructorDecl());
+        for (ConstructorDecl constructor : constructors) {
+            cons.add(constructor);
+        }
+        return cons;
     }
 
     /**
@@ -445,6 +463,134 @@ public abstract class MockGenerator {
                 getBlock(new ReturnStmt(new InstVar(new This(), "i"))));
 
         classDecl.getMethodDeclarations().add(getI);
+
+        return expectedAst;
+    }
+
+    public static Program getExplicitNullAssignAst() {
+        Program expectedAst = getEmptyProgram("ExplicitNullAssign");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        FieldDecl i = new FieldDecl(AccessModifier.PACKAGE_PRIVATE, new ReferenceType("ExplicitNullAssign"), "e");
+
+        classDecl.getFieldDelcarations().add(i);
+        Assign assignStmt = new Assign(new InstVar(new This(), "i"), new Null());
+        Block block = getBlock(assignStmt);
+
+        var parameters = getParameters(new MethodParameter(Primitives.INT, "i"));
+
+        var test = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.VOID), "test",
+                getParameters(),
+                getBlock(new Assign(new LocalOrFieldVar("e"), new Null())));
+
+        classDecl.getMethodDeclarations().add(test);
+
+        classDecl.getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getSelfReferenceAst() {
+        Program expectedAst = getEmptyProgram("SelfReference");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        FieldDecl i = new FieldDecl(AccessModifier.PACKAGE_PRIVATE, new ReferenceType("SelfReference"), "selfRef");
+
+        classDecl.getFieldDelcarations().add(i);
+        Assign assignStmt = new Assign(new InstVar(new This(), "i"), new This());
+        Block block = getBlock(assignStmt);
+
+        var parameters = getParameters(new MethodParameter(Primitives.INT, "i"));
+
+        var foo = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "foo",
+                getParameters(),
+                getBlock(new ReturnStmt(new MethodCall(new This(), "baz", getArguments()))));
+
+        var baz = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "baz",
+                getParameters(),
+                getBlock(new ReturnStmt(new IntegerExpr(10))));
+
+        var bar = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "bar",
+                getParameters(),
+                getBlock(
+                        new LocalVarDecl(new ReferenceType("SelfReference"), "self",
+                                new NewDecl("SelfReference", getArguments())),
+                        new ReturnStmt(new MethodCall(new InstVar(new LocalOrFieldVar("self"), "selfRef"), "foo",
+                                getArguments()))));
+
+        classDecl.getMethodDeclarations().add(foo);
+        classDecl.getMethodDeclarations().add(baz);
+        classDecl.getMethodDeclarations().add(bar);
+
+        classDecl.getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getSelfReferenceTast() {
+        Program expectedAst = getEmptyProgram("SelfReference");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        FieldDecl i = new FieldDecl(AccessModifier.PACKAGE_PRIVATE, new ReferenceType("SelfReference"), "selfRef");
+
+        classDecl.getFieldDelcarations().add(i);
+
+        Block fooBlock = getBlock(new ReturnStmt(new BaseType(Primitives.INT),
+                new MethodCall(new BaseType(Primitives.INT), new This("SelfReference"), "baz", getArguments())));
+        fooBlock.setType(new BaseType(Primitives.INT));
+
+        Block bazBlock = getBlock(new ReturnStmt(new BaseType(Primitives.INT), new IntegerExpr(10)));
+        bazBlock.setType(new BaseType(Primitives.INT));
+
+        Block barBlock = getBlock(
+                new LocalVarDecl(new ReferenceType("SelfReference"), "self",
+                        new NewDecl("SelfReference", getArguments())),
+                new ReturnStmt(new BaseType(Primitives.INT),
+                        new MethodCall(new BaseType(Primitives.INT),
+                                new InstVar(new ReferenceType("SelfReference"),
+                                        new LocalOrFieldVar(new ReferenceType("SelfReference"), "self"), "selfRef"),
+                                "foo",
+                                getArguments())));
+
+        barBlock.setType(new BaseType(Primitives.INT));
+
+        var foo = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "foo",
+                getParameters(), fooBlock);
+
+        var baz = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "baz",
+                getParameters(), bazBlock);
+
+        var bar = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "bar",
+                getParameters(),
+                barBlock);
+
+        classDecl.getMethodDeclarations().add(foo);
+        classDecl.getMethodDeclarations().add(baz);
+        classDecl.getMethodDeclarations().add(bar);
+
+        classDecl.getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getThisDotMethodCallAst() {
+        Program expectedAst = getEmptyProgram("ThisDotMethodCall");
+
+        ClassDecl classDecl = expectedAst.getClasses().firstElement();
+        var fields = classDecl.getFieldDelcarations();
+        fields.add(new FieldDecl(new BaseType(Primitives.INT), "i"));
+        PrintableVector<ConstructorDecl> constructors = classDecl.getConstructorDeclarations();
+
+        Block block = getBlock(
+                new Assign(new InstVar(new This(), "i"), new MethodCall(new This(), "foo", getArguments())));
+        constructors.add(new ConstructorDecl(AccessModifier.PUBLIC, getParameters(), block));
+
+        Block fooBlock = getBlock(new ReturnStmt(new IntegerExpr(1)));
+        PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
+        methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo", getEmptyParameters(), fooBlock));
 
         return expectedAst;
     }

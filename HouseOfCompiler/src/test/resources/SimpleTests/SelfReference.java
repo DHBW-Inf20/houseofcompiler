@@ -2,13 +2,17 @@ class SelfReference {
 
     SelfReference selfRef;
 
-    void foo() {
-        SelfReference self = new SelfReference();
+    int foo() {
+        return this.baz();
     }
 
-    void bar() {
+    int baz() {
+        return 10;
+    }
+
+    int bar() {
         SelfReference self = new SelfReference();
-        self.foo();
+        return self.selfRef.foo();
     }
 
 }

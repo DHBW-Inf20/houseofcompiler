@@ -53,6 +53,14 @@ class OperatorTest {
         return x != y;
     }
 
+    public boolean beq(boolean x, boolean y) {
+        return x == y;
+    }
+
+    public boolean bneq(boolean x, boolean y) {
+        return x != y;
+    }
+
     public boolean and(boolean x, boolean y) {
         return x && y;
     }

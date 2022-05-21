@@ -646,8 +646,8 @@ public class TestRunner {
     }
 
     @Test
-    @DisplayName("OperatorStressTest")
-    void operatorStressTest() {
+    @DisplayName("OperatorFullTest")
+    void operatorFullTest() {
         Program program = Resources.getProgram("SimpleTests/OperatorTest.java");
 
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
@@ -687,8 +687,23 @@ public class TestRunner {
             assertEquals(x == y, eq);
             var neq = loader.getMethod("OperatorTest", "neq", int.class, int.class).invoke(o, x, y);
             assertEquals(x != y, neq);
+
+            var beq = loader.getMethod("OperatorTest", "beq", boolean.class, boolean.class).invoke(o, true, true);
+            assertEquals(true, beq);
+            var beq2 = loader.getMethod("OperatorTest", "beq", boolean.class, boolean.class).invoke(o, true, false);
+            assertEquals(false, beq2);
+            var beq3 = loader.getMethod("OperatorTest", "beq", boolean.class, boolean.class).invoke(o, false, true);
+            assertEquals(false, beq3);
+            var beq4 = loader.getMethod("OperatorTest", "beq", boolean.class, boolean.class).invoke(o, false, false);
+            assertEquals(true, beq4);
+
+            var bneq = loader.getMethod("OperatorTest", "bneq", boolean.class, boolean.class).invoke(o, true, true);
+            assertEquals(false, bneq);
+
             var and = loader.getMethod("OperatorTest", "and", boolean.class, boolean.class).invoke(o, a, b);
             assertEquals(a && b, and);
+            var and2 = loader.getMethod("OperatorTest", "and", boolean.class, boolean.class).invoke(o, a, !b);
+            assertEquals(a && !b, and2);
             var or = loader.getMethod("OperatorTest", "or", boolean.class, boolean.class).invoke(o, a, b);
             assertEquals(a || b, or);
             var not = loader.getMethod("OperatorTest", "not", boolean.class).invoke(o,

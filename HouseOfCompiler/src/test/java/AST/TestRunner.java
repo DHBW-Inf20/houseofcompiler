@@ -157,6 +157,15 @@ public class TestRunner {
     }
 
     @Test
+    @DisplayName("ThisDotMethodCall")
+    void thisDotMethodCall() {
+        Program generatedAst = Resources.getProgram("SimpleTests/ThisDotMethodCall.java");
+        Program expectedAst = MockGenerator.getThisDotMethodCallAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
     @DisplayName("MethodCallWithParameters")
     void methodCallWithParameters() {
         Program generatedAst = Resources.getProgram("SimpleTests/MethodCallParams.java");
@@ -181,6 +190,24 @@ public class TestRunner {
     void charArgument() {
         Program generatedAst = Resources.getProgram("SimpleTests/CharArgument.java");
         Program expectedAst = MockGenerator.getCharArgumentAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("ExplicitNullAssign")
+    void explicitNullAssign() {
+        Program generatedAst = Resources.getProgram("SimpleTests/ExplicitNullAssign.java");
+        Program expectedAst = MockGenerator.getExplicitNullAssignAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("SelfReference")
+    void selfReference() {
+        Program generatedAst = Resources.getProgram("SimpleTests/SelfReference.java");
+        Program expectedAst = MockGenerator.getSelfReferenceAst();
 
         assertEquals(expectedAst, generatedAst);
     }

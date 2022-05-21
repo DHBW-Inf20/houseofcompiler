@@ -51,7 +51,7 @@ ifStmt: If OpenRoundBracket expression ClosedRoundBracket statement;
 elseStmt: Else statement;
 assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
-receiver: ((instVar | newDecl | Identifier) Dot);
+receiver: ((This | instVar | newDecl | Identifier) Dot);
 receivingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?
 type: Int | Boolean | Char | Identifier;
 value: IntValue | BooleanValue | CharValue | NullValue;

@@ -227,4 +227,14 @@ public class TestRunner {
         Program program = Resources.getProgram("SimpleTests/ExplicitNullAssign.java");
         Compiler.getFactory().getTastAdapter().getTast(program);
     }
+
+    @Test
+    @DisplayName("SelfReference")
+    void selfReference() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getSelfReferenceAst());
+
+        Program expectedTast = MockGenerator.getSelfReferenceTast();
+
+        assertEquals(expectedTast, generatedTast);
+    }
 }
