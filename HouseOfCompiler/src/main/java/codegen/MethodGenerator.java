@@ -262,12 +262,38 @@ public class MethodGenerator implements MethodCodeVisitor {
     }
 
     /**
+     * @param unary
+     */
+    private void visitBoolLogic(Unary unary) {
+        Label trueLabel = new Label();
+        Label falseLabel = new Label();
+
+        switch (unary.getOperator()) {
+            case NOT -> {
+                unary.getExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IFNE, falseLabel); // == true -> false
+            }
+        }
+
+        Label end = new Label();
+
+        mv.visitLabel(trueLabel);
+        mv.visitInsn(TRUE);
+        mv.visitJumpInsn(Opcodes.GOTO, end);
+
+        mv.visitLabel(falseLabel);
+        mv.visitInsn(FALSE);
+
+        mv.visitLabel(end);
+    }
+
+    /**
      * @param binary
      */
     @Override
     public void visit(Binary binary) {
         switch (binary.getOperator()) {
-            case PLUS, MINUS, MULT, DIV, MOD -> visitBinaryArithmetic(binary);
+            case PLUS, MINUS, MULT, DIV, MOD -> visitArithmetic(binary);
             case GREATER, LESS, GREATEREQUAL, LESSEQUAL, EQUAL, NOTEQUAL, AND, OR -> visitBoolLogic(binary);
         }
     }
@@ -275,7 +301,7 @@ public class MethodGenerator implements MethodCodeVisitor {
     /**
      * @param binary
      */
-    private void visitBinaryArithmetic(Binary binary) {
+    private void visitArithmetic(Binary binary) {
         binary.getlExpression().accept(this);
         binary.getrExpression().accept(this);
 
@@ -285,28 +311,6 @@ public class MethodGenerator implements MethodCodeVisitor {
             case MULT -> mv.visitInsn(Opcodes.IMUL);
             case DIV -> mv.visitInsn(Opcodes.IDIV);
         }
-    }
-
-    /**
-     * @param unary
-     */
-    private void visitBoolLogic(Unary unary) {
-
-        Label label = new Label();
-        Label finish = new Label();
-
-        switch (unary.getOperator()) {
-            case NOT -> {
-                unary.getExpression().accept(this);
-                mv.visitJumpInsn(Opcodes.IFNE, label);
-            }
-        }
-        mv.visitInsn(Opcodes.ICONST_1);
-        mv.visitJumpInsn(Opcodes.GOTO, finish);
-        mv.visitLabel(label);
-        mv.visitInsn(Opcodes.ICONST_0);
-        mv.visitLabel(finish);
-
     }
 
     /**
