@@ -12,6 +12,7 @@ class SelfReference {
 
     int bar() {
         SelfReference self = new SelfReference();
+        int i = self.foo();
         return self.selfRef.foo();
     }
 

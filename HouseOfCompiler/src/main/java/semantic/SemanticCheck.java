@@ -337,7 +337,7 @@ public class SemanticCheck implements SemanticVisitor {
         if (localVarDecl.getExpression() != null) {
             TypeCheckResult result = localVarDecl.getExpression().accept(this);
 
-            var resultType = result.getType();
+            var resultType = localVarDecl.getExpression().getType();
             valid = result.isValid() && valid;
 
             if (!resultType.equals(localVarDecl.getType())) {

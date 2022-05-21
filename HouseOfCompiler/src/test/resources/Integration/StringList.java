@@ -7,12 +7,12 @@ class StringList {
     }
 
     public StringList(char c) {
-        value = c;
+        this.value = c;
     }
 
     public char get(int i) {
         if (i == 0) {
-            return value;
+            return this.value;
         } else {
             return next.get(i - 1);
         }
@@ -22,12 +22,12 @@ class StringList {
         if (next == null) {
             next = new StringList(value);
         } else {
-            this.next.add(value);
+            next.add(value);
         }
     }
 
     public int length() {
-        if (next == null) {
+        if (this.next == null) {
             return 1;
         } else {
             return 1 + next.length();
