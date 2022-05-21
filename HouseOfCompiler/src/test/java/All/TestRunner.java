@@ -710,6 +710,12 @@ public class TestRunner {
                     a);
             assertEquals(!a, not);
 
+            var icEq = loader.getMethod("OperatorTest", "icEq", int.class, char.class).invoke(o, x, (char) x);
+            assertEquals(true, icEq);
+
+            var icLt = loader.getMethod("OperatorTest", "icLt", int.class, char.class).invoke(o, x, (char) y);
+            assertEquals(x < (char) y, icLt);
+
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -800,6 +806,67 @@ public class TestRunner {
             fail(e.getMessage());
         }
 
+    }
+
+    @Test
+    @DisplayName("LinkedList")
+    void linkedList() {
+        Program program = Resources.getProgram("Integration/LinkedList.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        try {
+            Object o = loader.getConstructor("LinkedList", int.class).newInstance(1);
+            var add = loader.getMethod("LinkedList", "add", int.class);
+            add.invoke(o, 2);
+            add.invoke(o, 3);
+            var get = loader.getMethod("LinkedList", "get", int.class);
+            assertEquals(1, get.invoke(o, 0));
+            assertEquals(2, get.invoke(o, 1));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("StringLinkedList")
+    void stringLinkedList() {
+        Program program = Resources.getProgram("Integration/StringList.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        try {
+            Object o = loader.getConstructor("StringList", char.class).newInstance('H');
+            var add = loader.getMethod("StringList", "add", char.class);
+            var get = loader.getMethod("StringList", "get", int.class);
+            var length = loader.getMethod("StringList", "length");
+            add.invoke(o, 'e');
+            add.invoke(o, 'l');
+            add.invoke(o, 'l');
+            add.invoke(o, 'o');
+            add.invoke(o, ' ');
+            add.invoke(o, 'W');
+            add.invoke(o, 'o');
+            add.invoke(o, 'r');
+            add.invoke(o, 'l');
+            add.invoke(o, 'd');
+            add.invoke(o, '!');
+
+            String result = "";
+            for (int i = 0; i < (int) length.invoke(o); i++) {
+                System.out.println(get.invoke(o, i));
+                result += get.invoke(o, i);
+            }
+            assertEquals("Hello World!", result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
     }
 
 }

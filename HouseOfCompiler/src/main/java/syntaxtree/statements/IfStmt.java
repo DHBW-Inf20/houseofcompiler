@@ -113,4 +113,12 @@ public class IfStmt implements IStatement {
     public int hashCode() {
         return Objects.hash(condition, blockIf, blockElse, type);
     }
+
+    /**
+     * @return String
+     */
+    @Override
+    public String toString() {
+        return "if(" + condition + ")\n" + blockIf + (blockElse != null ? "else\n" + blockElse : "");
+    }
 }

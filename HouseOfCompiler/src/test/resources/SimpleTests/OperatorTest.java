@@ -73,4 +73,12 @@ class OperatorTest {
         return !x;
     }
 
+    public boolean icEq(int x, char y) {
+        return x == y;
+    }
+
+    public boolean icLt(int x, char y) {
+        return x < y;
+    }
+
 }

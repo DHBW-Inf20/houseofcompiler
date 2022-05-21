@@ -66,4 +66,12 @@ public class Null implements IExpression {
         return Objects.hash(type);
     }
 
+    /**
+     * @return String
+     */
+    @Override
+    public String toString() {
+        return "null";
+    }
+
 }

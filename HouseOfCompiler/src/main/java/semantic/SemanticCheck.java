@@ -50,7 +50,7 @@ public class SemanticCheck implements SemanticVisitor {
     private ArrayList<String> currentFields = new ArrayList<>();
     private String currentMethod = "";
     private Type currentMethodReturnType;
-    private Type currentAssignLeftType;
+    private Type currentNullType;
     private String fileName;
     private ScopeContext currentLocalScope;
 
@@ -204,6 +204,8 @@ public class SemanticCheck implements SemanticVisitor {
         }
         currentMethodReturnType = methodDecl.getType();
         currentMethod = methodDecl.getIdentifier();
+        currentNullType = currentMethodReturnType; // Solange nicht in einem Assign oder Methoden-Aufruf dieser Typ
+                                                   // gesetzt ist, ist dieser der Rückgabewert der Methode
         var result = methodDecl.getBlock().accept(this);
         valid = valid && result.isValid();
         currentLocalScope.popScope();
@@ -227,7 +229,10 @@ public class SemanticCheck implements SemanticVisitor {
     @Override
     public TypeCheckResult typeCheck(Assign toCheck) {
         IExpression lExpression = toCheck.getlExpression();
+        var oldNullType = currentNullType;
+        currentNullType = toCheck.getlExpression().getType();
         IExpression rExpression = toCheck.getrExpression();
+        currentNullType = oldNullType;
         var valid = true;
 
         // This check currently handles things like :
@@ -244,7 +249,7 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         var lResult = lExpression.accept(this);
-        currentAssignLeftType = lResult.getType();
+        currentNullType = lResult.getType();
         var rResult = rExpression.accept(this);
 
         if (!Objects.equals(lExpression.getType(), rExpression.getType())) {
@@ -257,7 +262,7 @@ public class SemanticCheck implements SemanticVisitor {
             toCheck.setType(lExpression.getType());
         }
         valid = valid && lResult.isValid() && rResult.isValid();
-        currentAssignLeftType = null;
+        currentNullType = null;
         return new TypeCheckResult(valid, null); // return type is null to get the return type sufficently
     }
 
@@ -579,8 +584,8 @@ public class SemanticCheck implements SemanticVisitor {
      */
     @Override
     public TypeCheckResult typeCheck(Null aNull) {
-        if (currentAssignLeftType != null) {
-            var assignType = currentAssignLeftType;
+        if (currentNullType != null) {
+            var assignType = currentNullType;
             if (assignType != null) {
                 aNull.setType(assignType);
             }
@@ -705,18 +710,21 @@ public class SemanticCheck implements SemanticVisitor {
         var valid = true;
 
         var lResult = binary.getlExpression().accept(this);
+        var oldNullType = currentNullType;
+        currentNullType = binary.getlExpression().getType();
         var rResult = binary.getrExpression().accept(this);
+        currentNullType = oldNullType;
+
+        final Type lType = binary.getlExpression().getType();
+        final Type rType = binary.getrExpression().getType();
 
         var errorToThrow = new TypeMismatchException(
                 "The Operator: " + binary.getOperator() + " is undefined for the argument types: "
-                        + lResult.getType() + ", " + rResult.getType()
+                        + lType + ", " + rType
                         + TypeHelper.generateLocationString(binary.line, binary.column, fileName));
 
         // Following vars are there to determine the type of the binary expression
         final Operator operator = binary.getOperator();
-
-        final Type lType = lResult.getType();
-        final Type rType = rResult.getType();
 
         final boolean isCompareOperator = (binary.getOperator() == Operator.EQUAL
                 || operator == Operator.NOTEQUAL || operator == Operator.LESS
@@ -727,9 +735,9 @@ public class SemanticCheck implements SemanticVisitor {
         final boolean isArithmeticOperator = (operator == Operator.PLUS || operator == Operator.MINUS
                 || operator == Operator.MULT || operator == Operator.DIV || operator == Operator.MOD);
 
-        final boolean isSame = lResult.getType().equals(rResult.getType());
+        final boolean isSame = lType.equals(rType);
         final boolean lIsReference = lResult.getType() instanceof ReferenceType;
-
+        final boolean oneIsNull = lResult.getType() == null ^ rResult.getType() == null;
         // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
         // gleiche Typen
         // TODO: Chars dürfen mit Ints verglichen werden
@@ -759,16 +767,19 @@ public class SemanticCheck implements SemanticVisitor {
                     valid = false;
                 }
             }
-        } else if (isSame && lIsReference) {// Wenn 2 Objekte miteinander verglichen werden
+        } else if ((isSame || oneIsNull) && lIsReference) {// Wenn 2 Objekte miteinander verglichen werden
             if (operator == Operator.EQUAL) {
                 binary.setType(new BaseType(Primitives.BOOL));
             } else {
                 errors.add(errorToThrow);
                 valid = false;
             }
-        } else if (isCompareOperator && (lType == new BaseType(Primitives.CHAR) && rType == new BaseType(Primitives.INT)
-                || (rType == new BaseType(Primitives.CHAR) && lType == new BaseType(Primitives.INT)))) { // Wenn z.B.
-                                                                                                         // 1=='a'...
+        } else if (isCompareOperator && (Objects.equals(lType, new BaseType(Primitives.CHAR))
+                && Objects.equals(rType, new BaseType(Primitives.INT))
+                || Objects.equals(rType, new BaseType(Primitives.CHAR))
+                        && Objects.equals(lType, new BaseType(Primitives.INT)))) { // Wenn
+                                                                                   // z.B.
+            // 1=='a'...
             binary.setType(new BaseType(Primitives.BOOL));
         } else {
             errors.add(errorToThrow);

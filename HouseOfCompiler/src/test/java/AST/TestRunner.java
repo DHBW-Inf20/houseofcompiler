@@ -212,4 +212,13 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("ValueAdapterTests")
+    void valueAdapterTest() {
+        Program generatedAst = Resources.getProgram("SimpleTests/ValueAdapterTests.java");
+        Program expectedAst = MockGenerator.getValueAdapterTestAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
 }

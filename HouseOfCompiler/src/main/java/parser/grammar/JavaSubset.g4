@@ -18,7 +18,7 @@ argumentList: expression? | expression (Comma expression)*?;
 expression: subExpression | binaryExpr; //FIXME unary Expressions fehlen noch
 
 //subExpression to dissolve left-recusion
-subExpression: Identifier | instVar | value | stmtExpr | unaryExpr | OpenRoundBracket expression ClosedRoundBracket;
+subExpression: This | Identifier | instVar  | value | stmtExpr | unaryExpr | OpenRoundBracket expression ClosedRoundBracket;
 
 //FIXME macht es mehr sinn den Methodenaufruf rekursiv umzusetzen? sodass vorstehende Methodenaufrufe als reciever gehandhabt werden?
 //methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket

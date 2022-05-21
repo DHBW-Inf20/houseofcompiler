@@ -2,9 +2,12 @@ package Helper;
 
 import common.AccessModifier;
 import common.BaseType;
+import common.Operator;
 import common.Primitives;
 import common.PrintableVector;
 import common.ReferenceType;
+import syntaxtree.expressions.Binary;
+import syntaxtree.expressions.BoolExpr;
 import syntaxtree.expressions.CharExpr;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.InstVar;
@@ -593,6 +596,56 @@ public abstract class MockGenerator {
         methods.add(new MethodDecl(new BaseType(Primitives.INT), "foo", getEmptyParameters(), fooBlock));
 
         return expectedAst;
+    }
+
+    public static Program getValueAdapterTestAst() {
+        Program expectedAst = getEmptyProgram("ValueAdapterTests");
+
+        Block readsTrueBlock = getBlock(new ReturnStmt(new BoolExpr(true)));
+
+        Block readsFalseBlock = getBlock(new ReturnStmt(new BoolExpr(false)));
+
+        Block readsTrueAndFalseBlock = getBlock(new ReturnStmt(new Binary(new BoolExpr(true),
+                Operator.AND, new BoolExpr(false))));
+
+        Block readsIntBlock = getBlock(new ReturnStmt(new IntegerExpr(1)));
+
+        Block readsIntAndIntBlock = getBlock(new ReturnStmt(new Binary(new IntegerExpr(1),
+                Operator.PLUS, new IntegerExpr(1))));
+
+        Block readsCharBlock = getBlock(new ReturnStmt(new CharExpr('a')));
+
+        MethodDecl readsTrue = new MethodDecl(new BaseType(Primitives.BOOL), "readsTrue", getEmptyParameters(),
+                readsTrueBlock);
+
+        MethodDecl readsFalse = new MethodDecl(new BaseType(Primitives.BOOL), "readsFalse", getEmptyParameters(),
+                readsFalseBlock);
+
+        MethodDecl readsTrueAndFalse = new MethodDecl(new BaseType(Primitives.BOOL), "readsTrueAndFalse",
+                getEmptyParameters(), readsTrueAndFalseBlock);
+
+        MethodDecl readsInt = new MethodDecl(new BaseType(Primitives.INT), "readsInt", getEmptyParameters(),
+                readsIntBlock);
+
+        MethodDecl readsIntAndInt = new MethodDecl(new BaseType(Primitives.INT), "readsIntAndInt", getEmptyParameters(),
+                readsIntAndIntBlock);
+
+        MethodDecl readsChar = new MethodDecl(new BaseType(Primitives.CHAR), "readsChar", getEmptyParameters(),
+                readsCharBlock);
+
+        var methods = expectedAst.getClasses().firstElement().getMethodDeclarations();
+
+        methods.add(readsTrue);
+        methods.add(readsFalse);
+        methods.add(readsTrueAndFalse);
+        methods.add(readsInt);
+        methods.add(readsIntAndInt);
+        methods.add(readsChar);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+
     }
 
 }

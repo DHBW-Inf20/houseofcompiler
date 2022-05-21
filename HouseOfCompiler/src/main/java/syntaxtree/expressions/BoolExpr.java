@@ -73,4 +73,12 @@ public class BoolExpr implements IExpression {
     public int hashCode() {
         return Objects.hash(value, type);
     }
+
+    /**
+     * @return String
+     */
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }
