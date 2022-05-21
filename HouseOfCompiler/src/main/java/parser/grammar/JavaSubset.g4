@@ -66,7 +66,7 @@ Char: 'char';
 Int: 'int';
 
 //Operators
-DotOperator: Mult | Div;
+DotOperator: Mult | Div | Modulo;
 LineOperator: Plus | Minus;
 ComparisonOperator: Greater | Less | GreaterEqual | LessEqual | Equal | NotEqual;
 LogicalOpertor: And | Or;
@@ -75,6 +75,7 @@ Assign: '=';
 Plus: '+';
 Minus: '-';
 Mult: '*';
+Modulo: '%';
 Div: '/';
 Greater: '>';
 Less: '<';
