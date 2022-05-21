@@ -1,8 +1,8 @@
 class MultipleClassesMethodCalls {
 
     public int main(int i) {
-        Test t = new Test(i);
-        return t.getX();
+        t = new Test(i);
+        return 1;
     }
 
 }

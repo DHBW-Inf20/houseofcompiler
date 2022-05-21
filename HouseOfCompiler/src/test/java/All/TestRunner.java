@@ -408,6 +408,7 @@ public class TestRunner {
         Program program = Resources.getProgram("SimpleTests/FourClasses.java");
 
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> clazz = loader.findClass("FourClasses");
@@ -571,7 +572,7 @@ public class TestRunner {
         try {
             o = clazz.getDeclaredConstructor().newInstance();
             var foo = loader.getMethod("ModMethod", "foo", int.class, int.class);
-            var ivalue = (int) foo.invoke(o, a, b);
+            var ivalue = (int) foo.invoke(o, b, a);
             assertEquals(result, ivalue);
         } catch (Exception e) {
             fail(e.getMessage());
@@ -607,11 +608,12 @@ public class TestRunner {
 
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        System.out.println(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> clazz = loader.findClass("OperatorTest");
         Object o = null;
-        int x = 87;
-        int y = 452;
+        int x = 452;
+        int y = 87;
 
         boolean a = true;
         boolean b = false;
@@ -694,6 +696,30 @@ public class TestRunner {
         System.out.println(program);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+    }
+
+    @Test
+    @DisplayName("MultipleClassesMethodCalls")
+    void multipleClassesMethodCalls() {
+        Program program = Resources.getProgram("SimpleTests/MultipleClassesMethodCalls.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("MultipleClassesMethodCalls");
+        int x = 10;
+        try{
+            Object o = loader.getConstructor("MultipleClassesMethodCalls").newInstance();
+            var mainMethod = loader.getMethod("MultipleClassesMethodCalls", "main", int.class);
+            var returnValue = mainMethod.invoke(o, x);
+            assertEquals(x, returnValue);
+        }catch (Exception e){
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+
+
     }
 
 }

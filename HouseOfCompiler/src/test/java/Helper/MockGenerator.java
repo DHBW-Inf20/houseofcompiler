@@ -400,7 +400,7 @@ public abstract class MockGenerator {
      * @return Program
      */
     public static Program getCharArgumentAst() {
-        Program expectedAst = getEmptyProgram("MethodCallParams");
+        Program expectedAst = getEmptyProgram("CharArgument");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
         var fields = classDecl.getFieldDelcarations();

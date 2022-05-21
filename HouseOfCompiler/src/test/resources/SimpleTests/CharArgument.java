@@ -1,8 +1,8 @@
-class MethodCallParams {
+class CharArgument {
 
     char c;
 
-    public MethodCallParams() {
+    public CharArgument() {
         this.c = foo('a');
     }
 
