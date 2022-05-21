@@ -765,4 +765,26 @@ public class TestRunner {
 
     }
 
+    @Test
+    @DisplayName("RealWhile")
+    void realWhile() {
+        Program program = Resources.getProgram("SimpleTests/RealWhile.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        int x = 10;
+        try {
+            Object o = loader.getConstructor("RealWhile").newInstance();
+            var mainMethod = loader.getMethod("RealWhile", "foo", int.class);
+            var returnValue = mainMethod.invoke(o, x);
+            assertEquals(x * 2, returnValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+
+    }
+
 }
