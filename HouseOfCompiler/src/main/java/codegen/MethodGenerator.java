@@ -457,8 +457,11 @@ public class MethodGenerator implements MethodCodeVisitor {
     @Override
     public void visit(InstVar instVar) {
         IExpression expression = instVar.getExpression();
+        boolean temp = this.getInstVarField;
+        this.getInstVarField = true;
         expression.accept(this);
-        if (getInstVarField) {
+        this.getInstVarField = temp;
+        if (this.getInstVarField) {
             this.lastClassName = ((ReferenceType) expression.getType()).getIdentifier();
             mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClassName, instVar.getIdentifier(),
                     GenUtils.generateDescriptor(instVar.getType()));
