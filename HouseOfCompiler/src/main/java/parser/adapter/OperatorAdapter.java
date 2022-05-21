@@ -40,6 +40,8 @@ public class OperatorAdapter {
                 return Operator.AND;
             case "||":
                 return Operator.OR;
+            case "%":
+                return Operator.MOD;
             default:
                 return null;
         }

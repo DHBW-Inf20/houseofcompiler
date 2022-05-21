@@ -425,6 +425,50 @@ public class TestRunner {
     }
 
     @Test
+    @DisplayName("FourClassesFieldAssign")
+    void fourClassesFieldAssign() {
+        Program program = Resources.getProgram("SimpleTests/FourClassesFieldAssign.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("FourClassesFieldAssign");
+        Object o = null;
+        int result = 10;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var main = loader.getMethod("FourClassesFieldAssign", "fieldAssign", int.class);
+            var ivalue = (int) main.invoke(o, result);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("FourClassesSetter")
+    void fourClassesSetter() {
+        Program program = Resources.getProgram("SimpleTests/FourClassesSetter.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("FourClassesSetter");
+        Object o = null;
+        int result = 10;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var main = loader.getMethod("FourClassesSetter", "setFieldTest", int.class);
+            var ivalue = (int) main.invoke(o, result);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
     @DisplayName("MinusMethod")
     void minusMethod() {
         Program program = Resources.getProgram("SimpleTests/MinusMethod.java");
@@ -568,7 +612,7 @@ public class TestRunner {
         Object o = null;
         int a = 4;
         int b = 260;
-        int result = a % b;
+        int result = b % a;
         try {
             o = clazz.getDeclaredConstructor().newInstance();
             var foo = loader.getMethod("ModMethod", "foo", int.class, int.class);
@@ -709,16 +753,15 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> clazz = loader.findClass("MultipleClassesMethodCalls");
         int x = 10;
-        try{
+        try {
             Object o = loader.getConstructor("MultipleClassesMethodCalls").newInstance();
             var mainMethod = loader.getMethod("MultipleClassesMethodCalls", "main", int.class);
             var returnValue = mainMethod.invoke(o, x);
             assertEquals(x, returnValue);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
         }
-
 
     }
 
