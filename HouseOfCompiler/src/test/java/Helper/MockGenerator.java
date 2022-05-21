@@ -648,4 +648,40 @@ public abstract class MockGenerator {
 
     }
 
+    public static Program getSystemOutPrintlnTast() {
+        Program expectedAst = getEmptyProgram("SystemOutPrintln");
+        var iv = new InstVar(new ReferenceType("java/io/PrintStream"),
+                new LocalOrFieldVar(new ReferenceType("java/lang/System"), "System"), "out");
+        iv.setAccessModifier(AccessModifier.PUBLIC_STATIC);
+        Block block = getBlock(
+                new MethodCall(new BaseType(Primitives.VOID),
+                        iv,
+                        "println",
+                        getArguments(new IntegerExpr(1))));
+
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getSystemOutPrintlnAst() {
+        Program expectedAst = getEmptyProgram("SystemOutPrintln");
+
+        Block block = getBlock(
+                new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                        getArguments(new IntegerExpr(1))));
+
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
 }

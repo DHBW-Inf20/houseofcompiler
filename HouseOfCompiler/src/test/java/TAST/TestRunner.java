@@ -237,4 +237,14 @@ public class TestRunner {
 
         assertEquals(expectedTast, generatedTast);
     }
+
+    @Test
+    @DisplayName("SystemOutPrintln-Test")
+    void systemOutPrintlnTest() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getSystemOutPrintlnAst());
+        Program expectedTast = MockGenerator.getSystemOutPrintlnTast();
+        expectedTast.getClasses().firstElement();
+
+        assertEquals(expectedTast, generatedTast);
+    }
 }

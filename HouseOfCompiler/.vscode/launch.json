@@ -23,13 +23,6 @@
             "request": "launch",
             "mainClass": "Main.Testing",
             "projectName": "HouseOfCompiler"
-        },
-        {
-            "type": "java",
-            "name": "Launch Test",
-            "request": "launch",
-            "mainClass": "codegen.Test",
-            "projectName": "HouseOfCompiler"
         }
     ]
 }

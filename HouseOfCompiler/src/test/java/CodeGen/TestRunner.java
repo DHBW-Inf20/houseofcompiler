@@ -238,4 +238,21 @@ public class TestRunner {
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
     }
+
+    @Test
+    @DisplayName("SystemOutPrintln Test")
+    void systemOutPrintlnTest() {
+        Program tast = MockGenerator.getSystemOutPrintlnTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("SystemOutPrintln");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var m = loader.getMethod("SystemOutPrintln", "foo");
+            m.invoke(o);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 }

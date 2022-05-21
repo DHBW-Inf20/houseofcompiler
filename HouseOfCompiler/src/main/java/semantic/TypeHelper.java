@@ -99,11 +99,14 @@ public class TypeHelper {
             var objectClass = (ReferenceType) type;
             var declaredClassnames = context.getClasses();
             var classContext = declaredClassnames.get(objectClass.getIdentifier());
-            var methods = classContext.getMethods().get(methodCall.getIdentifier());
-            if (methods == null) {
+            if (classContext == null) {
+                classContext = context.getClasses().get(context.getImports().get(objectClass.getIdentifier()));
+            }
+            if (classContext == null) {
                 throw new TypeMismatchException("No declared Method " + methodCall.getIdentifier() + " with Arguments: "
                         + methodCall.printTypes() + " in Type " + type);
             }
+            var methods = classContext.getMethods().get(methodCall.getIdentifier());
             for (var method : methods) {
                 if (method.getParameterTypes().size() == methodCall.getArguments().size()) {
                     boolean isSame = true;

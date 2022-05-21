@@ -221,4 +221,13 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("System.out.println Test")
+    void systemOutPrintlnTest() {
+        Program generatedAst = Resources.getProgram("SimpleTests/SystemOutPrintln.java");
+        Program expectedAst = MockGenerator.getSystemOutPrintlnAst();
+
+        assertEquals(expectedAst, generatedAst);
+    }
+
 }

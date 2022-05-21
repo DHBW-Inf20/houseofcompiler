@@ -2,6 +2,7 @@ package syntaxtree.expressions;
 
 import java.util.Objects;
 
+import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
 import common.ReferenceType;
@@ -15,6 +16,7 @@ public class InstVar implements IExpression {
     private String identifier;
     private IExpression expression;
     private Type type;
+    private boolean _static = false;
     public int line;
     public int column;
 
@@ -117,7 +119,7 @@ public class InstVar implements IExpression {
             return false;
         InstVar instVar = (InstVar) o;
         return identifier.equals(instVar.identifier) && expression.equals(instVar.expression)
-                && Objects.equals(type, instVar.type);
+                && Objects.equals(type, instVar.type) && (_static == instVar._static);
     }
 
     /**
@@ -125,7 +127,7 @@ public class InstVar implements IExpression {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, expression, type);
+        return Objects.hash(identifier, expression, type, _static);
     }
 
     /**
@@ -133,7 +135,26 @@ public class InstVar implements IExpression {
      */
     @Override
     public String toString() {
-        return expression + "." + identifier + "(" + type + ")[instvar]";
+        return (_static ? "STATIC " : "") + expression + "." + identifier + "(" + type + ")[instvar]";
+    }
+
+    public boolean isStatic() {
+        return _static;
+    }
+
+    public void setAccessModifier(AccessModifier accessModifier) {
+        if (accessModifier == null) {
+            _static = false;
+            return;
+        }
+        switch (accessModifier) {
+            case PRIVATE_STATIC, PUBLIC_STATIC -> {
+                this._static = true;
+            }
+            default -> {
+                this._static = false;
+            }
+        }
     }
 
 }

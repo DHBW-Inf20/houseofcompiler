@@ -22,6 +22,8 @@ public class GenUtils {
             case PUBLIC -> Opcodes.ACC_PUBLIC;
             case PRIVATE -> Opcodes.ACC_PRIVATE;
             case PROTECTED -> Opcodes.ACC_PROTECTED;
+            case PRIVATE_STATIC -> Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;
+            case PUBLIC_STATIC -> Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC;
             case PACKAGE_PRIVATE -> 0;
         };
     }

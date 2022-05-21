@@ -602,6 +602,14 @@ public class SemanticCheck implements SemanticVisitor {
     @Override
     public TypeCheckResult typeCheck(LocalOrFieldVar localOrFieldVar) {
 
+        // check if the variable is declared in the current scope
+        Type localVar = currentLocalScope.getLocalVar(localOrFieldVar.getIdentifier());
+
+        if (localVar != null) {
+            localOrFieldVar.setType(localVar);
+            return new TypeCheckResult(true, localVar);
+        }
+
         // check if the variable is declared in the current class
 
         var fieldVar = TypeHelper.getFieldInType(localOrFieldVar.getIdentifier(),
@@ -612,12 +620,12 @@ public class SemanticCheck implements SemanticVisitor {
             return new TypeCheckResult(true, fieldVar.getType());
         }
 
-        // check if the variable is declared in the current scope
-        Type localVar = currentLocalScope.getLocalVar(localOrFieldVar.getIdentifier());
+        var importStaticField = context.getImports().get(localOrFieldVar.getIdentifier());
 
-        if (localVar != null) {
-            localOrFieldVar.setType(localVar);
-            return new TypeCheckResult(true, localVar);
+        if (importStaticField != null) {
+            var importedType = new ReferenceType(importStaticField);
+            localOrFieldVar.setType(importedType);
+            return new TypeCheckResult(true, importedType);
         }
 
         errors.add(new VariableNotDeclaredException(
@@ -677,7 +685,7 @@ public class SemanticCheck implements SemanticVisitor {
         valid = valid && result.isValid();
         var newType = nextInstVar.getType();
         instVar.setType(newType);
-
+        instVar.setAccessModifier(nextInstVar.getAccessModifier());
         return new TypeCheckResult(valid, newType);
     }
 
