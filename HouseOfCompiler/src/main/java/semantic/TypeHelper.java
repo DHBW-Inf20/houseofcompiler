@@ -1,6 +1,7 @@
 package semantic;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import common.BaseType;
 import common.Primitives;
@@ -38,7 +39,8 @@ public class TypeHelper {
      */
     public static boolean isBool(Type type) {
         var boolType = new BaseType(Primitives.BOOL);
-        return type.equals(boolType);
+
+        return Objects.equals(boolType, type);
     }
 
     /**

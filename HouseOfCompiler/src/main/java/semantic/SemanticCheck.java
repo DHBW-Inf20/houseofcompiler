@@ -504,8 +504,11 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         try {
-            var method = TypeHelper.getMethodInType(methodCall, receiver.getType(), context); // Throws an Error, cant
-                                                                                              // be
+            var method = TypeHelper.getMethodInType(methodCall, methodCall.getReceiver().getType(), context); // Throws
+                                                                                                              // an
+                                                                                                              // Error,
+                                                                                                              // cant
+            // be
             var returnType = method.getType();
             methodCall.setType(returnType);
             return new TypeCheckResult(valid, null);
@@ -776,7 +779,7 @@ public class SemanticCheck implements SemanticVisitor {
                 }
             }
         } else if ((isSame || oneIsNull) && lIsReference) {// Wenn 2 Objekte miteinander verglichen werden
-            if (operator == Operator.EQUAL) {
+            if (operator == Operator.EQUAL || operator == Operator.NOTEQUAL) {
                 binary.setType(new BaseType(Primitives.BOOL));
             } else {
                 errors.add(errorToThrow);

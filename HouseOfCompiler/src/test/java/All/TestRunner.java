@@ -825,13 +825,9 @@ public class TestRunner {
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         try {
-            Object o = loader.getConstructor("LinkedList", int.class).newInstance(1);
-            var add = loader.getMethod("LinkedList", "add", int.class);
-            add.invoke(o, 2);
-            add.invoke(o, 3);
-            var get = loader.getMethod("LinkedList", "get", int.class);
-            assertEquals(1, get.invoke(o, 0));
-            assertEquals(2, get.invoke(o, 1));
+            Object executer = loader.getConstructor("Executer").newInstance();
+            var foo = loader.getMethod("Executer", "foo");
+            foo.invoke(executer);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -852,6 +848,7 @@ public class TestRunner {
             var add = loader.getMethod("StringList", "add", char.class);
             var get = loader.getMethod("StringList", "get", int.class);
             var length = loader.getMethod("StringList", "length");
+            var print = loader.getMethod("StringList", "print");
             add.invoke(o, 'e');
             add.invoke(o, 'l');
             add.invoke(o, 'l');
@@ -863,13 +860,14 @@ public class TestRunner {
             add.invoke(o, 'l');
             add.invoke(o, 'd');
             add.invoke(o, '!');
+            print.invoke(o);
+            System.setOut(new PrintStream(outContent));
+            print.invoke(o);
+            var expected = new String("Hello World!").replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
 
-            String result = "";
-            for (int i = 0; i < (int) length.invoke(o); i++) {
-                System.out.println(get.invoke(o, i));
-                result += get.invoke(o, i);
-            }
-            assertEquals("Hello World!", result);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -890,15 +888,40 @@ public class TestRunner {
             var foo = loader.getMethod("SystemOutPrintln", "foo");
             var bar = loader.getMethod("SystemOutPrintln", "bar");
             var baz = loader.getMethod("SystemOutPrintln", "baz");
+            var errortest = loader.getMethod("SystemOutPrintln", "errorTest");
             System.setOut(new PrintStream(outContent));
+            System.setErr(new PrintStream(errContent));
             foo.invoke(o);
             bar.invoke(o);
             baz.invoke(o);
-            var expected = new String("c\n\t100\n\ttrue\n\t").replaceAll("\\p{C}", "");
+            errortest.invoke(o);
+            var expected = new String("c\n\tcd\n\t100\n\ttrue\n\t").replaceAll("\\p{C}", "");
             ;
             var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
             assertEquals(expected, actual);
+            var expectedErr = new String("a\n\t").replaceAll("\\p{C}", "");
+            var actualErr = new String(errContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expectedErr, actualErr);
             System.setOut(originalOut);
+            System.setErr(originalErr);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("StackTest")
+    void stackTest() {
+        Program program = Resources.getProgram("Integration/Stack.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("Executer");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("Executer", "foo");
+            foo.invoke(o);
         } catch (Exception e) {
             fail(e.getMessage());
         }
