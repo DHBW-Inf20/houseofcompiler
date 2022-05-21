@@ -89,12 +89,6 @@ public class ReflectLoader extends ClassLoader {
         return field1;
     }
 
-    public void setStaticField(String className, String field, Object newField) throws NoSuchFieldException, IllegalAccessException {
-        Field field1 = findClass(className).getDeclaredField(field);
-        field1.setAccessible(true);
-        field1.set(null, newField);
-    }
-
     /**
      * @param classname
      * @param parameterTyped

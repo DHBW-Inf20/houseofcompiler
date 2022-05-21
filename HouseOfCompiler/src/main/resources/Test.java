@@ -9,9 +9,11 @@ class Test {
 //    }
 
     int main() {
-        boolean b = false;
-        System.out.println(!b);
-        return 0;
+        if (true == false) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
 
