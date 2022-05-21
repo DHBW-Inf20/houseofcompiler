@@ -115,4 +115,10 @@ public class LocalVarDecl implements IStatement {
     public int hashCode() {
         return Objects.hash(type, identifier);
     }
+
+    @Override
+    public String toString() {
+        return type + " " + identifier + " = " + expression;
+    }
+
 }

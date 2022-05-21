@@ -107,6 +107,8 @@ public abstract class MockGenerator {
     public static Program getClassFieldsAst() {
         Program expectedAst = getEmptyProgram("ClassFields");
 
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
         FieldDecl privateField = new FieldDecl("privateAccess", AccessModifier.PRIVATE);
         privateField.setType(new BaseType(Primitives.INT));
         FieldDecl publicField = new FieldDecl("publicAccess", AccessModifier.PUBLIC);
@@ -129,6 +131,8 @@ public abstract class MockGenerator {
         Program expectedAst = getEmptyProgram("AutoAccessModifierField");
 
         FieldDecl autoField = new FieldDecl(new BaseType(Primitives.INT), "autoAccess");
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
 
         PrintableVector<FieldDecl> fields = expectedAst.getClasses().firstElement().getFieldDelcarations();
         fields.add(autoField);
@@ -231,6 +235,8 @@ public abstract class MockGenerator {
         Program expectedAst = getEmptyProgram("VoidMethod");
 
         ClassDecl classDecl = expectedAst.getClasses().firstElement();
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
 
         PrintableVector<MethodDecl> methods = classDecl.getMethodDeclarations();
         MethodDecl foo = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), getEmptyBlock());

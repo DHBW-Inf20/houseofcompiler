@@ -239,6 +239,7 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(NewDecl newDecl) {
+
         this.lastClassName = newDecl.getIdentifier();
         mv.visitTypeInsn(Opcodes.NEW, newDecl.getIdentifier());
         mv.visitInsn(Opcodes.DUP);

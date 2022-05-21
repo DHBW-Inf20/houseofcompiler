@@ -109,9 +109,19 @@ public class NewDecl implements IStatementExpression {
             returnString += expression.getType() + ", ";
         }
         // delete the last ", "
-        returnString = returnString.substring(0, returnString.length() - 2);
+        if (returnString.length() > 1) {
+            returnString = returnString.substring(0, returnString.length() - 2);
+        }
         returnString += ")";
         return returnString;
 
+    }
+
+    /**
+     * @return String
+     */
+    @Override
+    public String toString() {
+        return "new " + identifier + printTypes();
     }
 }

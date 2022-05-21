@@ -686,4 +686,14 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("SelfReference")
+    void SelfReference() {
+        Program program = Resources.getProgram("SimpleTests/SelfReference.java");
+
+        System.out.println(program);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+    }
+
 }

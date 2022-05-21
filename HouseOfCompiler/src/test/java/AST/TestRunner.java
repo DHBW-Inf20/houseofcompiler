@@ -36,14 +36,15 @@ public class TestRunner {
     void emptyClass() {
         InputStream file = Resources.getFileAsStream("SimpleTests/EmptyClass.java");
         Program ast = Compiler.getFactory().getAstAdapter().getAst(file);
-
-        ClassDecl classDecl = new ClassDecl("EmptyClass", new PrintableVector<>(), new PrintableVector<>(),
+        PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
+        constructors.add(new ConstructorDecl());
+        ClassDecl classDecl = new ClassDecl("EmptyClass", new PrintableVector<>(), constructors,
                 new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var generatedAst = new Program(classDecls);
 
-        assertEquals(ast, generatedAst);
+        assertEquals(generatedAst, ast);
 
     }
 
@@ -91,6 +92,7 @@ public class TestRunner {
         Program generatedAst = Compiler.getFactory().getAstAdapter().getAst(file);
 
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
+        constructors.add(new ConstructorDecl());
         PrintableVector<FieldDecl> fields = new PrintableVector<>();
 
         FieldDecl lorem = new FieldDecl("lorem", AccessModifier.PRIVATE);

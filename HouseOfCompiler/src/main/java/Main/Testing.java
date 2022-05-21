@@ -16,13 +16,13 @@ public class Testing {
 
         String className = fileName.substring(0, fileName.length() - 5);
         try {
-            Compiler.getFactory().compileTest(fileName);
             ClassLoader classLoader = Testing.class.getClassLoader();
             File file = new File(classLoader.getResource(fileName).getFile());
             var ast = Compiler.getFactory().getAstAdapter().getAst(new FileInputStream(file));
             var tast = Compiler.getFactory().getTastAdapter().getTast(ast);
             System.out.println("Generierter TAST:");
             System.out.println(tast);
+            Compiler.getFactory().compileTest(fileName);
             var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
             ReflectLoader loader = new ReflectLoader(bc);
             Class<?> c = loader.findClass(className);

@@ -1,32 +1,33 @@
 package CodeGen;
 
-import Helper.MockGenerator;
-import Helper.ReflectLoader;
-import common.Compiler;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import Helper.MockGenerator;
+import Helper.ReflectLoader;
+import Helper.Resources;
+import common.Compiler;
+import common.PrintableVector;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.Program;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import common.PrintableVector;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 @DisplayName("Bytecode Generation")
 public class TestRunner {
-
 
     @Test
     @DisplayName("Empty Class")
     void main() {
-        ClassDecl emptyClass = new ClassDecl("EmptyClass", new PrintableVector<>(),new PrintableVector<>(),new PrintableVector<>());
+        ClassDecl emptyClass = new ClassDecl("EmptyClass", new PrintableVector<>(), new PrintableVector<>(),
+                new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(emptyClass);
-
 
         var tast = new Program(classDecls);
 
@@ -45,10 +46,11 @@ public class TestRunner {
 
     @Test
     @DisplayName("EmptyClassWithConstructor")
-    void emptyClassWithConstructor()  {
+    void emptyClassWithConstructor() {
         PrintableVector<ConstructorDecl> constructors = new PrintableVector<>();
         constructors.add(new ConstructorDecl());
-        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(),constructors,new PrintableVector<>());
+        ClassDecl classDecl = new ClassDecl("EmptyClassWithConstructor", new PrintableVector<>(), constructors,
+                new PrintableVector<>());
         PrintableVector<ClassDecl> classDecls = new PrintableVector<>();
         classDecls.add(classDecl);
         var tast = new Program(classDecls);
@@ -104,14 +106,14 @@ public class TestRunner {
 
     @Test
     @DisplayName("ClassFields - autoAccess")
-    void classFieldsAuto(){
+    void classFieldsAuto() {
         Program tast = MockGenerator.getAutoClassFieldAst();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         try {
             var autoAccess = loader.getField("AutoAccessModifierField", "autoAccess");
             System.out.println(autoAccess.getModifiers());
-            assertEquals(0,autoAccess.getModifiers());
+            assertEquals(0, autoAccess.getModifiers());
 
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
@@ -121,13 +123,13 @@ public class TestRunner {
 
     @Test
     @DisplayName("ClassFields - privateAccess")
-    void classFieldsPrivate(){
+    void classFieldsPrivate() {
         Program tast = MockGenerator.getClassFieldsTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         try {
             var autoAccess = loader.getField("ClassFields", "privateAccess");
-            assertEquals(Modifier.PRIVATE,autoAccess.getModifiers());
+            assertEquals(Modifier.PRIVATE, autoAccess.getModifiers());
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
@@ -136,13 +138,13 @@ public class TestRunner {
 
     @Test
     @DisplayName("ClassFields - publicAccess")
-    void classFieldsPublic(){
+    void classFieldsPublic() {
         Program tast = MockGenerator.getClassFieldsTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         try {
             var autoAccess = loader.getField("ClassFields", "publicAccess");
-            assertEquals(Modifier.PUBLIC,autoAccess.getModifiers());
+            assertEquals(Modifier.PUBLIC, autoAccess.getModifiers());
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
@@ -151,24 +153,23 @@ public class TestRunner {
 
     @Test
     @DisplayName("ClassFields - protectedAccess")
-    void classFieldsProtected(){
+    void classFieldsProtected() {
         Program tast = MockGenerator.getClassFieldsTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         try {
             var autoAccess = loader.getField("ClassFields", "protectedAccess");
-            
-            assertEquals(Modifier.PROTECTED,autoAccess.getModifiers());
+
+            assertEquals(Modifier.PROTECTED, autoAccess.getModifiers());
         } catch (Exception e) {
             fail(e.getLocalizedMessage());
         }
 
     }
 
-
     @Test
     @DisplayName("VoidMethod")
-    void voidMethod(){
+    void voidMethod() {
         Program tast = MockGenerator.getVoidMethodTast();
 
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
@@ -189,7 +190,7 @@ public class TestRunner {
 
     @Test
     @DisplayName("RealConstructor")
-    void realConstructor(){
+    void realConstructor() {
         Program tast = MockGenerator.getRealConstructorTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
@@ -201,17 +202,16 @@ public class TestRunner {
             var i = loader.getField("RealConstructor", "i");
             int ivalue = (int) i.get(o);
             assertEquals(randomI, ivalue);
-        } catch (NoSuchFieldException e){
+        } catch (NoSuchFieldException e) {
             fail("No such field");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fail(e.getCause());
         }
     }
 
     @Test
     @DisplayName("MethodCall")
-    void methodCall(){
+    void methodCall() {
         Program tast = MockGenerator.getMethodCallTast();
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
@@ -229,4 +229,13 @@ public class TestRunner {
 
     }
 
+    @Test
+    @DisplayName("MiniLinkedList")
+    void miniLinkedList() {
+        Program program = Resources.getProgram("SimpleTests/MiniLinkedList.java");
+
+        System.out.println(program);
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+    }
 }

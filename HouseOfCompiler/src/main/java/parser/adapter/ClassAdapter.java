@@ -18,6 +18,10 @@ public class ClassAdapter {
                 PrintableVector<FieldDecl> fieldDecls = new PrintableVector<FieldDecl>();
                 PrintableVector<MethodDecl> methodDecls = new PrintableVector<MethodDecl>();
 
+                if (classdeclContext.constuctorDecl().size() < 1) {
+                        constructorDecls.add(new ConstructorDecl());
+                }
+
                 classdeclContext.constuctorDecl().forEach(constuctorDeclContext -> constructorDecls
                                 .add(ConstructorAdapter.adapt(constuctorDeclContext)));
                 classdeclContext.fieldDecl()

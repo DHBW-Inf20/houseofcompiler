@@ -498,13 +498,20 @@ public class SemanticCheck implements SemanticVisitor {
             valid = valid && parameterResult.isValid();
         }
 
-        var method = TypeHelper.getMethodInType(methodCall, receiver.getType(), context); // Throws an Error, cant be
-                                                                                          // null
-        var returnType = method.getType();
+        try {
+            var method = TypeHelper.getMethodInType(methodCall, receiver.getType(), context); // Throws an Error, cant
+                                                                                              // be
+            var returnType = method.getType();
+            methodCall.setType(returnType);
+            return new TypeCheckResult(valid, null);
+        } catch (TypeMismatchException e) {
+            errors.add(new SemanticError(e.getMessage() + TypeHelper.generateLocationString(methodCall.line,
+                    methodCall.column, fileName)));
+            return new TypeCheckResult(false, null);
 
-        methodCall.setType(returnType);
+        }
+        // null
 
-        return new TypeCheckResult(valid, null);
     }
 
     /**
@@ -708,6 +715,9 @@ public class SemanticCheck implements SemanticVisitor {
         // Following vars are there to determine the type of the binary expression
         final Operator operator = binary.getOperator();
 
+        final Type lType = lResult.getType();
+        final Type rType = rResult.getType();
+
         final boolean isCompareOperator = (binary.getOperator() == Operator.EQUAL
                 || operator == Operator.NOTEQUAL || operator == Operator.LESS
                 || operator == Operator.LESSEQUAL || operator == Operator.GREATER
@@ -716,45 +726,54 @@ public class SemanticCheck implements SemanticVisitor {
         final boolean isLogicalOperator = (operator == Operator.AND || operator == Operator.OR);
         final boolean isArithmeticOperator = (operator == Operator.PLUS || operator == Operator.MINUS
                 || operator == Operator.MULT || operator == Operator.DIV || operator == Operator.MOD);
+
+        final boolean isSame = lResult.getType().equals(rResult.getType());
+        final boolean lIsReference = lResult.getType() instanceof ReferenceType;
+
         // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
         // gleiche Typen
         // TODO: Chars dürfen mit Ints verglichen werden
         // TODO: ReferenceTypes dürfen mit Equal und NotEqual verglichen werden
-        if (lResult.getType() instanceof ReferenceType || !lResult.getType().equals(rResult.getType())) {
-            errors.add(errorToThrow);
-            valid = false;
-        } else {
-            BaseType lType = (BaseType) lResult.getType();
-
-            switch (lType.getIdentifier()) {
+        if (isSame && !lIsReference) { // Wenn 2 gleiche BaseTypes miteinander verglichen werden
+            var lBaseType = (BaseType) lType;
+            switch (lBaseType.getIdentifier()) {
                 case BOOL -> {
                     if (!isLogicalOperator && !isCompareOperator) {
                         errors.add(errorToThrow);
                         valid = false;
+                    } else {
+                        binary.setType(new BaseType(Primitives.BOOL));
                     }
                 }
                 case INT -> {
                     if (!isArithmeticOperator && !isCompareOperator) {
                         errors.add(errorToThrow);
                         valid = false;
+                    } else {
+                        binary.setType(new BaseType(isArithmeticOperator ? Primitives.INT : Primitives.BOOL));
                     }
                 }
                 default -> {
                     errors.add(errorToThrow);
+                    binary.setType(new BaseType(Primitives.VOID));
+                    valid = false;
                 }
-
             }
-
-        }
-
-        if (valid) {
-            if (isLogicalOperator || isCompareOperator) {
+        } else if (isSame && lIsReference) {// Wenn 2 Objekte miteinander verglichen werden
+            if (operator == Operator.EQUAL) {
                 binary.setType(new BaseType(Primitives.BOOL));
             } else {
-                binary.setType(lResult.getType());
+                errors.add(errorToThrow);
+                valid = false;
             }
+        } else if (isCompareOperator && (lType == new BaseType(Primitives.CHAR) && rType == new BaseType(Primitives.INT)
+                || (rType == new BaseType(Primitives.CHAR) && lType == new BaseType(Primitives.INT)))) { // Wenn z.B.
+                                                                                                         // 1=='a'...
+            binary.setType(new BaseType(Primitives.BOOL));
         } else {
+            errors.add(errorToThrow);
             binary.setType(new BaseType(Primitives.VOID));
+            valid = false;
         }
 
         valid = valid && lResult.isValid() && rResult.isValid();
