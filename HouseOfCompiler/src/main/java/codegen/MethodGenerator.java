@@ -463,6 +463,9 @@ public class MethodGenerator implements MethodCodeVisitor {
             mv.visitFieldInsn(Opcodes.GETFIELD, className, localOrFieldVar.getIdentifier(),
                     GenUtils.generateDescriptor(localOrFieldVar.getType()));
         }
+        if (localOrFieldVar.getType() instanceof ReferenceType) {
+            this.lastClassName = localOrFieldVar.getIdentifier();
+        }
     }
 
     /**
