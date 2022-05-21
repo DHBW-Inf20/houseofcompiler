@@ -287,7 +287,7 @@ public class MethodGenerator implements MethodCodeVisitor {
     }
 
     /**
-     * @param binary
+     * @param unary
      */
     private void visitBoolLogic(Unary unary) {
 
