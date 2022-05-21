@@ -119,6 +119,7 @@ public class SemanticCheck implements SemanticVisitor {
         }
         PrintableVector<String> identifiers = new PrintableVector<>();
 
+        currentFields.clear();
         for (FieldDecl field : toCheck.getFieldDelcarations()) {
             var result = field.accept(this);
             valid = valid && result.isValid();
@@ -308,8 +309,8 @@ public class SemanticCheck implements SemanticVisitor {
     public TypeCheckResult typeCheck(ReturnStmt returnStmt) {
 
         var returnExpression = returnStmt.getExpression().accept(this);
-        returnStmt.setType(returnExpression.getType());
-        if (currentMethodReturnType != null && !currentMethodReturnType.equals(returnExpression.getType())) {
+        returnStmt.setType(returnStmt.getExpression().getType());
+        if (currentMethodReturnType != null && !currentMethodReturnType.equals(returnStmt.getType())) {
             errors.add(
                     new TypeMismatchException("Return-Type mismatch:  cannot convert from " + returnExpression.getType()
                             + " to " + currentMethodReturnType

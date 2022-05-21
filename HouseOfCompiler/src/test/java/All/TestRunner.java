@@ -402,4 +402,24 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("FourClasses")
+    void fourClasses() {
+        Program program = Resources.getProgram("SimpleTests/FourClasses.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("FourClasses");
+        Object o = null;
+        int result = 10;
+        try {
+            var foo = loader.getMethod("FourClasses", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, result);
+            assertEquals(result * 2, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
 }
