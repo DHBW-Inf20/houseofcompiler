@@ -224,10 +224,9 @@ public class MethodGenerator implements MethodCodeVisitor {
                     mv.visitVarInsn(Opcodes.ASTORE, index);
                 }
             } else { // field var
-                lExpression.accept(this);
-                String owner = this.lastClassName;
+                mv.visitVarInsn(Opcodes.ALOAD, 0);
                 rExpression.accept(this);
-                mv.visitFieldInsn(Opcodes.PUTFIELD, owner, ((LocalOrFieldVar) lExpression).getIdentifier(),
+                mv.visitFieldInsn(Opcodes.PUTFIELD, className, ((LocalOrFieldVar) lExpression).getIdentifier(),
                         GenUtils.generateDescriptor((lExpression).getType()));
             }
         }
