@@ -90,8 +90,6 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(MethodDecl methodDecl) {
-        System.out.println("Method: " + methodDecl.getIdentifier());
-
         PrintableVector<Type> parameterTypes = methodDecl.getParameters().stream().map(MethodParameter::getType)
                 .collect(Collectors.toCollection(PrintableVector::new));
 
@@ -175,10 +173,8 @@ public class MethodGenerator implements MethodCodeVisitor {
         } else {
             expression.accept(this);
             if (expression.getType() instanceof BaseType) {
-                System.out.println("IRETURN");
                 mv.visitInsn(Opcodes.IRETURN);
             } else {
-                System.out.println("ARETURN");
                 mv.visitInsn(Opcodes.ARETURN);
             }
         }
@@ -263,8 +259,6 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitTypeInsn(Opcodes.NEW, newDecl.getIdentifier());
         mv.visitInsn(Opcodes.DUP);
         newDecl.getArguments().forEach(expression -> expression.accept(this));
-        System.out.println(GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()),
-                new BaseType(Primitives.VOID)));
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, newDecl.getIdentifier(), "<init>",
                 GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()),
                         new BaseType(Primitives.VOID)),
