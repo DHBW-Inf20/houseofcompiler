@@ -328,6 +328,7 @@ public class MethodGenerator implements MethodCodeVisitor {
             case MINUS -> mv.visitInsn(Opcodes.ISUB);
             case MULT -> mv.visitInsn(Opcodes.IMUL);
             case DIV -> mv.visitInsn(Opcodes.IDIV);
+            case MOD -> mv.visitInsn(Opcodes.IREM);
         }
     }
 
