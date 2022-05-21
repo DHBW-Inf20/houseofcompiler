@@ -37,7 +37,13 @@ public class ProgramGenerator implements ProgramCodeVisitor, IProgramGenerator {
      */
     public static HashMap<String, byte[]> generate(Program program) {
         ProgramGenerator pg = new ProgramGenerator();
-        return pg.generateBytecode(program);
+        pg.generateBytecode(program);
+        System.out.println(pg);
+        return pg.getBytecode();
+    }
+
+    public HashMap<String, byte[]> getBytecode() {
+        return classes;
     }
 
     /**

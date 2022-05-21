@@ -459,9 +459,9 @@ public class MethodGenerator implements MethodCodeVisitor {
     public void visitInstVar(InstVar instVar, boolean getField) {
         IExpression expression = instVar.getExpression();
         expression.accept(this);
+        this.lastClassName = ((ReferenceType) expression.getType()).getIdentifier();
         if (getField) {
-            this.lastClassName = ((ReferenceType) expression.getType()).getIdentifier();
-            mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClassName, instVar.getIdentifier(),
+            mv.visitFieldInsn(Opcodes.GETFIELD, ((ReferenceType) expression.getType()).getIdentifier(), instVar.getIdentifier(),
                     GenUtils.generateDescriptor(instVar.getType()));
         }
     }
