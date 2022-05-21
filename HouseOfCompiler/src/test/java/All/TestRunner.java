@@ -3,7 +3,9 @@ package All;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -17,6 +19,11 @@ import syntaxtree.structure.Program;
 
 @DisplayName("All")
 public class TestRunner {
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
 
     /**
      * @throws Exception
@@ -865,6 +872,34 @@ public class TestRunner {
             assertEquals("Hello World!", result);
         } catch (Exception e) {
             e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("SystemOutPrintln Test")
+    void systemOutPrintlnTest() {
+        Program program = Resources.getProgram("Integration/SystemOutPrintln.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("SystemOutPrintln");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("SystemOutPrintln", "foo");
+            var bar = loader.getMethod("SystemOutPrintln", "bar");
+            var baz = loader.getMethod("SystemOutPrintln", "baz");
+            System.setOut(new PrintStream(outContent));
+            foo.invoke(o);
+            bar.invoke(o);
+            baz.invoke(o);
+            var expected = new String("c\n\t100\n\ttrue\n\t").replaceAll("\\p{C}", "");
+            ;
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }
