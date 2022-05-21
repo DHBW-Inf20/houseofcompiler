@@ -1,8 +1,9 @@
-class FourClasses {
+class FourClassesFieldAssign {
 
-    public int main(int i) {
+    public int fieldAssign(int i) {
         Test t = new Test(i);
         Test2 t2 = new Test2(t.y);
+        t2.test.test3.x = i;
         return t2.test.test3.getX();
     }
 

@@ -1,9 +1,11 @@
-class FourClasses {
+class FourClassesSetter {
 
-    public int main(int i) {
+    public int setFieldTest(int i) {
         Test t = new Test(i);
         Test2 t2 = new Test2(t.y);
-        return t2.test.test3.getX();
+        t2.test.test3.setY(i);
+
+        return t2.test.test3.getY();
     }
 
 }

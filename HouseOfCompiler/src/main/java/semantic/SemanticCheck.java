@@ -247,7 +247,7 @@ public class SemanticCheck implements SemanticVisitor {
         currentAssignLeftType = lResult.getType();
         var rResult = rExpression.accept(this);
 
-        if (!lExpression.getType().equals(rExpression.getType())) {
+        if (!Objects.equals(lExpression.getType(), rExpression.getType())) {
             errors.add(new TypeMismatchException(
                     "Mismatch types in Assign-Statement got: \"" + lResult.getType() + "\" and \""
                             + rResult.getType() + "\""
