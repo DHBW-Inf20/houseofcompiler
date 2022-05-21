@@ -39,6 +39,7 @@ binaryExpr: subExpression operator expression;
 operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator | Not;
 
 BooleanValue: 'true'|'false';
+NullValue: 'null';
 
 //Statements
 returnStmt: Return expression;
@@ -53,7 +54,7 @@ newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 receiver: ((instVar | newDecl | Identifier) Dot);
 receivingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?
 type: Int | Boolean | Char | Identifier;
-value: IntValue | BooleanValue | CharValue;
+value: IntValue | BooleanValue | CharValue | NullValue;
 
 //Access modifier
 AccessModifier: 'public' | 'private' | 'protected';

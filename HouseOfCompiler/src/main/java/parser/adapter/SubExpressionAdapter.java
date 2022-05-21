@@ -3,7 +3,6 @@ package parser.adapter;
 import parser.generated.JavaSubsetParser;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.LocalOrFieldVar;
-import syntaxtree.expressions.ValueAdapter;
 
 public class SubExpressionAdapter {
 
