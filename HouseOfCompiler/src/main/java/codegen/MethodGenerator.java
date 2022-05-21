@@ -189,7 +189,18 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(WhileStmt whileStmt) {
+        Label loop = new Label();
+        Label end = new Label();
 
+        mv.visitLabel(loop);
+
+        whileStmt.getExpression().accept(this);
+        mv.visitJumpInsn(Opcodes.IFEQ, end);
+
+        whileStmt.getBlock().accept(this);
+        mv.visitJumpInsn(Opcodes.GOTO, loop);
+
+        mv.visitLabel(end);
     }
 
     /************************
