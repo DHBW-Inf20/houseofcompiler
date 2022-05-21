@@ -414,9 +414,242 @@ public class TestRunner {
         Object o = null;
         int result = 10;
         try {
+            o = clazz.getDeclaredConstructor().newInstance();
             var foo = loader.getMethod("FourClasses", "foo", int.class);
             var ivalue = (int) foo.invoke(o, result);
             assertEquals(result * 2, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("MinusMethod")
+    void minusMethod() {
+        Program program = Resources.getProgram("SimpleTests/MinusMethod.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("MinusMethod");
+        Object o = null;
+        int result = 10;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("MinusMethod", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, result);
+            assertEquals(0, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("PlusMethod")
+    void plusMethod() {
+        Program program = Resources.getProgram("SimpleTests/PlusMethod.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("PlusMethod");
+        Object o = null;
+        int result = 10;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("PlusMethod", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, result);
+            assertEquals(20, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("MulMethod")
+    void mulMethod() {
+        Program program = Resources.getProgram("SimpleTests/MulMethod.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("MulMethod");
+        Object o = null;
+        int result = 10;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("MulMethod", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, result);
+            assertEquals(100, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("DivMethod")
+    void divMethod() {
+        Program program = Resources.getProgram("SimpleTests/DivMethod.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("DivMethod");
+        Object o = null;
+        int result = 10;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("DivMethod", "foo", int.class);
+            var ivalue = (int) foo.invoke(o, result);
+            assertEquals(1, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("PunktVorStrich")
+    void punktVorStrich() {
+        Program program = Resources.getProgram("SimpleTests/PunktVorStrich.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("PunktVorStrich");
+        Object o = null;
+        int a = 10;
+        int b = 20;
+        int c = 30;
+        int result = a + b * c;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("PunktVorStrich", "foo", int.class, int.class, int.class);
+            var ivalue = (int) foo.invoke(o, a, b, c);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("KlammerVorPunkt")
+    void klammerVorPunkt() {
+        Program program = Resources.getProgram("SimpleTests/KlammerVorPunkt.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("KlammerVorPunkt");
+        Object o = null;
+        int a = 10;
+        int b = 20;
+        int c = 30;
+        int result = a * (b + c);
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("KlammerVorPunkt", "foo", int.class, int.class, int.class);
+            var ivalue = (int) foo.invoke(o, a, b, c);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("ModMethod")
+    void modMethod() {
+        Program program = Resources.getProgram("SimpleTests/ModMethod.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("ModMethod");
+        Object o = null;
+        int a = 10;
+        int b = 20;
+        int result = a % b;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("ModMethod", "foo", int.class, int.class, int.class);
+            var ivalue = (int) foo.invoke(o, a, b);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("NotMethod")
+    void notMethod() {
+        Program program = Resources.getProgram("SimpleTests/NotMethod.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("NotMethod");
+        Object o = null;
+        boolean a = true;
+        boolean result = !a;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("NotMethod", "foo", boolean.class);
+            var ivalue = (boolean) foo.invoke(o, a);
+            assertEquals(result, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("OperatorStressTest")
+    void operatorStressTest() {
+        Program program = Resources.getProgram("SimpleTests/OperatorTest.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("OperatorTest");
+        Object o = null;
+        int x = 10;
+        int y = 20;
+
+        boolean a = true;
+        boolean b = false;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var assign = loader.getMethod("OperatorTest", "assign", int.class).invoke(o, x);
+            assertEquals(x, assign);
+            var plus = loader.getMethod("OperatorTest", "plus", int.class, int.class).invoke(o, x, y);
+            assertEquals(x + y, plus);
+            var minus = loader.getMethod("OperatorTest", "minus", int.class, int.class).invoke(o, x, y);
+            assertEquals(x - y, minus);
+            var mult = loader.getMethod("OperatorTest", "mult", int.class, int.class).invoke(o, x, y);
+            assertEquals(x * y, mult);
+            var div = loader.getMethod("OperatorTest", "div", int.class, int.class).invoke(o, x, y);
+            assertEquals(x / y, div);
+            // var mod = loader.getMethod("OperatorTest", "mod", int.class,
+            // int.class).invoke(o, x, y);
+            // assertEquals(x % y, mod);
+            var gt = loader.getMethod("OperatorTest", "gt", int.class, int.class).invoke(o, x, y);
+            assertEquals(x > y, gt);
+            var lt = loader.getMethod("OperatorTest", "lt", int.class, int.class).invoke(o, x, y);
+            assertEquals(x < y, lt);
+            var gte = loader.getMethod("OperatorTest", "gte", int.class, int.class).invoke(o, x, y);
+            assertEquals(x >= y, gte);
+            var lte = loader.getMethod("OperatorTest", "lte", int.class, int.class).invoke(o, x, y);
+            assertEquals(x <= y, lte);
+            var eq = loader.getMethod("OperatorTest", "eq", int.class, int.class).invoke(o, x, y);
+            assertEquals(x == y, eq);
+            var neq = loader.getMethod("OperatorTest", "neq", int.class, int.class).invoke(o, x, y);
+            assertEquals(x != y, neq);
+            var and = loader.getMethod("OperatorTest", "and", boolean.class, boolean.class).invoke(o, a, b);
+            assertEquals(a && b, and);
+            var or = loader.getMethod("OperatorTest", "or", boolean.class, boolean.class).invoke(o, a, b);
+            assertEquals(a || b, or);
+            // var not = loader.getMethod("OperatorTest", "not", boolean.class).invoke(o,
+            // a);
+            // assertEquals(!a, not);
+
         } catch (Exception e) {
             fail(e.getMessage());
         }
