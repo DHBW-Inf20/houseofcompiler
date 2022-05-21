@@ -53,6 +53,8 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     private String lastClassName;
 
+    private boolean getInstVarField = true;
+
     public MethodGenerator(String className, Context context, ClassWriter cw) {
         this.className = className;
         this.cw = cw;
@@ -79,7 +81,7 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitVarInsn(Opcodes.ALOAD, 0);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
         constructorDecl.getBlock().accept(this);
-        mv.visitInsn(Opcodes.RETURN); // Temp
+        mv.visitInsn(Opcodes.RETURN);
 
         mv.visitMaxs(0, 0);
         mv.visitEnd();
@@ -90,6 +92,8 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(MethodDecl methodDecl) {
+        System.out.println("Method: " + methodDecl.getIdentifier());
+
         PrintableVector<Type> parameterTypes = methodDecl.getParameters().stream().map(MethodParameter::getType)
                 .collect(Collectors.toCollection(PrintableVector::new));
 
@@ -101,7 +105,11 @@ public class MethodGenerator implements MethodCodeVisitor {
         methodDecl.getParameters().forEach(parameter -> localVars.push(parameter.getIdentifier()));
 
         methodDecl.getBlock().accept(this);
-        mv.visitInsn(Opcodes.RETURN); // Temp
+        if (methodDecl.getType() instanceof BaseType) {
+            if (((BaseType) methodDecl.getType()).getIdentifier() == Primitives.VOID) {
+                mv.visitInsn(Opcodes.RETURN);
+            }
+        }
 
         mv.visitMaxs(0, 0);
         mv.visitEnd();
@@ -169,8 +177,10 @@ public class MethodGenerator implements MethodCodeVisitor {
         } else {
             expression.accept(this);
             if (expression.getType() instanceof BaseType) {
+                System.out.println("IRETURN");
                 mv.visitInsn(Opcodes.IRETURN);
             } else {
+                System.out.println("ARETURN");
                 mv.visitInsn(Opcodes.ARETURN);
             }
         }
@@ -195,8 +205,10 @@ public class MethodGenerator implements MethodCodeVisitor {
 
         if (lExpression instanceof InstVar) {
             // lExpression.identifier ist immer ein Field?
+            getInstVarField = false;
             lExpression.accept(this);
             String owner = this.lastClassName;
+            getInstVarField = true;
             rExpression.accept(this);
             // mv.visitInsn(Opcodes.DUP);
             mv.visitFieldInsn(Opcodes.PUTFIELD, owner, ((InstVar) lExpression).getIdentifier(),
@@ -227,11 +239,15 @@ public class MethodGenerator implements MethodCodeVisitor {
      */
     @Override
     public void visit(MethodCall methodCall) {
-        methodCall.receiver.accept(this);
+        methodCall.getReceiver().accept(this);
         methodCall.getArguments().forEach(parameter -> parameter.accept(this));
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, this.lastClassName, methodCall.getIdentifier(), GenUtils
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, ((ReferenceType) methodCall.getReceiver().getType()).getIdentifier(), methodCall.getIdentifier(), GenUtils
                 .generateDescriptor(GenUtils.expressionsToTypes(methodCall.getArguments()), methodCall.getType()),
                 false);
+
+        if (methodCall.getType() instanceof ReferenceType) {
+            this.lastClassName = ((ReferenceType) methodCall.getType()).getIdentifier();
+        }
     }
 
     /**
@@ -244,6 +260,8 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitTypeInsn(Opcodes.NEW, newDecl.getIdentifier());
         mv.visitInsn(Opcodes.DUP);
         newDecl.getArguments().forEach(expression -> expression.accept(this));
+        System.out.println(GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()),
+                new BaseType(Primitives.VOID)));
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, newDecl.getIdentifier(), "<init>",
                 GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()),
                         new BaseType(Primitives.VOID)),
@@ -439,7 +457,7 @@ public class MethodGenerator implements MethodCodeVisitor {
     public void visit(InstVar instVar) {
         IExpression expression = instVar.getExpression();
         expression.accept(this);
-        if (!(expression instanceof This)) {
+        if (getInstVarField) {
             this.lastClassName = ((ReferenceType) expression.getType()).getIdentifier();
             mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClassName, instVar.getIdentifier(),
                     GenUtils.generateDescriptor(instVar.getType()));

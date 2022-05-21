@@ -416,8 +416,8 @@ public class TestRunner {
         int result = 10;
         try {
             o = clazz.getDeclaredConstructor().newInstance();
-            var foo = loader.getMethod("FourClasses", "foo", int.class);
-            var ivalue = (int) foo.invoke(o, result);
+            var main = loader.getMethod("FourClasses", "main", int.class);
+            var ivalue = (int) main.invoke(o, result);
             assertEquals(result * 2, ivalue);
         } catch (Exception e) {
             fail(e.getMessage());
