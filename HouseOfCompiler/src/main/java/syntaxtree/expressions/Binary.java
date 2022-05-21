@@ -113,4 +113,9 @@ public class Binary implements IExpression {
     public int hashCode() {
         return Objects.hash(lExpression, rExpression, operator, type);
     }
+
+    @Override
+    public String toString(){
+        return "("+type+") "+ lExpression + " " + operator + " " + rExpression;
+    }
 }
