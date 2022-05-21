@@ -1,6 +1,7 @@
 package All;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayOutputStream;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import Helper.ReflectLoader;
 import Helper.Resources;
 import common.Compiler;
+import semantic.exceptions.SemanticError;
 import syntaxtree.structure.Program;
 
 @DisplayName("All")
@@ -925,6 +927,111 @@ public class TestRunner {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("OverridingTest")
+    void OverridingTest() {
+        Program program = Resources.getProgram("SimpleTests/OverridingTest.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OverridingTest");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OverridingTest", "foo", int.class);
+            assertEquals(1337, foo.invoke(o, 30));
+            assertEquals(8, foo.invoke(o, 8));
+            assertEquals(0, foo.invoke(o, 2));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("OverridingTestNull")
+    void OverridingTestNull() {
+        Program program = Resources.getProgram("SimpleTests/OverridingTestNull.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OverridingTestNull");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OverridingTestNull", "foo", int.class);
+            assertEquals(1337, foo.invoke(o, 40));
+            assertEquals(1337, foo.invoke(o, 15));
+            assertEquals(8, foo.invoke(o, 8));
+            assertEquals(0, foo.invoke(o, 2));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("OverridingTestNullMultiple")
+    void OverridingTestNullMultiple() {
+        Program program = Resources.getProgram("SimpleTests/OverridingTestNullMultiple.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OverridingTestNullMultiple");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OverridingTestNullMultiple", "foo", int.class);
+            assertEquals(1337, foo.invoke(o, 40));
+            assertEquals(1337, foo.invoke(o, 20));
+            assertEquals(1337, foo.invoke(o, 15));
+            assertEquals(8, foo.invoke(o, 8));
+            assertEquals(0, foo.invoke(o, 2));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("MultipleMethodsConflictTest")
+    void MultipleMethodsConflictTest() {
+        Program program = Resources.getProgram("FailTests/MultipleMethodsConflict.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+    }
+
+    @Test
+    @DisplayName("LOFOI")
+    void lOFOITest() {
+        Program program = Resources.getProgram("Integration/LOFOI.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("LOFOI");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("LOFOI", "foo");
+            var bar = loader.getMethod("LOFOI", "bar");
+            assertEquals(20, foo.invoke(o));
+            assertEquals(10, bar.invoke(o));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("LOFOIFailTest")
+    void lOFOIFailTest() {
+        Program program = Resources.getProgram("FailTests/LOFOI.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
     }
 
 }
