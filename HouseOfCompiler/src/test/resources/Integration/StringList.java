@@ -22,7 +22,7 @@ class StringList {
         if (next == null) {
             next = new StringList(value);
         } else {
-            this.next.add(value);
+            next.add(value);
         }
     }
 
