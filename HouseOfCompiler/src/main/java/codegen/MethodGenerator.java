@@ -2,7 +2,6 @@ package codegen;
 
 import java.util.stream.Collectors;
 
-import common.*;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -10,6 +9,11 @@ import org.objectweb.asm.Opcodes;
 
 import codegen.utils.GenUtils;
 import codegen.utils.LocalVarStack;
+import common.BaseType;
+import common.Primitives;
+import common.PrintableVector;
+import common.ReferenceType;
+import common.Type;
 import context.Context;
 import syntaxtree.expressions.Binary;
 import syntaxtree.expressions.BoolExpr;
@@ -240,7 +244,8 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitInsn(Opcodes.DUP);
         newDecl.getArguments().forEach(expression -> expression.accept(this));
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, newDecl.getIdentifier(), "<init>",
-                GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()), new BaseType(Primitives.VOID)),
+                GenUtils.generateDescriptor(GenUtils.expressionsToTypes(newDecl.getArguments()),
+                        new BaseType(Primitives.VOID)),
                 false);
     }
 
@@ -250,7 +255,9 @@ public class MethodGenerator implements MethodCodeVisitor {
 
     @Override
     public void visit(Unary unary) {
-
+        switch (unary.getOperator()) {
+            case NOT -> visitBoolLogic(unary);
+        }
     }
 
     /**
@@ -259,7 +266,7 @@ public class MethodGenerator implements MethodCodeVisitor {
     @Override
     public void visit(Binary binary) {
         switch (binary.getOperator()) {
-            case PLUS, MINUS, MULT, DIV -> visitBinaryArithmetic(binary);
+            case PLUS, MINUS, MULT, DIV, MOD -> visitBinaryArithmetic(binary);
             case GREATER, LESS, GREATEREQUAL, LESSEQUAL, EQUAL, NOTEQUAL, AND, OR -> visitBoolLogic(binary);
         }
     }
@@ -277,6 +284,28 @@ public class MethodGenerator implements MethodCodeVisitor {
             case MULT -> mv.visitInsn(Opcodes.IMUL);
             case DIV -> mv.visitInsn(Opcodes.IDIV);
         }
+    }
+
+    /**
+     * @param binary
+     */
+    private void visitBoolLogic(Unary unary) {
+
+        Label label = new Label();
+        Label finish = new Label();
+
+        switch (unary.getOperator()) {
+            case NOT -> {
+                unary.getExpression().accept(this);
+                mv.visitJumpInsn(Opcodes.IFNE, label);
+            }
+        }
+        mv.visitInsn(Opcodes.ICONST_1);
+        mv.visitJumpInsn(Opcodes.GOTO, finish);
+        mv.visitLabel(label);
+        mv.visitInsn(Opcodes.ICONST_0);
+        mv.visitLabel(finish);
+
     }
 
     /**
@@ -426,7 +455,8 @@ public class MethodGenerator implements MethodCodeVisitor {
             }
         } else { // field var
             mv.visitVarInsn(Opcodes.ALOAD, 0);
-            mv.visitFieldInsn(Opcodes.GETFIELD, className, localOrFieldVar.getIdentifier(), GenUtils.generateDescriptor(localOrFieldVar.getType()));
+            mv.visitFieldInsn(Opcodes.GETFIELD, className, localOrFieldVar.getIdentifier(),
+                    GenUtils.generateDescriptor(localOrFieldVar.getType()));
         }
     }
 

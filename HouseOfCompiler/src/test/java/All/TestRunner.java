@@ -565,12 +565,12 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> clazz = loader.findClass("ModMethod");
         Object o = null;
-        int a = 10;
-        int b = 20;
+        int a = 4;
+        int b = 260;
         int result = a % b;
         try {
             o = clazz.getDeclaredConstructor().newInstance();
-            var foo = loader.getMethod("ModMethod", "foo", int.class, int.class, int.class);
+            var foo = loader.getMethod("ModMethod", "foo", int.class, int.class);
             var ivalue = (int) foo.invoke(o, a, b);
             assertEquals(result, ivalue);
         } catch (Exception e) {
@@ -610,8 +610,8 @@ public class TestRunner {
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> clazz = loader.findClass("OperatorTest");
         Object o = null;
-        int x = 10;
-        int y = 20;
+        int x = 87;
+        int y = 452;
 
         boolean a = true;
         boolean b = false;
@@ -627,9 +627,8 @@ public class TestRunner {
             assertEquals(x * y, mult);
             var div = loader.getMethod("OperatorTest", "div", int.class, int.class).invoke(o, x, y);
             assertEquals(x / y, div);
-            // var mod = loader.getMethod("OperatorTest", "mod", int.class,
-            // int.class).invoke(o, x, y);
-            // assertEquals(x % y, mod);
+            var mod = loader.getMethod("OperatorTest", "mod", int.class, int.class).invoke(o, x, y);
+            assertEquals(x % y, mod);
             var gt = loader.getMethod("OperatorTest", "gt", int.class, int.class).invoke(o, x, y);
             assertEquals(x > y, gt);
             var lt = loader.getMethod("OperatorTest", "lt", int.class, int.class).invoke(o, x, y);
@@ -646,9 +645,41 @@ public class TestRunner {
             assertEquals(a && b, and);
             var or = loader.getMethod("OperatorTest", "or", boolean.class, boolean.class).invoke(o, a, b);
             assertEquals(a || b, or);
-            // var not = loader.getMethod("OperatorTest", "not", boolean.class).invoke(o,
-            // a);
-            // assertEquals(!a, not);
+            var not = loader.getMethod("OperatorTest", "not", boolean.class).invoke(o,
+                    a);
+            assertEquals(!a, not);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("ExtendedNotTest")
+    void extendedNotTest() {
+        Program program = Resources.getProgram("SimpleTests/ExtendedNotTest.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("ExtendedNotTest");
+        Object o = null;
+        boolean a = true;
+        boolean b = false;
+        int x = 87;
+        int y = 452;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var notequal = loader.getMethod("ExtendedNotTest", "notequal", int.class, int.class);
+
+            assertEquals(false, notequal.invoke(o, x, x));
+            assertEquals(true, notequal.invoke(o, x, y));
+
+            var multiple = loader.getMethod("ExtendedNotTest", "multiple", boolean.class, boolean.class);
+            assertEquals(!(!a || b), multiple.invoke(o, a, b));
+
+            var notWithAssigns = loader.getMethod("ExtendedNotTest", "notWithAssigns", boolean.class);
+            assertEquals(a, notWithAssigns.invoke(o, a));
 
         } catch (Exception e) {
             fail(e.getMessage());

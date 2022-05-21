@@ -15,6 +15,7 @@ public enum Operator {
     NOTEQUAL("!="),
     NOT("!"),
     AND("&&"),
+    MOD("%"),
     OR("||");
 
     private String symbol;

@@ -25,6 +25,10 @@ class OperatorTest {
         return x / y;
     }
 
+    public int mod(int x, int y) {
+        return x % y;
+    }
+
     public boolean gt(int x, int y) {
         return x > y;
     }
@@ -55,6 +59,10 @@ class OperatorTest {
 
     public boolean or(boolean x, boolean y) {
         return x || y;
+    }
+
+    public boolean not(boolean x) {
+        return !x;
     }
 
 }

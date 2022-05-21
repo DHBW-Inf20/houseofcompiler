@@ -1,5 +1,5 @@
 class NotMethod {
-    int foo(boolean i) {
+    boolean foo(boolean i) {
         return !i;
     }
 }

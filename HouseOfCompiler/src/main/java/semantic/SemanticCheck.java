@@ -513,7 +513,47 @@ public class SemanticCheck implements SemanticVisitor {
      */
     @Override
     public TypeCheckResult typeCheck(Unary unary) {
-        return null;
+
+        var valid = true;
+
+        var result = unary.getExpression().accept(this);
+        valid = valid && result.isValid();
+
+        var thrownError = new SemanticError("The Operator: " + unary.getOperator()
+                + " is undefined for the argument type: " + unary.getExpression().getType()
+                + TypeHelper.generateLocationString(unary.line, unary.column, fileName));
+
+        final boolean isBoolOperator = unary.getOperator() == Operator.NOT;
+        final boolean isIntOperator = false;
+        // Check if the unary is valid
+        if (unary.getExpression().getType() instanceof ReferenceType) {
+            errors.add(thrownError);
+            valid = false;
+        } else {
+            var expressionType = ((BaseType) unary.getExpression().getType()).getIdentifier();
+            switch (expressionType) {
+                case BOOL -> {
+                    if (!isBoolOperator) {
+                        errors.add(thrownError);
+                        valid = false;
+                    }
+                }
+                case INT -> {
+                    if (!isIntOperator) {
+                        errors.add(thrownError);
+                        valid = false;
+                    }
+                }
+                default -> {
+                    errors.add(thrownError);
+                    valid = false;
+                }
+            }
+        }
+
+        unary.setType(unary.getExpression().getType());
+
+        return new TypeCheckResult(valid, unary.getType());
     }
 
     /**
@@ -675,7 +715,7 @@ public class SemanticCheck implements SemanticVisitor {
 
         final boolean isLogicalOperator = (operator == Operator.AND || operator == Operator.OR);
         final boolean isArithmeticOperator = (operator == Operator.PLUS || operator == Operator.MINUS
-                || operator == Operator.MULT || operator == Operator.DIV);
+                || operator == Operator.MULT || operator == Operator.DIV || operator == Operator.MOD);
         // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
         // gleiche Typen
         // TODO: Chars dürfen mit Ints verglichen werden
