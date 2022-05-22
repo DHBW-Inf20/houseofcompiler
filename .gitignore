@@ -23,3 +23,5 @@ hs_err_pid*
 
 target
 HouseOfCompiler/javadoc/
+HouseOfCompiler/HouseOfCompiler.jar
+out/artifacts/HouseOfCompiler_jar/HouseOfCompiler.jar

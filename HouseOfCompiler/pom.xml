@@ -38,6 +38,11 @@
             <artifactId>junit-platform-suite-engine</artifactId>
             <version>1.8.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>4.1</version>
+        </dependency>
     </dependencies>
 
 </project>
