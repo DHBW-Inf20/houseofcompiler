@@ -121,7 +121,7 @@ If there were multiple Classes in one `.java`-File the Compiler will write the c
 
 You can now run the main-.class File with:
 ```
-java -jar HouseOfRunner.jar outDir/Test.class
+java -jar HouseOfCompiler.jar outDir/Test.class
 ```
 If the original .java File contained more than One class, it will be loaded automatically with the other prefixed-`.class` Files.
 
