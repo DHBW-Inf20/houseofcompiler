@@ -98,7 +98,7 @@ You can find the latest `.jar` of the Compiler [here](#)
 ### Usage
 
 ```
-java -j houseofcompiler.jar <.java-File to Compile> [OutDir-Path]
+java -j houseofcompiler.jar <.java-File to Compile> [outdir="."]
 ```
 
 
