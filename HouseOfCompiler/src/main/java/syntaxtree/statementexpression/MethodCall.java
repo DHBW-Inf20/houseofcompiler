@@ -136,7 +136,9 @@ public class MethodCall implements IStatementExpression {
             returnString += expression.getType() + ", ";
         }
         // delete the last ", "
-        returnString = returnString.substring(0, returnString.length() - 2);
+        if (returnString.length() > 1) {
+            returnString = returnString.substring(0, returnString.length() - 2);
+        }
         returnString += ")";
         return returnString;
 

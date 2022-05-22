@@ -71,7 +71,7 @@ public class Null implements IExpression {
      */
     @Override
     public String toString() {
-        return "null";
+        return "null" + " [" + type + "]";
     }
 
 }

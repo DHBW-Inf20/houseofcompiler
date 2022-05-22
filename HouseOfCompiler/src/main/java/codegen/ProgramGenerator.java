@@ -1,9 +1,5 @@
 package codegen;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.HashMap;
-
 import common.IProgramGenerator;
 import context.Context;
 import org.objectweb.asm.ClassReader;
@@ -11,6 +7,10 @@ import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceClassVisitor;
 import syntaxtree.structure.Program;
 import visitor.codevisitor.ProgramCodeVisitor;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
 
 public class ProgramGenerator implements ProgramCodeVisitor, IProgramGenerator {
 

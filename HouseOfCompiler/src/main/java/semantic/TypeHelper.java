@@ -1,9 +1,11 @@
 package semantic;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import common.BaseType;
 import common.Primitives;
+import common.PrintableVector;
 import common.ReferenceType;
 import common.Type;
 import context.ConstructorContext;
@@ -11,6 +13,7 @@ import context.Context;
 import context.FieldContext;
 import context.MethodContext;
 import semantic.exceptions.TypeMismatchException;
+import syntaxtree.expressions.Null;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 
@@ -38,7 +41,8 @@ public class TypeHelper {
      */
     public static boolean isBool(Type type) {
         var boolType = new BaseType(Primitives.BOOL);
-        return type.equals(boolType);
+
+        return Objects.equals(boolType, type);
     }
 
     /**
@@ -106,6 +110,7 @@ public class TypeHelper {
                 throw new TypeMismatchException("No declared Method " + methodCall.getIdentifier() + " with Arguments: "
                         + methodCall.printTypes() + " in Type " + type);
             }
+            var foundMethods = new PrintableVector<MethodContext>();
             var methods = classContext.getMethods().get(methodCall.getIdentifier());
             for (var method : methods) {
                 if (method.getParameterTypes().size() == methodCall.getArguments().size()) {
@@ -113,18 +118,33 @@ public class TypeHelper {
                     for (int i = 0; i < method.getParameterTypes().size(); i++) {
                         var parameterType = method.getParameterTypes().get(i);
                         var argument = methodCall.getArguments().get(i);
-                        if (!parameterType.equals(argument.getType())) {
+                        if (!((argument instanceof Null && parameterType instanceof ReferenceType)
+                                || (!(argument instanceof Null) && parameterType.equals(argument.getType())))) {
                             isSame = false;
                             break;
                         }
                     }
                     if (isSame) {
-                        return method;
+                        foundMethods.add(method);
                     }
                 }
             }
-            throw new TypeMismatchException("No declared Method " + methodCall.getIdentifier() + " with Arguments: "
-                    + methodCall.printTypes() + " in Type " + type);
+            if (foundMethods.size() == 0) {
+                throw new TypeMismatchException("No declared Method " + methodCall.getIdentifier() + " with Arguments: "
+                        + methodCall.printTypes() + " in Type " + type);
+            } else if (foundMethods.size() == 1) {
+                for (int i = 0; i < foundMethods.get(0).getParameterTypes().size(); i++) {
+                    var parameterType = foundMethods.get(0).getParameterTypes().get(i);
+                    var argument = methodCall.getArguments().get(i);
+                    if (argument instanceof Null) {
+                        ((Null) argument).setType(parameterType);
+                    }
+                }
+                return foundMethods.get(0);
+            } else {
+                throw new TypeMismatchException("Cannot resolve Method-Call with Arguments: " + methodCall.printTypes()
+                        + " in Type " + type + ". Multiple Methods found: \n" + foundMethods);
+            }
         } else {
             throw new TypeMismatchException("Base Type " + type + " does not have Methods");
         }

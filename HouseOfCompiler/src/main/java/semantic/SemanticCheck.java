@@ -504,8 +504,7 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         try {
-            var method = TypeHelper.getMethodInType(methodCall, receiver.getType(), context); // Throws an Error, cant
-                                                                                              // be
+            var method = TypeHelper.getMethodInType(methodCall, methodCall.getReceiver().getType(), context);
             var returnType = method.getType();
             methodCall.setType(returnType);
             return new TypeCheckResult(valid, null);
@@ -611,13 +610,18 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         // check if the variable is declared in the current class
+        try {
+            var fieldVar = TypeHelper.getFieldInType(localOrFieldVar.getIdentifier(),
+                    new ReferenceType(this.currentClass.getIdentifier()), context);
 
-        var fieldVar = TypeHelper.getFieldInType(localOrFieldVar.getIdentifier(),
-                new ReferenceType(this.currentClass.getIdentifier()), context);
-
-        if (fieldVar != null) {
-            localOrFieldVar.setType(fieldVar.getType());
-            return new TypeCheckResult(true, fieldVar.getType());
+            if (fieldVar != null) {
+                localOrFieldVar.setType(fieldVar.getType());
+                return new TypeCheckResult(true, fieldVar.getType());
+            }
+        } catch (TypeMismatchException e) {
+            errors.add(new SemanticError(e.getMessage() + TypeHelper.generateLocationString(localOrFieldVar.line,
+                    localOrFieldVar.column, fileName)));
+            return new TypeCheckResult(false, null);
         }
 
         var importStaticField = context.getImports().get(localOrFieldVar.getIdentifier());
@@ -673,20 +677,28 @@ public class SemanticCheck implements SemanticVisitor {
                             + TypeHelper.generateLocationString(instVar.line, instVar.column, fileName)));
             valid = false;
         }
-        var nextInstVar = TypeHelper.getFieldInType(instVar.getIdentifier(), type, this.context);
+        try {
 
-        // Check if the identifier exists in current Type
-        if (nextInstVar == null) {
-            errors.add(
-                    new FieldNotFoundException("Field: " + instVar.getIdentifier() + " not found in Class: " + type
-                            + TypeHelper.generateLocationString(instVar.line, instVar.column, fileName)));
+            var nextInstVar = TypeHelper.getFieldInType(instVar.getIdentifier(), type, this.context);
+
+            // Check if the identifier exists in current Type
+            if (nextInstVar == null) {
+                errors.add(
+                        new FieldNotFoundException("Field: " + instVar.getIdentifier() + " not found in Class: " + type
+                                + TypeHelper.generateLocationString(instVar.line, instVar.column, fileName)));
+                valid = false;
+            }
+            valid = valid && result.isValid();
+            var newType = nextInstVar == null ? null : nextInstVar.getType();
+            instVar.setType(newType);
+            instVar.setAccessModifier(nextInstVar == null ? null : nextInstVar.getAccessModifier());
+            return new TypeCheckResult(valid, newType);
+        } catch (TypeMismatchException e) {
+            errors.add(new TypeMismatchException(e.getMessage() + TypeHelper.generateLocationString(instVar.line,
+                    instVar.column, fileName)));
             valid = false;
+            return new TypeCheckResult(valid, null);
         }
-        valid = valid && result.isValid();
-        var newType = nextInstVar.getType();
-        instVar.setType(newType);
-        instVar.setAccessModifier(nextInstVar.getAccessModifier());
-        return new TypeCheckResult(valid, newType);
     }
 
     /**
@@ -776,7 +788,7 @@ public class SemanticCheck implements SemanticVisitor {
                 }
             }
         } else if ((isSame || oneIsNull) && lIsReference) {// Wenn 2 Objekte miteinander verglichen werden
-            if (operator == Operator.EQUAL) {
+            if (operator == Operator.EQUAL || operator == Operator.NOTEQUAL) {
                 binary.setType(new BaseType(Primitives.BOOL));
             } else {
                 errors.add(errorToThrow);

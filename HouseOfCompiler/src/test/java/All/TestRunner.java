@@ -1,6 +1,7 @@
 package All;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayOutputStream;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import Helper.ReflectLoader;
 import Helper.Resources;
 import common.Compiler;
+import semantic.exceptions.SemanticError;
 import syntaxtree.structure.Program;
 
 @DisplayName("All")
@@ -825,13 +827,9 @@ public class TestRunner {
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         try {
-            Object o = loader.getConstructor("LinkedList", int.class).newInstance(1);
-            var add = loader.getMethod("LinkedList", "add", int.class);
-            add.invoke(o, 2);
-            add.invoke(o, 3);
-            var get = loader.getMethod("LinkedList", "get", int.class);
-            assertEquals(1, get.invoke(o, 0));
-            assertEquals(2, get.invoke(o, 1));
+            Object executer = loader.getConstructor("Executer").newInstance();
+            var foo = loader.getMethod("Executer", "foo");
+            foo.invoke(executer);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -852,6 +850,7 @@ public class TestRunner {
             var add = loader.getMethod("StringList", "add", char.class);
             var get = loader.getMethod("StringList", "get", int.class);
             var length = loader.getMethod("StringList", "length");
+            var print = loader.getMethod("StringList", "print");
             add.invoke(o, 'e');
             add.invoke(o, 'l');
             add.invoke(o, 'l');
@@ -863,13 +862,14 @@ public class TestRunner {
             add.invoke(o, 'l');
             add.invoke(o, 'd');
             add.invoke(o, '!');
+            print.invoke(o);
+            System.setOut(new PrintStream(outContent));
+            print.invoke(o);
+            var expected = new String("Hello World!").replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
 
-            String result = "";
-            for (int i = 0; i < (int) length.invoke(o); i++) {
-                System.out.println(get.invoke(o, i));
-                result += get.invoke(o, i);
-            }
-            assertEquals("Hello World!", result);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -890,18 +890,157 @@ public class TestRunner {
             var foo = loader.getMethod("SystemOutPrintln", "foo");
             var bar = loader.getMethod("SystemOutPrintln", "bar");
             var baz = loader.getMethod("SystemOutPrintln", "baz");
+            var errortest = loader.getMethod("SystemOutPrintln", "errorTest");
             System.setOut(new PrintStream(outContent));
+            System.setErr(new PrintStream(errContent));
             foo.invoke(o);
             bar.invoke(o);
             baz.invoke(o);
-            var expected = new String("c\n\t100\n\ttrue\n\t").replaceAll("\\p{C}", "");
+            errortest.invoke(o);
+            var expected = new String("c\n\tcd\n\t100\n\ttrue\n\t").replaceAll("\\p{C}", "");
             ;
             var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
             assertEquals(expected, actual);
+            var expectedErr = new String("a\n\t").replaceAll("\\p{C}", "");
+            var actualErr = new String(errContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expectedErr, actualErr);
             System.setOut(originalOut);
+            System.setErr(originalErr);
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
 
+    @Test
+    @DisplayName("StackTest")
+    void stackTest() {
+        Program program = Resources.getProgram("Integration/Stack.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("Executer");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("Executer", "foo");
+            foo.invoke(o);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("OverridingTest")
+    void OverridingTest() {
+        Program program = Resources.getProgram("SimpleTests/OverridingTest.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OverridingTest");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OverridingTest", "foo", int.class);
+            assertEquals(1337, foo.invoke(o, 30));
+            assertEquals(8, foo.invoke(o, 8));
+            assertEquals(0, foo.invoke(o, 2));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("OverridingTestNull")
+    void OverridingTestNull() {
+        Program program = Resources.getProgram("SimpleTests/OverridingTestNull.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OverridingTestNull");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OverridingTestNull", "foo", int.class);
+            assertEquals(1337, foo.invoke(o, 40));
+            assertEquals(1337, foo.invoke(o, 15));
+            assertEquals(8, foo.invoke(o, 8));
+            assertEquals(0, foo.invoke(o, 2));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("OverridingTestNullMultiple")
+    void OverridingTestNullMultiple() {
+        Program program = Resources.getProgram("SimpleTests/OverridingTestNullMultiple.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        System.out.println(tast);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OverridingTestNullMultiple");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OverridingTestNullMultiple", "foo", int.class);
+            assertEquals(1337, foo.invoke(o, 40));
+            assertEquals(1337, foo.invoke(o, 20));
+            assertEquals(1337, foo.invoke(o, 15));
+            assertEquals(8, foo.invoke(o, 8));
+            assertEquals(0, foo.invoke(o, 2));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("MultipleMethodsConflictTest")
+    void MultipleMethodsConflictTest() {
+        Program program = Resources.getProgram("FailTests/MultipleMethodsConflict.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+    }
+
+    @Test
+    @DisplayName("LOFOI")
+    void lOFOITest() {
+        Program program = Resources.getProgram("Integration/LOFOI.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("LOFOI");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("LOFOI", "foo");
+            var bar = loader.getMethod("LOFOI", "bar");
+            assertEquals(20, foo.invoke(o));
+            assertEquals(10, bar.invoke(o));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("LOFOIFailTest")
+    void lOFOIFailTest() {
+        Program program = Resources.getProgram("FailTests/LOFOI.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+    }
+
+    @Test
+    @DisplayName("MethodCallsInWhile")
+    void methodCallsInWhile() {
+
+        Program program = Resources.getProgram("SimpleTests/MethodCallsInWhile.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+
+    }
 }

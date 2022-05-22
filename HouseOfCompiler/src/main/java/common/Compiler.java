@@ -6,8 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import codegen.ProgramGenerator;
+import main.ReflectLoader;
 import semantic.exceptions.SemanticError;
 import syntaxtree.structure.Program;
 
@@ -150,15 +154,87 @@ public class Compiler implements CompilerFactory {
                 fileName = prefix + clazz;
             }
             File file = new File(outDir + File.separator + fileName + ".class");
-            if (!file.exists())
-                try {
-                    file.createNewFile();
-                    try (FileOutputStream fos = new FileOutputStream(file)) {
-                        fos.write(bc.get(clazz));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if (file.exists()) {
+                file.delete();
+            }
+            try {
+                file.createNewFile();
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    fos.write(bc.get(clazz));
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
+
     }
+
+    @Override
+    public void runCode(String fileName) {
+
+        // get the file data in a byte hashmap
+        File file = new File(fileName);
+        HashMap<String, byte[]> bytecode = new HashMap<>();
+        if (file.exists()) {
+            try {
+                InputStream inputStream = new FileInputStream(file);
+                var bytecodeClass = inputStream.readAllBytes();
+                bytecode.put(file.getName().replaceFirst("[.][^.]+$", ""), bytecodeClass);
+                inputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // Check if the directory where the file lays has any other files
+        var parent = file.getParentFile();
+        if (parent == null) {
+            parent = new File(".");
+        }
+        File[] files = parent.listFiles();
+        ArrayList<File> filesToRun = new ArrayList<>();
+        filesToRun.add(file);
+        for (var otherFile : files) {
+            var otherFileName = otherFile.getName();
+            if (otherFile.toString().contains("$")) {
+                var checkClassName = otherFileName.substring(0, otherFileName.indexOf('$'));
+                if (checkClassName.equals(file.getName().replaceFirst("[.][^.]+$", ""))) {
+                    if (otherFile.exists()) {
+                        try {
+                            InputStream inputStream = new FileInputStream(otherFile);
+                            var bytecodeClass = inputStream.readAllBytes();
+                            var className = otherFileName.replaceFirst("[.][^.]+$", "");
+                            className = className.substring(className.indexOf('$') + 1, className.length());
+                            bytecode.put(className, bytecodeClass);
+                            inputStream.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        ReflectLoader loader = new ReflectLoader(bytecode);
+        try {
+            var main = loader.getMethod(file.getName().replaceFirst("[.][^.]+$", ""), "main");
+            Object o = loader.getConstructor(file.getName().replaceFirst("[.][^.]+$", "")).newInstance();
+            main.invoke(o);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

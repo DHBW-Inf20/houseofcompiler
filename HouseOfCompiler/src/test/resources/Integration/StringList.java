@@ -34,4 +34,13 @@ class StringList {
         }
     }
 
+    public void print() {
+        System.out.print(this.value);
+        if (this.next != null) {
+            next.print();
+        } else {
+            System.out.println();
+        }
+    }
+
 }
