@@ -93,13 +93,37 @@ When you wanna Test the Compiler without building a jar file, you can simply go 
 
 ## Downloads
 
-You can find the latest `.jar` of the Compiler [here](https://github.com/DHBW-Inf20/houseofcompiler/releases)
+You can find the latest `.jar`-Artifacts of the Compiler and runner [here](https://github.com/DHBW-Inf20/houseofcompiler/releases)
 
 ### Usage
 
+Since we cant declare static methods, there isnt a `static void main`-Method, thus we created a Reflection-Wrapper that is loading the classFiles, instantiates the received class with the default constructor and invokes the main method. So a basic File should look like this:
+
+```java
+class Test{
+
+          public Test(){} // <-- Always set the default constructor if you use one with parameters
+          
+          void main(){
+                    //...Code to execute
+          }
+
+}
 ```
-java -jar HouseOfCompiler.jar <File to Compile> [outdir="."]
+
+You can then build the Class with:
 ```
+java -jar HouseOfCompiler.jar ./Path/to/Test.java [outdir="."]
+````
+
+All The necessary `.class`-Files are now being build and will appear in the specified Out-Directory (if non is specified, it defaults to ".")
+If there were multiple Classes in one `.java`-File the Compiler will write the class files with a "`MainClass$`"-Prefix, where `MainClass` is the Name that is obtained from the FileName (e.g. if there is a class `Test` and another `Test2` in the same File but the filename is `Test.java` the Compiler will produce a `Test.class` and a `Test$Test2.class`) 
+
+You can now run the main-.class File with:
+```
+java -jar HouseOfRunner.jar outDir/Test.class
+```
+If the original .java File contained more than One class, it will be loaded automatically with the other prefixed-`.class` Files.
 
 
 
