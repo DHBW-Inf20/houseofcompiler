@@ -93,12 +93,12 @@ When you wanna Test the Compiler without building a jar file, you can simply go 
 
 ## Downloads
 
-You can find the latest `.jar` of the Compiler [here](#)
+You can find the latest `.jar` of the Compiler [here](https://github.com/DHBW-Inf20/houseofcompiler/releases)
 
 ### Usage
 
 ```
-java -j houseofcompiler.jar <.java-File to Compile> [outdir="."]
+java -jar HouseOfCompiler.jar <File to Compile> [outdir="."]
 ```
 
 
