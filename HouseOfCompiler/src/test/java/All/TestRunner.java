@@ -1034,4 +1034,13 @@ public class TestRunner {
                 "Expected SemanticError to be thrown").getMessage());
     }
 
+    @Test
+    @DisplayName("MethodCallsInWhile")
+    void methodCallsInWhile() {
+
+        Program program = Resources.getProgram("SimpleTests/MethodCallsInWhile.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+
+    }
 }
