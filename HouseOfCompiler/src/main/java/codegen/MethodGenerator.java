@@ -118,7 +118,14 @@ public class MethodGenerator implements MethodCodeVisitor {
     @Override
     public void visit(Block block) {
         localVars.startBlock();
-        block.getStatements().forEach(statement -> statement.accept(this));
+        block.getStatements().forEach(statement -> {
+            statement.accept(this);
+            if (statement instanceof MethodCall) {
+                if (!(((MethodCall) statement).getType() instanceof BaseType) || ((BaseType) ((MethodCall) statement).getType()).getIdentifier() != Primitives.VOID) {
+                    mv.visitInsn(Opcodes.POP);
+                }
+            }
+        });
         localVars.endBlock();
     }
 

@@ -9,11 +9,10 @@ class Test {
 //    }
 
     int main() {
-        if (true == false) {
-            return 1;
-        } else {
-            return 0;
-        }
+        int i = 5;
+        int b = 5;
+        i = (b = 10);
+        return i;
     }
 }
 

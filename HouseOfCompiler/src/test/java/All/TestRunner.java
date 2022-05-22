@@ -1040,6 +1040,7 @@ public class TestRunner {
 
         Program program = Resources.getProgram("SimpleTests/MethodCallsInWhile.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+//        System.out.println(tast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
 
     }
