@@ -6,6 +6,26 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "main.Main",
+            "args": [
+                "Test.java"
+            ],
+            "projectName": "HouseOfCompiler"
+        },
+        {
+            "type": "java",
+            "name": "Launch Runner",
+            "request": "launch",
+            "mainClass": "main.Runner",
+            "args": [
+                "Test.class"
+            ],
+            "projectName": "HouseOfCompiler"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"

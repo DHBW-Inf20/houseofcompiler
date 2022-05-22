@@ -18,4 +18,6 @@ public interface CompilerFactory {
 
     void compile(InputStream inputStream, String outDir);
 
+    void runCode(String fileName);
+
 }
