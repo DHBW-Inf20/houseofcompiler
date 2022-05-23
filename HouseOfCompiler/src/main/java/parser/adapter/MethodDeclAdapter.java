@@ -6,6 +6,7 @@ import common.Primitives;
 import common.PrintableVector;
 import common.Type;
 import parser.generated.JavaSubsetParser;
+import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 
@@ -16,6 +17,11 @@ public class MethodDeclAdapter {
      * @return MethodDecl
      */
     public static MethodDecl adapt(JavaSubsetParser.MethodDeclContext methodDeclContext) {
+
+        if (methodDeclContext.MainMethodDecl() != null) {
+            return new MainMethodDecl(BlockAdapter.adapt(methodDeclContext.block()));
+        }
+
         var parameters = new PrintableVector<MethodParameter>();
         var block = BlockAdapter.adapt(methodDeclContext.block());
         Type type = new BaseType(Primitives.VOID);

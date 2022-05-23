@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="HouseOfCompiler" target="18" />
+      <module name="HouseOfCompiler" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -6,7 +6,7 @@ program: classdecl+;
 classdecl: 'class' Identifier OpenCurlyBracket (constuctorDecl|fieldDecl|methodDecl)* ClosedCurlyBracket;
 constuctorDecl: AccessModifier? Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
 //public static void main(string[] args) {...}
-methodDecl: AccessModifier? (type | Void) Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
+methodDecl: MainMethodDecl block | AccessModifier? (type | Void) Identifier OpenRoundBracket parameterList? ClosedRoundBracket block;
 fieldDecl: AccessModifier? type Identifier Semicolon;
 //int param1, string param2,...
 parameterList: parameter(Comma parameter)*;
@@ -59,6 +59,7 @@ value: IntValue | BooleanValue | StringValue | CharValue | NullValue;
 
 //Access modifier
 AccessModifier: 'public' | 'private' | 'protected';
+MainMethodDecl: 'public static void main(String[] args)';
 
 //Types
 Void: 'void';

@@ -238,4 +238,12 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("MainMethodTest")
+    void mainMethodTest() {
+        Program generatedAst = Resources.getProgram("SimpleTests/MainMethodTest.java");
+        Program expectedAst = MockGenerator.getMainMethodTestAst();
+        assertEquals(expectedAst, generatedAst);
+    }
+
 }

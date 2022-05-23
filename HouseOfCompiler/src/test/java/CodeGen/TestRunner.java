@@ -272,4 +272,20 @@ public class TestRunner {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    @DisplayName("MainMethodTest")
+    void mainMethodTest() {
+        Program tast = MockGenerator.getMainMethodTestTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("MainMethodTest");
+        try {
+            var m = c.getMethod("main", String[].class);
+            m.invoke(null, new Object[] { new String[] {} });
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
 }

@@ -26,6 +26,7 @@ import syntaxtree.statements.ReturnStmt;
 import syntaxtree.structure.ClassDecl;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.FieldDecl;
+import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 import syntaxtree.structure.Program;
@@ -713,6 +714,41 @@ public abstract class MockGenerator {
                         getArguments(new StringExpr("Das ist ein String"))));
 
         var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getMainMethodTestAst() {
+        Program expectedAst = getEmptyProgram("MainMethodTest");
+        Block block = getBlock(
+                new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                        getArguments(new StringExpr("maintest"))));
+
+        var method = new MainMethodDecl(block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getMainMethodTestTast() {
+        Program expectedAst = getEmptyProgram("MainMethodTest");
+        var iv = new InstVar(new ReferenceType("java/io/PrintStream"),
+                new LocalOrFieldVar(new ReferenceType("java/lang/System"), "System"), "out");
+        iv.setAccessModifier(AccessModifier.PUBLIC_STATIC);
+        Block block = getBlock(
+                new MethodCall(new BaseType(Primitives.VOID),
+                        iv,
+                        "println",
+                        getArguments(new StringExpr("maintest"))));
+
+        var method = new MainMethodDecl(block);
 
         expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
 

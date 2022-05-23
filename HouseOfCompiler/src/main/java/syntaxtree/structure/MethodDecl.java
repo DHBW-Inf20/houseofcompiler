@@ -112,7 +112,7 @@ public class MethodDecl implements Visitable {
         MethodDecl that = (MethodDecl) o;
         return identifier.equals(that.identifier) && Objects.equals(type, that.type)
                 && parameters.equals(that.parameters) && block.equals(that.block)
-                && accessModifier == that.accessModifier;
+                && accessModifier.equals(that.accessModifier);
     }
 
     public boolean isSameDeclaration(MethodDecl methodDecl) {

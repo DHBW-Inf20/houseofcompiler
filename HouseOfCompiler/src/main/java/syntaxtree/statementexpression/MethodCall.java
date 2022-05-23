@@ -153,7 +153,8 @@ public class MethodCall implements IStatementExpression {
         if (receiver != null) {
             returnString += receiver.toString() + ".";
         }
-        returnString += identifier;
+        returnString += identifier + " ";
+        returnString += type;
         returnString += "(" + arguments.toString() + ")[methodCall]";
         return returnString;
     }

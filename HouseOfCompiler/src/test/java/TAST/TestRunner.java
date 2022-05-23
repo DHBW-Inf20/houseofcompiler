@@ -289,4 +289,12 @@ public class TestRunner {
         assertEquals(expectedTast, generatedTast);
     }
 
+    @Test
+    @DisplayName("MainMethodTest")
+    void mainMethodTest() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getMainMethodTestAst());
+        Program expectedTast = MockGenerator.getMainMethodTestTast();
+        assertEquals(expectedTast, generatedTast);
+    }
+
 }

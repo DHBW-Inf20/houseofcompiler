@@ -1,5 +1,7 @@
 package syntaxtree.expressions;
 
+import java.util.Objects;
+
 import common.ReferenceType;
 import common.Type;
 import semantic.TypeCheckResult;
@@ -41,7 +43,7 @@ public class StringExpr implements IExpression {
      */
     @Override
     public void accept(MethodCodeVisitor visitor) {
-         visitor.visit(this);
+        visitor.visit(this);
     }
 
     @Override
@@ -67,17 +69,7 @@ public class StringExpr implements IExpression {
         if (getClass() != obj.getClass())
             return false;
         StringExpr other = (StringExpr) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        if (value == null) {
-            if (other.value != null)
-                return false;
-        } else if (!value.equals(other.value))
-            return false;
-        return true;
+        return Objects.equals(other.value, value);
     }
 
 }
