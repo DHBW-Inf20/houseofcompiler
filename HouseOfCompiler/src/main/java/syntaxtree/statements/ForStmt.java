@@ -108,34 +108,20 @@ public class ForStmt implements IStatement {
 
     @Override
     public String toString() {
-        return "for(" + init + "; " + condition + "; " + update + ") " + statement;
+        return "("+ type + ")"+ "for(" + init + "; " + condition + "; " + update + ") " + statement;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ForStmt forStmt = (ForStmt) o;
+        return Objects.equals(type, forStmt.type) && Objects.equals(init, forStmt.init) && Objects.equals(condition, forStmt.condition) && Objects.equals(update, forStmt.update) && Objects.equals(statement, forStmt.statement);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((statement == null) ? 0 : statement.hashCode());
-        result = prime * result + ((condition == null) ? 0 : condition.hashCode());
-        result = prime * result + ((init == null) ? 0 : init.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        result = prime * result + ((update == null) ? 0 : update.hashCode());
-        return result;
+        return Objects.hash(type, init, condition, update, statement);
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ForStmt other = (ForStmt) obj;
-        return Objects.equals(other.statement,
-                statement)
-                && Objects.equals(other.condition, condition) && Objects.equals(other.init, init)
-                && Objects.equals(other.type, type) && Objects.equals(other.update, update);
-    }
-
 }

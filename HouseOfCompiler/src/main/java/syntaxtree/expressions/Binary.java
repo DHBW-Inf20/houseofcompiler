@@ -23,11 +23,25 @@ public class Binary implements IExpression {
         this.operator = operator;
     }
 
+    public Binary(Type type, IExpression lExpression, IExpression rExpression, Operator operator) {
+        this.lExpression = lExpression;
+        this.rExpression = rExpression;
+        this.operator = operator;
+        this.type = type;
+    }
+
     public Binary(IExpression lExpression, Operator operator, IExpression rExpression) {
         this.lExpression = lExpression;
         this.rExpression = rExpression;
         this.operator = operator;
         this.type = null;
+    }
+
+    public Binary(Type type, IExpression lExpression, Operator operator, IExpression rExpression) {
+        this.lExpression = lExpression;
+        this.rExpression = rExpression;
+        this.operator = operator;
+        this.type = type;
     }
 
     public Binary(IExpression leftExpression, IExpression rightExpression, Operator operator, int line,
@@ -115,7 +129,7 @@ public class Binary implements IExpression {
     }
 
     @Override
-    public String toString(){
-        return "("+type+") "+ lExpression + " " + operator + " " + rExpression;
+    public String toString() {
+        return "(" + type + ") " + lExpression + " " + operator + " " + rExpression;
     }
 }

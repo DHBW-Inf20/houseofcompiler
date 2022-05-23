@@ -47,7 +47,7 @@ returnStmt: Return (expression)?;
 localVarDecl: type Identifier (Assign expression)?;
 block: OpenCurlyBracket statement* ClosedCurlyBracket;
 whileStmt: While OpenRoundBracket expression ClosedRoundBracket block;
-forStmt: For OpenRoundBracket (stmtExpr | localVarDecl)? Semicolon (expression)? Semicolon (stmtExpr)? ClosedRoundBracket statement;
+forStmt: For OpenRoundBracket (stmtExpr | localVarDecl) Semicolon (expression) Semicolon (stmtExpr) ClosedRoundBracket statement;
 ifElseStmt: ifStmt elseStmt?;
 ifStmt: If OpenRoundBracket expression ClosedRoundBracket statement;
 elseStmt: Else statement;
