@@ -3,6 +3,7 @@ package semantic;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import common.AccessModifier;
 import common.BaseType;
 import common.Primitives;
 import common.PrintableVector;
@@ -16,6 +17,7 @@ import semantic.exceptions.TypeMismatchException;
 import syntaxtree.expressions.Null;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
+import syntaxtree.structure.ClassDecl;
 
 public class TypeHelper {
     public static final Type voidType = null;
@@ -61,12 +63,26 @@ public class TypeHelper {
      * @param context
      * @return FieldContext
      */
-    public static FieldContext getFieldInType(String identifier, Type type, Context context) {
+    public static FieldContext getFieldInType(String identifier, Type type, Context context, ClassDecl currentClass) {
         if (type instanceof ReferenceType) {
             var objectClass = (ReferenceType) type;
             var declaredClassnames = context.getClasses();
             var classContext = declaredClassnames.get(objectClass.getIdentifier());
-            return classContext.getFields().get(identifier);
+            var field = classContext.getFields().get(identifier);
+            if (field == null) {
+                return null;
+            }
+            var am = field.getAccessModifier() == null ? AccessModifier.PACKAGE_PRIVATE : field.getAccessModifier();
+            if (am == AccessModifier.PRIVATE || am == AccessModifier.PRIVATE_STATIC) {
+                if (objectClass.getIdentifier().equals(currentClass.getIdentifier())) {
+                    return field;
+                } else {
+                    throw new TypeMismatchException(
+                            "The Field " + objectClass.getIdentifier() + "." + identifier + " is not visible");
+                }
+            } else {
+                return field;
+            }
         } else {
             throw new TypeMismatchException("Field " + identifier + " is missing in Type " + type);
 
@@ -98,7 +114,9 @@ public class TypeHelper {
      * @param context
      * @return MethodContext
      */
-    public static MethodContext getMethodInType(MethodCall methodCall, Type type, Context context) {
+    public static MethodContext getMethodInType(MethodCall methodCall, Type type, Context context,
+            ClassDecl currentClass) {
+        boolean failedBecauseNotVisible = false;
         if (type instanceof ReferenceType) {
             var objectClass = (ReferenceType) type;
             var declaredClassnames = context.getClasses();
@@ -129,13 +147,35 @@ public class TypeHelper {
                         }
                     }
                     if (isSame) {
-                        foundMethods.add(method);
+                        var am = method.getAccessModifier();
+                        boolean canAccess;
+                        if (am == AccessModifier.PRIVATE || am == AccessModifier.PRIVATE_STATIC) {
+                            canAccess = objectClass.getIdentifier().equals(currentClass.getIdentifier());
+                            if (!canAccess) {
+                                failedBecauseNotVisible = true;
+                            }
+                        } else {
+                            canAccess = true;
+                        }
+                        if (canAccess) {
+                            foundMethods.add(method);
+                        }
                     }
                 }
             }
             if (foundMethods.size() == 0) {
-                throw new TypeMismatchException("No declared Method " + methodCall.getIdentifier() + " with Arguments: "
-                        + methodCall.printTypes() + " in Type " + type);
+                if (failedBecauseNotVisible) {
+
+                    throw new TypeMismatchException(
+                            "The Method " + objectClass.getIdentifier() + "." + methodCall.getIdentifier()
+                                    + methodCall.printTypes() + " is not visible");
+
+                } else {
+
+                    throw new TypeMismatchException(
+                            "No declared Method " + methodCall.getIdentifier() + " with Arguments: "
+                                    + methodCall.printTypes() + " in Type " + type);
+                }
             } else if (foundMethods.size() == 1) {
                 for (int i = 0; i < foundMethods.get(0).getParameterTypes().size(); i++) {
                     var parameterType = foundMethods.get(0).getParameterTypes().get(i);

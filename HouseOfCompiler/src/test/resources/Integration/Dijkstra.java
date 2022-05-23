@@ -72,7 +72,6 @@ class Graph {
             // Search for every adjacent vertex
             VertexSet currentAdjanceyList = current.getAdjanceyList();
             if (currentAdjanceyList != null) {
-                current.printAdjancey();
                 int i = 0;
                 while (i < currentAdjanceyList.size()) {
                     Vertex adjancey = currentAdjanceyList.getFromIndex(i);

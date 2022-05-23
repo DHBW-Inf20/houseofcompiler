@@ -247,4 +247,38 @@ public class TestRunner {
 
         assertEquals(expectedTast, generatedTast);
     }
+
+    @Test
+    @DisplayName("FieldAccessTests")
+    void fieldAccessTests() {
+        Program program = Resources.getProgram("FailTests/FieldAccessTests.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("MethodAccessTests")
+    void methodAccessTests() {
+        Program program = Resources.getProgram("FailTests/MethodAccessTests.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
+    @Test
+    @DisplayName("DuplicateMethod")
+    void duplicateMethod() {
+        Program program = Resources.getProgram("FailTests/DuplicateMethod.java");
+        System.err.print(assertThrows(
+                SemanticError.class,
+                () -> Compiler.getFactory().getTastAdapter().getTast(program),
+                "Expected SemanticError to be thrown").getMessage());
+
+    }
+
 }

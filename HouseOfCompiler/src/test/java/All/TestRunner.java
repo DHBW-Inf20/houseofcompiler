@@ -1052,19 +1052,41 @@ public class TestRunner {
 
     }
 
+    // Stream outContent = new ByteArrayOutputStream();
+    // private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    // private final PrintStream originalOut = System.out;
+    // private final PrintStream originalErr = System.err;
+
     @Test
     @DisplayName("DijsktraTest")
     void dijsktraTest() {
         Program program = Resources.getProgram("Integration/Dijkstra.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
-        // ReflectLoader loader = new ReflectLoader(bc);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("Dijkstra");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("Dijkstra", "main");
+            foo.invoke(o);
+            System.setOut(new PrintStream(outContent));
+            foo.invoke(o);
+            var expected = new String("Shortest path from source (1) to destination (4): 1 3 4  With a distance of 2")
+                    .replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
 
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
     @DisplayName("VoidReturn")
     void voidReturn() {
+        // private final ByteArrayOutput
         Program program = Resources.getProgram("SimpleTests/VoidReturn.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);

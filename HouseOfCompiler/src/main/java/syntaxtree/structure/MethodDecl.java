@@ -115,6 +115,21 @@ public class MethodDecl implements Visitable {
                 && accessModifier == that.accessModifier;
     }
 
+    public boolean isSameDeclaration(MethodDecl methodDecl) {
+
+        if (!this.getIdentifier().equals(methodDecl.getIdentifier()) || !this.getType().equals(methodDecl.getType())
+                || this.getParameters().size() != methodDecl.getParameters().size()) {
+            return false;
+        }
+
+        for (int i = 0; i < this.getParameters().size(); i++) {
+            if (!this.getParameters().get(i).getType().equals(methodDecl.getParameters().get(i).getType())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * @return int
      */

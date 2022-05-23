@@ -196,12 +196,26 @@ public class SemanticCheck implements SemanticVisitor {
     public TypeCheckResult typeCheck(MethodDecl methodDecl) {
         var valid = true;
 
+        for (var otherMethod : this.currentClass.getMethodDeclarations()) {
+            if (otherMethod.equals(methodDecl))
+                break;
+            if (otherMethod.isSameDeclaration(methodDecl)) {
+                errors.add(new AlreadyDefinedException(
+                        "Method " + methodDecl.getIdentifier() + " is already defined in class "
+                                + currentClass.getIdentifier()
+                                + TypeHelper.generateLocationString(methodDecl.line, methodDecl.column, fileName)));
+                valid = false;
+            }
+        }
+
         currentLocalScope.pushScope();
         for (var parameter : methodDecl.getParameters()) {
             var result = parameter.accept(this);
             valid = valid && result.isValid();
             currentLocalScope.addLocalVar(parameter);
         }
+        // Check if this method is already declared
+
         currentMethodReturnType = methodDecl.getType();
         currentMethod = methodDecl.getIdentifier();
         currentNullType = currentMethodReturnType; // Solange nicht in einem Assign oder Methoden-Aufruf dieser Typ
@@ -511,7 +525,8 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         try {
-            var method = TypeHelper.getMethodInType(methodCall, methodCall.getReceiver().getType(), context);
+            var method = TypeHelper.getMethodInType(methodCall, methodCall.getReceiver().getType(), context,
+                    this.currentClass);
             var returnType = method.getType();
             methodCall.setType(returnType);
             return new TypeCheckResult(valid, null);
@@ -619,7 +634,7 @@ public class SemanticCheck implements SemanticVisitor {
         // check if the variable is declared in the current class
         try {
             var fieldVar = TypeHelper.getFieldInType(localOrFieldVar.getIdentifier(),
-                    new ReferenceType(this.currentClass.getIdentifier()), context);
+                    new ReferenceType(this.currentClass.getIdentifier()), context, this.currentClass);
 
             if (fieldVar != null) {
                 localOrFieldVar.setType(fieldVar.getType());
@@ -686,7 +701,7 @@ public class SemanticCheck implements SemanticVisitor {
         }
         try {
 
-            var nextInstVar = TypeHelper.getFieldInType(instVar.getIdentifier(), type, this.context);
+            var nextInstVar = TypeHelper.getFieldInType(instVar.getIdentifier(), type, this.context, this.currentClass);
 
             // Check if the identifier exists in current Type
             if (nextInstVar == null) {
