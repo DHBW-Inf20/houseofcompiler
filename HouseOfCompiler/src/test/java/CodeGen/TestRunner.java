@@ -255,4 +255,21 @@ public class TestRunner {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    @DisplayName("SystemOutPrintlnString Test")
+    void systemOutPrintlnStringTest() {
+        Program tast = MockGenerator.getSystemOutPrintStringTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("SystemOutPrintlnString");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var m = loader.getMethod("SystemOutPrintlnString", "foo");
+            m.invoke(o);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 }

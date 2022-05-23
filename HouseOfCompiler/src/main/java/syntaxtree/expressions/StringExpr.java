@@ -46,7 +46,7 @@ public class StringExpr implements IExpression {
 
     @Override
     public String toString() {
-        return "StringExpr [type=" + type + ", value=" + value + "]";
+        return "\"" + value + "\"";
     }
 
     @Override

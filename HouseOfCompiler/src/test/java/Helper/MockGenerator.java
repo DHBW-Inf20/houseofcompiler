@@ -14,6 +14,7 @@ import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;
 import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.Null;
+import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
@@ -674,6 +675,42 @@ public abstract class MockGenerator {
         Block block = getBlock(
                 new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
                         getArguments(new IntegerExpr(1))));
+
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getSystemOutPrintStringAst() {
+        Program expectedAst = getEmptyProgram("SystemOutPrintlnString");
+
+        Block block = getBlock(
+                new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                        getArguments(new StringExpr("Das ist ein String"))));
+
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getSystemOutPrintStringTast() {
+        Program expectedAst = getEmptyProgram("SystemOutPrintlnString");
+        var iv = new InstVar(new ReferenceType("java/io/PrintStream"),
+                new LocalOrFieldVar(new ReferenceType("java/lang/System"), "System"), "out");
+        iv.setAccessModifier(AccessModifier.PUBLIC_STATIC);
+        Block block = getBlock(
+                new MethodCall(new BaseType(Primitives.VOID),
+                        iv,
+                        "println",
+                        getArguments(new StringExpr("Das ist ein String"))));
 
         var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
 

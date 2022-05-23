@@ -62,7 +62,7 @@ public class Context {
                 var charParams = new PrintableVector<MethodParameter>();
                 charParams.add(new MethodParameter(new BaseType(Primitives.CHAR), "c"));
                 var stringParams = new PrintableVector<MethodParameter>();
-                charParams.add(new MethodParameter(new BaseType(Primitives.CHAR), "s"));
+                stringParams.add(new MethodParameter(new ReferenceType("java/lang/String"), "s"));
 
                 MethodDecl printlnInt = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.VOID), "println",
                                 intParams,
@@ -77,7 +77,8 @@ public class Context {
                                 new PrintableVector<>(),
                                 new Block());
 
-                MethodDecl printlnString = new MethodDecl(AccessModifier.PUBLIC, new ReferenceType("java/lang/String"),
+                MethodDecl printlnString = new MethodDecl(AccessModifier.PUBLIC, new BaseType(
+                                Primitives.VOID),
                                 "println",
                                 stringParams,
                                 new Block());
@@ -93,7 +94,8 @@ public class Context {
                 MethodDecl print = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.VOID), "print",
                                 new PrintableVector<>(),
                                 new Block());
-                MethodDecl printString = new MethodDecl(AccessModifier.PUBLIC, new ReferenceType("java/lang/String"),
+                MethodDecl printString = new MethodDecl(AccessModifier.PUBLIC, new BaseType(
+                                Primitives.VOID),
                                 "print",
                                 stringParams,
                                 new Block());

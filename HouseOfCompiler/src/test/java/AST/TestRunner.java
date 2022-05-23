@@ -230,4 +230,12 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("System.out.print-String Test")
+    void systemOutPrintStringTest() {
+        Program generatedAst = Resources.getProgram("SimpleTests/SystemOutPrintlnString.java");
+        Program expectedAst = MockGenerator.getSystemOutPrintStringAst();
+        assertEquals(expectedAst, generatedAst);
+    }
+
 }
