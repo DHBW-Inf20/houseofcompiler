@@ -24,7 +24,7 @@ public class JavaSubsetParser extends Parser {
 		And=25, Or=26, Dot=27, OpenRoundBracket=28, ClosedRoundBracket=29, OpenCurlyBracket=30, 
 		ClosedCurlyBracket=31, Semicolon=32, Comma=33, Class=34, This=35, While=36, 
 		If=37, Else=38, For=39, Return=40, New=41, Identifier=42, CharValue=43, 
-		IntValue=44, WS=45, InlineComment=46, MultilineComment=47;
+		StringValue=44, IntValue=45, WS=46, InlineComment=47, MultilineComment=48;
 	public static final int
 		RULE_program = 0, RULE_classdecl = 1, RULE_constuctorDecl = 2, RULE_methodDecl = 3, 
 		RULE_fieldDecl = 4, RULE_parameterList = 5, RULE_parameter = 6, RULE_argumentList = 7, 
@@ -64,8 +64,8 @@ public class JavaSubsetParser extends Parser {
 			"GreaterEqual", "LessEqual", "Equal", "NotEqual", "Not", "And", "Or", 
 			"Dot", "OpenRoundBracket", "ClosedRoundBracket", "OpenCurlyBracket", 
 			"ClosedCurlyBracket", "Semicolon", "Comma", "Class", "This", "While", 
-			"If", "Else", "For", "Return", "New", "Identifier", "CharValue", "IntValue", 
-			"WS", "InlineComment", "MultilineComment"
+			"If", "Else", "For", "Return", "New", "Identifier", "CharValue", "StringValue", 
+			"IntValue", "WS", "InlineComment", "MultilineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -684,7 +684,7 @@ public class JavaSubsetParser extends Parser {
 				setState(123);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanValue) | (1L << NullValue) | (1L << Not) | (1L << OpenRoundBracket) | (1L << This) | (1L << New) | (1L << Identifier) | (1L << CharValue) | (1L << IntValue))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanValue) | (1L << NullValue) | (1L << Not) | (1L << OpenRoundBracket) | (1L << This) | (1L << New) | (1L << Identifier) | (1L << CharValue) | (1L << StringValue) | (1L << IntValue))) != 0)) {
 					{
 					setState(122);
 					expression();
@@ -1464,7 +1464,7 @@ public class JavaSubsetParser extends Parser {
 			setState(211);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanValue) | (1L << NullValue) | (1L << Not) | (1L << OpenRoundBracket) | (1L << This) | (1L << New) | (1L << Identifier) | (1L << CharValue) | (1L << IntValue))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanValue) | (1L << NullValue) | (1L << Not) | (1L << OpenRoundBracket) | (1L << This) | (1L << New) | (1L << Identifier) | (1L << CharValue) | (1L << StringValue) | (1L << IntValue))) != 0)) {
 				{
 				setState(210);
 				expression();
@@ -2150,6 +2150,7 @@ public class JavaSubsetParser extends Parser {
 	public static class ValueContext extends ParserRuleContext {
 		public TerminalNode IntValue() { return getToken(JavaSubsetParser.IntValue, 0); }
 		public TerminalNode BooleanValue() { return getToken(JavaSubsetParser.BooleanValue, 0); }
+		public TerminalNode StringValue() { return getToken(JavaSubsetParser.StringValue, 0); }
 		public TerminalNode CharValue() { return getToken(JavaSubsetParser.CharValue, 0); }
 		public TerminalNode NullValue() { return getToken(JavaSubsetParser.NullValue, 0); }
 		public ValueContext(ParserRuleContext parent, int invokingState) {
@@ -2180,7 +2181,7 @@ public class JavaSubsetParser extends Parser {
 			{
 			setState(276);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanValue) | (1L << NullValue) | (1L << CharValue) | (1L << IntValue))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanValue) | (1L << NullValue) | (1L << CharValue) | (1L << StringValue) | (1L << IntValue))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -2202,7 +2203,7 @@ public class JavaSubsetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\61\u0119\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\62\u0119\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2224,7 +2225,7 @@ public class JavaSubsetParser extends Parser {
 		"\n\32\3\32\3\32\3\32\3\33\3\33\3\33\3\33\3\33\3\33\3\34\3\34\3\34\3\34"+
 		"\5\34\u010b\n\34\3\34\3\34\3\35\3\35\3\35\3\35\3\35\3\35\3\36\3\36\3\37"+
 		"\3\37\3\37\3\u0084\2 \2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,."+
-		"\60\62\64\668:<\2\5\4\2\n\r\32\32\4\2\7\t,,\4\2\3\4-.\2\u0123\2?\3\2\2"+
+		"\60\62\64\668:<\2\5\4\2\n\r\32\32\4\2\7\t,,\4\2\3\4-/\2\u0123\2?\3\2\2"+
 		"\2\4C\3\2\2\2\6Q\3\2\2\2\b\\\3\2\2\2\nk\3\2\2\2\fq\3\2\2\2\16y\3\2\2\2"+
 		"\20\u0087\3\2\2\2\22\u008b\3\2\2\2\24\u0097\3\2\2\2\26\u009a\3\2\2\2\30"+
 		"\u00b3\3\2\2\2\32\u00b8\3\2\2\2\34\u00ba\3\2\2\2\36\u00cb\3\2\2\2 \u00cd"+

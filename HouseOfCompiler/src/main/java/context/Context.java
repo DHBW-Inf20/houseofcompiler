@@ -61,6 +61,8 @@ public class Context {
                 boolParams.add(new MethodParameter(new BaseType(Primitives.BOOL), "b"));
                 var charParams = new PrintableVector<MethodParameter>();
                 charParams.add(new MethodParameter(new BaseType(Primitives.CHAR), "c"));
+                var stringParams = new PrintableVector<MethodParameter>();
+                charParams.add(new MethodParameter(new BaseType(Primitives.CHAR), "s"));
 
                 MethodDecl printlnInt = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.VOID), "println",
                                 intParams,
@@ -74,6 +76,11 @@ public class Context {
                 MethodDecl println = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.VOID), "println",
                                 new PrintableVector<>(),
                                 new Block());
+
+                MethodDecl printlnString = new MethodDecl(AccessModifier.PUBLIC, new ReferenceType("java/lang/String"),
+                                "println",
+                                stringParams,
+                                new Block());
                 MethodDecl printInt = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.VOID), "print",
                                 intParams,
                                 new Block());
@@ -86,6 +93,10 @@ public class Context {
                 MethodDecl print = new MethodDecl(AccessModifier.PUBLIC, new BaseType(Primitives.VOID), "print",
                                 new PrintableVector<>(),
                                 new Block());
+                MethodDecl printString = new MethodDecl(AccessModifier.PUBLIC, new ReferenceType("java/lang/String"),
+                                "print",
+                                stringParams,
+                                new Block());
 
                 var streamMethods = new PrintableVector<MethodDecl>();
                 streamMethods.add(printlnInt);
@@ -96,6 +107,8 @@ public class Context {
                 streamMethods.add(printBool);
                 streamMethods.add(printChar);
                 streamMethods.add(print);
+                streamMethods.add(printlnString);
+                streamMethods.add(printString);
                 ClassDecl PrintStreamClass = new ClassDecl("java/io/PrintStream", new PrintableVector<>(),
                                 new PrintableVector<>(),
                                 streamMethods);

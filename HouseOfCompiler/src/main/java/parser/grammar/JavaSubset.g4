@@ -53,8 +53,8 @@ assign: (instVar | Identifier) Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 receiver: ((This | instVar | newDecl | Identifier) Dot);
 receivingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?
-type: Int | Boolean | Char | Identifier;
-value: IntValue | BooleanValue | CharValue | NullValue;
+type: Int | Boolean  | Char | Identifier;
+value: IntValue | BooleanValue | StringValue | CharValue | NullValue;
 
 //Access modifier
 AccessModifier: 'public' | 'private' | 'protected';
@@ -113,7 +113,8 @@ fragment ValidIdentSymbols : Alpabetic|Numeric|'$'|'_';
 Identifier: Alpabetic ValidIdentSymbols*;
 
 //Values
-CharValue: '\'' ~[\r\n] '\'';
+CharValue: '\''~[\r\n]?'\'';
+StringValue: '"'~[\r\n]*'"';
 IntValue: Minus? Numeric+;
 
 //To be Ignored
