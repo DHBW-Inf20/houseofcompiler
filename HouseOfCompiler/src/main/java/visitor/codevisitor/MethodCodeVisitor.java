@@ -6,11 +6,13 @@ import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.*;
 import syntaxtree.structure.ConstructorDecl;
+import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
 
 public interface MethodCodeVisitor {
     void visit(ConstructorDecl constructorDecl);
     void visit(MethodDecl methodDecl);
+    void visit(MainMethodDecl mainDecl);
 
     // Statements
     void visit(Block block);

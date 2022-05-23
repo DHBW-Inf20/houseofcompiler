@@ -18,6 +18,10 @@ public interface CompilerFactory {
 
     void compile(InputStream inputStream, String outDir);
 
+    void generateJar(String fileName, String outFile);
+
+    void generateJar(InputStream inputStream, String outFile);
+
     void runCode(String fileName);
 
 }

@@ -3,6 +3,7 @@ package syntaxtree.structure;
 import java.util.Objects;
 
 import common.PrintableVector;
+import context.Context;
 import semantic.TypeCheckResult;
 import visitor.SemanticVisitor;
 import visitor.Visitable;
@@ -11,8 +12,18 @@ import visitor.codevisitor.ProgramCodeVisitor;
 public class Program implements Visitable {
     private PrintableVector<ClassDecl> classes;
 
+    private Context context;
+
     public Program(PrintableVector<ClassDecl> classes) {
         this.classes = classes;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     /**
