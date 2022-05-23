@@ -29,11 +29,7 @@ import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
-import syntaxtree.statements.Block;
-import syntaxtree.statements.IfStmt;
-import syntaxtree.statements.LocalVarDecl;
-import syntaxtree.statements.ReturnStmt;
-import syntaxtree.statements.WhileStmt;
+import syntaxtree.statements.*;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
@@ -223,6 +219,29 @@ public class MethodGenerator implements MethodCodeVisitor {
         mv.visitJumpInsn(Opcodes.GOTO, loop);
 
         mv.visitLabel(end);
+    }
+
+    @Override
+    public void visit(ForStmt forStmt) {
+        localVars.startBlock();
+
+        Label loop = new Label();
+        Label end = new Label();
+
+        forStmt.getInit().accept(this);
+
+        mv.visitLabel(loop);
+
+        forStmt.getCondition().accept(this);
+        mv.visitJumpInsn(Opcodes.IFEQ, end);
+
+        forStmt.getStatement().accept(this);
+        forStmt.getUpdate().accept(this);
+        mv.visitJumpInsn(Opcodes.GOTO, loop);
+
+        mv.visitLabel(end);
+
+        localVars.endBlock();
     }
 
     /************************

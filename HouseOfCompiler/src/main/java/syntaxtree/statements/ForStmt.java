@@ -7,6 +7,7 @@ import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.statementexpression.IStatementExpression;
 import visitor.SemanticVisitor;
+import visitor.codevisitor.MethodCodeVisitor;
 
 public class ForStmt implements IStatement {
 
@@ -104,6 +105,11 @@ public class ForStmt implements IStatement {
 
     public void setStatement(IStatement statement) {
         this.statement = statement;
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override
