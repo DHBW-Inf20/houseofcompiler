@@ -2,16 +2,37 @@ package codegen.utils;
 
 import java.util.stream.Collectors;
 
+import common.*;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import common.AccessModifier;
-import common.BaseType;
-import common.PrintableVector;
-import common.ReferenceType;
-import common.Type;
 import syntaxtree.expressions.IExpression;
+import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.IStatementExpression;
+import syntaxtree.statementexpression.MethodCall;
+import syntaxtree.statementexpression.NewDecl;
+import syntaxtree.statements.IStatement;
 
 public class GenUtils {
+
+    public static void clearReturn(IStatementExpression statementExpr, MethodVisitor mv) {
+        if (!(statementExpr.getType() instanceof BaseType)
+                || ((BaseType) statementExpr.getType()).getIdentifier() != Primitives.VOID) {
+            mv.visitInsn(Opcodes.POP);
+        }
+    }
+
+    public static void clearReturn(IStatement statement, MethodVisitor mv) {
+        if (statement instanceof MethodCall || statement instanceof NewDecl || statement instanceof Assign) {
+            clearReturn((IStatementExpression) statement, mv);
+        }
+    }
+
+    public static void clearReturn(IExpression expression, MethodVisitor mv) {
+        if (expression instanceof MethodCall || expression instanceof NewDecl || expression instanceof Assign) {
+            clearReturn((IStatementExpression) expression, mv);
+        }
+    }
 
     /**
      * @param accessModifier
