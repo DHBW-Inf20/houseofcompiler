@@ -1,4 +1,4 @@
-// Generated from D:/Raqha/Dokumente/DHBW_Vorlesungen/TheoInf/CUM/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
+// Generated from C:/Users/lukas/Documents/Git-Repositories/houseofcompiler/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
 package parser.generated;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -107,11 +107,35 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBinaryExpr(JavaSubsetParser.BinaryExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavaSubsetParser#operator}.
+	 * Visit a parse tree produced by {@link JavaSubsetParser#calcExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOperator(JavaSubsetParser.OperatorContext ctx);
+	T visitCalcExpr(JavaSubsetParser.CalcExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#dotExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDotExpr(JavaSubsetParser.DotExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#dotSubExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDotSubExpr(JavaSubsetParser.DotSubExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#nonCalcExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonCalcExpr(JavaSubsetParser.NonCalcExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#nonCalcOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonCalcOperator(JavaSubsetParser.NonCalcOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#returnStmt}.
 	 * @param ctx the parse tree

@@ -15,15 +15,11 @@ parameter: type Identifier;
 
 argumentList: expression? | expression (Comma expression)*?;
 //property, object.a, 3+1, a = 3
-expression: subExpression | binaryExpr; //FIXME unary Expressions fehlen noch
+expression: subExpression | binaryExpr;
 
 //subExpression to dissolve left-recusion
 subExpression: This | Identifier | instVar  | value | stmtExpr | unaryExpr | OpenRoundBracket expression ClosedRoundBracket;
 
-//FIXME macht es mehr sinn den Methodenaufruf rekursiv umzusetzen? sodass vorstehende Methodenaufrufe als reciever gehandhabt werden?
-//methodCall: reciever Identifier OpenRoundBracket argumentList ClosedRoundBracket
-//reciever: (instVar | Identifier Dot | methodCall Dot)
-//reciever kann (fast beliebige) expression sein (methodenaufrufe mit dot in reciever auslagern)
 methodCall: receiver? receivingMethod* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 //int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
 statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | ifElseStmt | stmtExpr Semicolon;
@@ -34,9 +30,14 @@ unaryExpr: Not expression;
 
 instVar: This Dot Identifier | (This Dot)? (Identifier Dot)+ Identifier;
 
-binaryExpr: subExpression operator expression;
+binaryExpr: calcExpr | nonCalcExpr;
 
-operator: DotOperator | LineOperator | LogicalOpertor | ComparisonOperator | Not;
+calcExpr: calcExpr LineOperator dotExpr | dotExpr;
+dotExpr: dotExpr DotOperator dotSubExpr | dotSubExpr;
+dotSubExpr: IntValue | Identifier | instVar | methodCall | OpenRoundBracket calcExpr ClosedRoundBracket;
+nonCalcExpr: subExpression nonCalcOperator expression;
+
+nonCalcOperator: LogicalOpertor | ComparisonOperator;
 
 BooleanValue: 'true'|'false';
 NullValue: 'null';

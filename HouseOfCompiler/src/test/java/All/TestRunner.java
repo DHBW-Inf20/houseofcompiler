@@ -579,11 +579,11 @@ public class TestRunner {
         try {
             o = clazz.getDeclaredConstructor().newInstance();
             var foo = loader.getMethod("PunktVorStrich", "foo", int.class, int.class, int.class);
-            var bar = loader.getMethod("PunktVorStrich", "foo", int.class, int.class, int.class);
+            var bar = loader.getMethod("PunktVorStrich", "bar", int.class, int.class, int.class);
             var ivalue = (int) foo.invoke(o, a, b, c);
-            assertEquals(result, ivalue);
-            ivalue = (int) bar.invoke(o, a, b, c);
             assertEquals(result2, ivalue);
+            var ivalue2 = (int) bar.invoke(o, a, b, c);
+            assertEquals(result, ivalue2);
         } catch (Exception e) {
             fail(e.getMessage());
         }

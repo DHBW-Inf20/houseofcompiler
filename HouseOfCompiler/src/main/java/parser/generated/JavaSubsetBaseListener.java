@@ -1,4 +1,4 @@
-// Generated from D:/Raqha/Dokumente/DHBW_Vorlesungen/TheoInf/CUM/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
+// Generated from C:/Users/lukas/Documents/Git-Repositories/houseofcompiler/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
 package parser.generated;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -208,13 +208,61 @@ public class JavaSubsetBaseListener implements JavaSubsetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperator(JavaSubsetParser.OperatorContext ctx) { }
+	@Override public void enterCalcExpr(JavaSubsetParser.CalcExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperator(JavaSubsetParser.OperatorContext ctx) { }
+	@Override public void exitCalcExpr(JavaSubsetParser.CalcExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDotExpr(JavaSubsetParser.DotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDotExpr(JavaSubsetParser.DotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDotSubExpr(JavaSubsetParser.DotSubExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDotSubExpr(JavaSubsetParser.DotSubExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNonCalcExpr(JavaSubsetParser.NonCalcExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNonCalcExpr(JavaSubsetParser.NonCalcExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNonCalcOperator(JavaSubsetParser.NonCalcOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNonCalcOperator(JavaSubsetParser.NonCalcOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

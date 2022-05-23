@@ -1,4 +1,4 @@
-// Generated from D:/Raqha/Dokumente/DHBW_Vorlesungen/TheoInf/CUM/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
+// Generated from C:/Users/lukas/Documents/Git-Repositories/houseofcompiler/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
 package parser.generated;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -168,15 +168,55 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitBinaryExpr(JavaSubsetParser.BinaryExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavaSubsetParser#operator}.
+	 * Enter a parse tree produced by {@link JavaSubsetParser#calcExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterOperator(JavaSubsetParser.OperatorContext ctx);
+	void enterCalcExpr(JavaSubsetParser.CalcExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JavaSubsetParser#operator}.
+	 * Exit a parse tree produced by {@link JavaSubsetParser#calcExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitOperator(JavaSubsetParser.OperatorContext ctx);
+	void exitCalcExpr(JavaSubsetParser.CalcExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#dotExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDotExpr(JavaSubsetParser.DotExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#dotExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDotExpr(JavaSubsetParser.DotExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#dotSubExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDotSubExpr(JavaSubsetParser.DotSubExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#dotSubExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDotSubExpr(JavaSubsetParser.DotSubExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#nonCalcExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNonCalcExpr(JavaSubsetParser.NonCalcExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#nonCalcExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNonCalcExpr(JavaSubsetParser.NonCalcExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#nonCalcOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterNonCalcOperator(JavaSubsetParser.NonCalcOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#nonCalcOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitNonCalcOperator(JavaSubsetParser.NonCalcOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#returnStmt}.
 	 * @param ctx the parse tree

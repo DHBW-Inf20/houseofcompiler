@@ -14,14 +14,19 @@ public class BinaryExpressionAdapter {
         public static Binary adapt(JavaSubsetParser.BinaryExprContext binaryExprContext) {
                 IExpression leftExpression;
                 IExpression rightExpression;
-                leftExpression = SubExpressionAdapter.adapt(
-                                binaryExprContext.subExpression());
-                rightExpression = ExpressionAdapter.adapt(
-                                binaryExprContext.expression());
-                Operator operator = OperatorAdapter.adapt(binaryExprContext.operator());
-                return new Binary(leftExpression,
-                                rightExpression,
-                                operator, binaryExprContext.start.getLine(),
-                                binaryExprContext.start.getCharPositionInLine());
+                if(binaryExprContext.calcExpr() != null){
+                        return (Binary) CalcExprAdapter.adapt(binaryExprContext.calcExpr());
+                }
+                else{
+                        leftExpression = SubExpressionAdapter.adapt(
+                                        binaryExprContext.nonCalcExpr().subExpression());
+                        rightExpression = ExpressionAdapter.adapt(
+                                        binaryExprContext.nonCalcExpr().expression());
+                        Operator operator = NonCalcOperatorAdapter.adapt(binaryExprContext.nonCalcExpr().nonCalcOperator());
+                        return new Binary(leftExpression,
+                                        rightExpression,
+                                        operator, binaryExprContext.start.getLine(),
+                                        binaryExprContext.start.getCharPositionInLine());
+                }
         }
 }

@@ -3,13 +3,13 @@ package parser.adapter;
 import common.Operator;
 import parser.generated.JavaSubsetParser;
 
-public class OperatorAdapter {
+public class NonCalcOperatorAdapter {
 
     /**
      * @param operatorContext
      * @return Operator
      */
-    public static Operator adapt(JavaSubsetParser.OperatorContext operatorContext) {
+    public static Operator adapt(JavaSubsetParser.NonCalcOperatorContext operatorContext) {
         String operator = operatorContext.getText();
         switch (operator) {
             case "=":
