@@ -13,6 +13,7 @@ class Dijkstra {
         Vertex v9 = new Vertex(9);
         Vertex v10 = new Vertex(10);
         Vertex v11 = new Vertex(11);
+        Vertex v12 = new Vertex(12);
 
         g.addVertex(v2);
         g.addVertex(v4);
@@ -24,12 +25,41 @@ class Dijkstra {
         g.addVertex(v9);
         g.addVertex(v10);
         g.addVertex(v11);
+        g.addVertex(v12);
 
-        g.addEdge(v1, v2);
-        g.addEdge(v2, v3);
-        g.addEdge(v3, v4);
-        g.addEdge(v1, v3);
-        g.getShortestPath(v1, v4);
+        g.addEdge(v1, v2); // A-B
+        g.addEdge(v1, v5); // A-E
+        g.addEdge(v1, v10); // A-J
+
+        g.addEdge(v2, v3); // B
+        g.addEdge(v2, v7);
+
+        g.addEdge(v3, v4); // C
+        g.addEdge(v3, v5);
+
+        g.addEdge(v4, v8); // D
+
+        g.addEdge(v5, v6); // E
+        g.addEdge(v5, v9);
+
+        g.addEdge(v6, v7); // F
+
+        g.addEdge(v7, v8); // G
+
+        g.addEdge(v8, v12); // H
+        g.addEdge(v8, v10);
+
+        g.addEdge(v9, v10); // I
+
+        g.addEdge(v10, v11); // J
+
+        g.addEdge(v11, v12); // K
+
+        g.getShortestPath(v1, v8);
+        g.getShortestPath(v1, v12);
+        g.getShortestPath(v4, v12);
+        g.getShortestPath(v4, v9);
+        g.getShortestPath(v6, v9);
 
     }
 
@@ -72,8 +102,7 @@ class Graph {
             // Search for every adjacent vertex
             VertexSet currentAdjanceyList = current.getAdjanceyList();
             if (currentAdjanceyList != null) {
-                int i = 0;
-                while (i < currentAdjanceyList.size()) {
+                for (int i = 0; i < currentAdjanceyList.size(); i = i + 1) {
                     Vertex adjancey = currentAdjanceyList.getFromIndex(i);
                     adjancey = calcList.get(adjancey.id);
                     if ((adjancey != null) && !adjancey.isVisited()) {
@@ -83,7 +112,7 @@ class Graph {
                             adjancey.setPrevious(current);
                         }
                     }
-                    i = i + 1;
+
                 }
             } else {
             }
@@ -115,7 +144,7 @@ class Graph {
         {
             // Print "With a distance of"
             System.out.print("With a distance of ");
-            System.out.print(path.size - 1);
+            System.out.println(path.size - 1);
         }
 
     }
