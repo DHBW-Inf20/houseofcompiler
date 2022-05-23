@@ -92,56 +92,11 @@ class Graph {
 
         {
             // Write "Shortest path from destination to source" in chars
-            System.out.print('S');
-            System.out.print('h');
-            System.out.print('o');
-            System.out.print('r');
-            System.out.print('t');
-            System.out.print('e');
-            System.out.print('s');
-            System.out.print('t');
-            System.out.print(' ');
-            System.out.print('p');
-            System.out.print('a');
-            System.out.print('t');
-            System.out.print('h');
-            System.out.print(' ');
-            System.out.print('f');
-            System.out.print('r');
-            System.out.print('o');
-            System.out.print('m');
-            System.out.print(' ');
-            System.out.print('s');
-            System.out.print('o');
-            System.out.print('u');
-            System.out.print('r');
-            System.out.print('c');
-            System.out.print('e');
-            System.out.print(' ');
-            System.out.print('(');
+            System.out.print("Shortest path from ");
             source.print();
-            System.out.print(')');
-            System.out.print(' ');
-            System.out.print('t');
-            System.out.print('o');
-            System.out.print(' ');
-            System.out.print('d');
-            System.out.print('e');
-            System.out.print('s');
-            System.out.print('t');
-            System.out.print('i');
-            System.out.print('n');
-            System.out.print('a');
-            System.out.print('t');
-            System.out.print('i');
-            System.out.print('o');
-            System.out.print('n');
-            System.out.print(' ');
-            System.out.print('(');
+            System.out.print(" to ");
             destination.print();
-            System.out.print(')');
-            System.out.print(':');
-            System.out.print(' ');
+            System.out.print(": ");
         }
         Vertex previous = calcList.get(destination.id);
         if (previous == null) {
@@ -159,26 +114,7 @@ class Graph {
 
         {
             // Print "With a distance of"
-            System.out.print(' ');
-            System.out.print('W');
-            System.out.print('i');
-            System.out.print('t');
-            System.out.print('h');
-            System.out.print(' ');
-            System.out.print('a');
-            System.out.print(' ');
-            System.out.print('d');
-            System.out.print('i');
-            System.out.print('s');
-            System.out.print('t');
-            System.out.print('a');
-            System.out.print('n');
-            System.out.print('c');
-            System.out.print('e');
-            System.out.print(' ');
-            System.out.print('o');
-            System.out.print('f');
-            System.out.print(' ');
+            System.out.print("With a distance of ");
             System.out.print(path.size - 1);
         }
 
@@ -255,13 +191,12 @@ class Vertex {
     }
 
     public void printAdjancey() {
-        System.out.print('v');
-        System.out.print(':');
-        System.out.println(id);
-        System.out.print(' ');
-        System.out.print('a');
-        System.out.println(':');
-        adjanceyList.print();
+        System.out.print("Vertex: ");
+        System.out.println(this.id);
+        System.out.println("\tAdjancey: ");
+        if (adjanceyList != null) {
+            adjanceyList.print();
+        }
         System.out.println();
     }
 

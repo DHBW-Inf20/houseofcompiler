@@ -8,6 +8,7 @@ import syntaxtree.expressions.InstVar;
 import syntaxtree.expressions.IntegerExpr;
 import syntaxtree.expressions.LocalOrFieldVar;
 import syntaxtree.expressions.Null;
+import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
@@ -71,5 +72,7 @@ public interface SemanticVisitor {
     TypeCheckResult typeCheck(BoolExpr boolExpr);
 
     TypeCheckResult typeCheck(Binary binary);
+
+    TypeCheckResult typeCheck(StringExpr instVar);
 
 }

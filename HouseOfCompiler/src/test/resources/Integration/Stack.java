@@ -59,23 +59,11 @@ class Executer {
 
         stack.print();
         // // Write "peek(0)" here with chars
-        System.out.print('p');
-        System.out.print('e');
-        System.out.print('e');
-        System.out.print('k');
-        System.out.print('(');
-        System.out.print('0');
-        System.out.print(')');
-        System.out.print('=');
+        System.out.print("peek(0): ");
         System.out.println(stack.peek(0));
 
         // Write "pop()" here with chars
-        System.out.print('p');
-        System.out.print('o');
-        System.out.print('p');
-        System.out.print('(');
-        System.out.print(')');
-        System.out.print('=');
+        System.out.print("pop(): ");
 
         System.out.println(stack.pop());
         stack.print();

@@ -1,7 +1,12 @@
 package parser.adapter;
 
 import parser.generated.JavaSubsetParser;
-import syntaxtree.expressions.*;
+import syntaxtree.expressions.BoolExpr;
+import syntaxtree.expressions.CharExpr;
+import syntaxtree.expressions.IExpression;
+import syntaxtree.expressions.IntegerExpr;
+import syntaxtree.expressions.Null;
+import syntaxtree.expressions.StringExpr;
 
 public class ValueAdapter {
 
@@ -19,8 +24,10 @@ public class ValueAdapter {
                 return new BoolExpr(true);
             else
                 return new BoolExpr(false);
-        }
-        else
+        } else if (valueContext.StringValue() != null) {
+            return new StringExpr(valueContext.StringValue().getText().substring(1,
+                    valueContext.StringValue().getText().length() - 1));
+        } else
             return new Null();
     }
 }

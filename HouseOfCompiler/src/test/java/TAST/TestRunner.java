@@ -243,7 +243,6 @@ public class TestRunner {
     void systemOutPrintlnTest() {
         Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getSystemOutPrintlnAst());
         Program expectedTast = MockGenerator.getSystemOutPrintlnTast();
-        expectedTast.getClasses().firstElement();
 
         assertEquals(expectedTast, generatedTast);
     }
@@ -279,6 +278,15 @@ public class TestRunner {
                 () -> Compiler.getFactory().getTastAdapter().getTast(program),
                 "Expected SemanticError to be thrown").getMessage());
 
+    }
+
+    @Test
+    @DisplayName("SystemOutPrintln-String-Test")
+    void systemOutPrintlnStringTest() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter()
+                .getTast(MockGenerator.getSystemOutPrintStringAst());
+        Program expectedTast = MockGenerator.getSystemOutPrintStringTast();
+        assertEquals(expectedTast, generatedTast);
     }
 
 }
