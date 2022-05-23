@@ -507,7 +507,7 @@ public class SemanticCheck implements SemanticVisitor {
             valid = false;
         }
 
-        return new TypeCheckResult(valid, newDecl.getType());
+        return new TypeCheckResult(valid, null);
     }
 
     /**
@@ -857,7 +857,7 @@ public class SemanticCheck implements SemanticVisitor {
         var bodyResult = forStmt.getStatement().accept(this);
         currentLocalScope.popScope();
         valid = valid && bodyResult.isValid();
-        forStmt.setType(bodyResult.getType() == null ? new BaseType(Primitives.VOID) : bodyResult.getType());
-        return new TypeCheckResult(valid, forStmt.getType());
+        forStmt.setType(bodyResult.getType());
+        return new TypeCheckResult(valid, bodyResult.getType());
     }
 }
