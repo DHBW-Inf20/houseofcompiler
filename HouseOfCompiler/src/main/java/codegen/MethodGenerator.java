@@ -15,16 +15,7 @@ import common.PrintableVector;
 import common.ReferenceType;
 import common.Type;
 import context.Context;
-import syntaxtree.expressions.Binary;
-import syntaxtree.expressions.BoolExpr;
-import syntaxtree.expressions.CharExpr;
-import syntaxtree.expressions.IExpression;
-import syntaxtree.expressions.InstVar;
-import syntaxtree.expressions.IntegerExpr;
-import syntaxtree.expressions.LocalOrFieldVar;
-import syntaxtree.expressions.Null;
-import syntaxtree.expressions.This;
-import syntaxtree.expressions.Unary;
+import syntaxtree.expressions.*;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
@@ -452,6 +443,11 @@ public class MethodGenerator implements MethodCodeVisitor {
         } else {
             mv.visitLdcInsn(value);
         }
+    }
+
+    @Override
+    public void visit(StringExpr stringExpr) {
+        mv.visitLdcInsn(stringExpr.getValue());
     }
 
     /**

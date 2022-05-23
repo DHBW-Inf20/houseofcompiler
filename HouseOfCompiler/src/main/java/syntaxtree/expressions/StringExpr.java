@@ -41,7 +41,7 @@ public class StringExpr implements IExpression {
      */
     @Override
     public void accept(MethodCodeVisitor visitor) {
-        // visitor.visit(this);
+         visitor.visit(this);
     }
 
     @Override
