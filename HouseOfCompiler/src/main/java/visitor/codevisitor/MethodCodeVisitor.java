@@ -13,11 +13,7 @@ import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
-import syntaxtree.statements.Block;
-import syntaxtree.statements.IfStmt;
-import syntaxtree.statements.LocalVarDecl;
-import syntaxtree.statements.ReturnStmt;
-import syntaxtree.statements.WhileStmt;
+import syntaxtree.statements.*;
 import syntaxtree.structure.ConstructorDecl;
 import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
@@ -38,6 +34,8 @@ public interface MethodCodeVisitor {
     void visit(ReturnStmt returnStmt);
 
     void visit(WhileStmt whileStmt);
+
+    void visit(ForStmt forStmt);
 
     // StatementExpression
     void visit(Assign assign);

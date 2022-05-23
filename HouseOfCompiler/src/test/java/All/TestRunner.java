@@ -1172,4 +1172,29 @@ public class TestRunner {
         }
     }
 
+    @Test
+    @DisplayName("ForTest")
+    void forTest() {
+        // private final ByteArrayOutput
+        Program program = Resources.getProgram("SimpleTests/ForTest.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        // ReflectLoader loader = new ReflectLoader(bc);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("ForTest");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("ForTest", "foo");
+            foo.invoke(o);
+            System.setOut(new PrintStream(outContent));
+            foo.invoke(o);
+            var expected = new String("0123456789").replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 }
