@@ -35,6 +35,7 @@ import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
 import syntaxtree.statements.WhileStmt;
 import syntaxtree.structure.ConstructorDecl;
+import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
 import syntaxtree.structure.MethodParameter;
 import visitor.codevisitor.MethodCodeVisitor;
@@ -107,6 +108,22 @@ public class MethodGenerator implements MethodCodeVisitor {
                 mv.visitInsn(Opcodes.RETURN);
             }
         }
+
+        mv.visitMaxs(0, 0);
+        mv.visitEnd();
+    }
+
+    @Override
+    public void visit(MainMethodDecl mainDecl) {
+        mv = cw.visitMethod(GenUtils.resolveAccessModifier(mainDecl.getAccessModifier()), mainDecl.getIdentifier(),
+                "([Ljava/lang/String;)V", null, null);
+        mv.visitCode();
+
+        localVars.push("this");
+        localVars.push("+args");
+
+        mainDecl.getBlock().accept(this);
+        mv.visitInsn(Opcodes.RETURN);
 
         mv.visitMaxs(0, 0);
         mv.visitEnd();

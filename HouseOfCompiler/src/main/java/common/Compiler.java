@@ -7,10 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import codegen.ProgramGenerator;
+import context.Context;
 import main.ReflectLoader;
 import semantic.exceptions.SemanticError;
 import syntaxtree.structure.Program;
@@ -165,9 +169,71 @@ public class Compiler implements CompilerFactory {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+    }
 
+    @Override
+    public void generateJar(String fileName, String outFile) {
+        // get the filename without the extension
+        File file = new File(fileName);
+
+        if (file.exists()) {
+            try {
+                InputStream inputStream = new FileInputStream(file);
+                this.generateJar(inputStream, outFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void generateJar(InputStream inputStream, String outFile) {
+        IAstAdapter astAdapter = this.getAstAdapter();
+        ITastAdapter tastAdapter = this.getTastAdapter();
+        IProgramGenerator programGenerator = this.getProgramGenerator();
+        Program program = astAdapter.getAst(inputStream);
+
+        var className = program.getClasses().get(0).getIdentifier();
+        Program tast = tastAdapter.getTast(program);
+        var bc = programGenerator.generateBytecode(tast);
+
+        Context context = tast.getContext();
+        String main = context.getMain();
+
+        if (main != null) {
+            try {
+                File file = new File(outFile);
+                if (file.exists()) {
+                    file.delete();
+                }
+                file.createNewFile();
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    try (ZipOutputStream zos = new ZipOutputStream(fos)) {
+                        // write classes
+                        for (String clazz : bc.keySet()) {
+                            zos.putNextEntry(new ZipEntry(clazz + ".class"));
+                            zos.write(bc.get(clazz));
+                            zos.closeEntry();
+                        }
+
+                        // write manifest
+                        zos.putNextEntry(new ZipEntry("META-INF/MANIFEST.MF"));
+                        zos.write(getManifest(main));
+                        zos.closeEntry();
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private byte[] getManifest(String main) {
+        String manifest = "Manifest-Version: 1.0" + "\n" +
+                            "Main-Class: " + main + "\n";
+        return manifest.getBytes(StandardCharsets.UTF_8);
     }
 
     @Override

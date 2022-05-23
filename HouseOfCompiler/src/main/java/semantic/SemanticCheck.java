@@ -99,6 +99,8 @@ public class SemanticCheck implements SemanticVisitor {
     public TypeCheckResult typeCheck(Program toCheck) {
 
         context = new Context(toCheck);
+        toCheck.setContext(context);
+
         currentLocalScope = new ScopeContext();
         var valid = true;
         for (ClassDecl classDecl : toCheck.getClasses()) {

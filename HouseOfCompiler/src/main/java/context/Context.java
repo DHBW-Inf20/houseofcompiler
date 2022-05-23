@@ -1,5 +1,6 @@
 package context;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import common.AccessModifier;
@@ -20,14 +21,30 @@ public class Context {
 
         private HashMap<String, String> imports;
 
+        private ArrayList<String> mains;
+
         public Context(Program program) {
                 classes = new HashMap<>();
                 imports = new HashMap<>();
+                mains = new ArrayList<>();
 
                 addStaticContext();
                 addStaticImports();
 
-                program.getClasses().forEach(clazz -> classes.put(clazz.getIdentifier(), new ClassContext(clazz)));
+                program.getClasses().forEach(clazz -> {
+                        ClassContext cc = new ClassContext(clazz);
+                        classes.put(clazz.getIdentifier(), cc);
+                        if (cc.hasMain()) {
+                                mains.add(clazz.getIdentifier());
+                        }
+                });
+        }
+
+        public String getMain() {
+                if (mains.size() == 1) {
+                        return mains.get(0);
+                }
+                return null;
         }
 
         /**

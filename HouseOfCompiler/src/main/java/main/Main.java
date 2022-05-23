@@ -13,6 +13,8 @@ public class Main {
             Compiler.getFactory().runCode(args[0]);
         } else if (args.length == 1 && args[0].endsWith(".java")) {
             Compiler.getFactory().compile(args[0], ".");
+        } else if (args.length == 2 && args[0].equals("-jar") && args[1].endsWith(".java")) {
+            Compiler.getFactory().generateJar(args[1], args[1].replaceAll(".java", ".jar"));
         } else {
             Compiler.getFactory().compile(args[0], args[1]);
         }

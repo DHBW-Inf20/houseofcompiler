@@ -19,12 +19,14 @@ import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
 import syntaxtree.statements.WhileStmt;
 import syntaxtree.structure.ConstructorDecl;
+import syntaxtree.structure.MainMethodDecl;
 import syntaxtree.structure.MethodDecl;
 
 public interface MethodCodeVisitor {
     void visit(ConstructorDecl constructorDecl);
 
     void visit(MethodDecl methodDecl);
+    void visit(MainMethodDecl mainDecl);
 
     // Statements
     void visit(Block block);
