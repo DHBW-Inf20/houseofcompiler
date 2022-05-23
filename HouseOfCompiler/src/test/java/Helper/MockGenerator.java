@@ -20,6 +20,7 @@ import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
+import syntaxtree.statements.ForStmt;
 import syntaxtree.statements.IStatement;
 import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
@@ -749,6 +750,56 @@ public abstract class MockGenerator {
                         getArguments(new StringExpr("maintest"))));
 
         var method = new MainMethodDecl(block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getForTestAst() {
+        Program expectedAst = getEmptyProgram("ForTest");
+        Block forBlock = getBlock(new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                getArguments(new LocalOrFieldVar("i"))));
+        Block block = getBlock(
+                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                        new Binary(new LocalOrFieldVar("i"), new IntegerExpr(10), Operator.LESS),
+                        new Assign(new LocalOrFieldVar("i"),
+                                new Binary(new LocalOrFieldVar("i"), new IntegerExpr(1), Operator.PLUS)),
+                        forBlock));
+
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getForTestTast() {
+        Program expectedAst = getEmptyProgram("ForTest");
+        var iv = new InstVar(new ReferenceType("java/io/PrintStream"),
+                new LocalOrFieldVar(new ReferenceType("java/lang/System"), "System"), "out");
+        iv.setAccessModifier(AccessModifier.PUBLIC_STATIC);
+        Block forBlock = getBlock(new MethodCall(new BaseType(Primitives.VOID),
+                iv,
+                "println",
+                getArguments(new LocalOrFieldVar(new BaseType(Primitives.INT), "i"))));
+        Block block = getBlock(
+                new ForStmt(new BaseType(Primitives.VOID),
+                        new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                        new Binary(new BaseType(Primitives.BOOL),
+                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"), new IntegerExpr(10),
+                                Operator.LESS),
+                        new Assign(new BaseType(Primitives.INT), new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                new Binary(new BaseType(Primitives.INT),
+                                        new LocalOrFieldVar(new BaseType(Primitives.INT), "i"), new IntegerExpr(1),
+                                        Operator.PLUS)),
+                        forBlock));
+        block.setType(new BaseType(Primitives.VOID));
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
 
         expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
 

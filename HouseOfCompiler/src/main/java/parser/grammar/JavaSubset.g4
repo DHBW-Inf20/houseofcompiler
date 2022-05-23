@@ -22,7 +22,7 @@ subExpression: This | Identifier | instVar  | value | stmtExpr | unaryExpr | Ope
 
 methodCall: receiver? receivingMethod* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 //int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
-statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | ifElseStmt | stmtExpr Semicolon;
+statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | forStmt | ifElseStmt | stmtExpr Semicolon;
 //a = expr, new Object(), method(param1)
 stmtExpr: assign | newDecl | methodCall;
 
@@ -47,6 +47,7 @@ returnStmt: Return (expression)?;
 localVarDecl: type Identifier (Assign expression)?;
 block: OpenCurlyBracket statement* ClosedCurlyBracket;
 whileStmt: While OpenRoundBracket expression ClosedRoundBracket block;
+forStmt: For OpenRoundBracket (stmtExpr | localVarDecl) Semicolon (expression) Semicolon (stmtExpr) ClosedRoundBracket statement;
 ifElseStmt: ifStmt elseStmt?;
 ifStmt: If OpenRoundBracket expression ClosedRoundBracket statement;
 elseStmt: Else statement;

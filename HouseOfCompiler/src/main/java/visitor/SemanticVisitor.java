@@ -15,6 +15,7 @@ import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
+import syntaxtree.statements.ForStmt;
 import syntaxtree.statements.IfStmt;
 import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
@@ -40,6 +41,8 @@ public interface SemanticVisitor {
     TypeCheckResult typeCheck(Assign toCheck);
 
     TypeCheckResult typeCheck(MethodParameter toCheck);
+
+    TypeCheckResult typeCheck(ForStmt forStmt);
 
     TypeCheckResult typeCheck(WhileStmt whileStmt);
 

@@ -258,6 +258,16 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitWhileStmt(JavaSubsetParser.WhileStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#forStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterForStmt(JavaSubsetParser.ForStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#forStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitForStmt(JavaSubsetParser.ForStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#ifElseStmt}.
 	 * @param ctx the parse tree
 	 */

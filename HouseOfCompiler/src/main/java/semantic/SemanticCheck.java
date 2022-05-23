@@ -32,6 +32,7 @@ import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
+import syntaxtree.statements.ForStmt;
 import syntaxtree.statements.IfStmt;
 import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
@@ -98,6 +99,8 @@ public class SemanticCheck implements SemanticVisitor {
     public TypeCheckResult typeCheck(Program toCheck) {
 
         context = new Context(toCheck);
+        toCheck.setContext(context);
+
         currentLocalScope = new ScopeContext();
         var valid = true;
         for (ClassDecl classDecl : toCheck.getClasses()) {
@@ -838,5 +841,23 @@ public class SemanticCheck implements SemanticVisitor {
     @Override
     public TypeCheckResult typeCheck(StringExpr stringExpr) {
         return new TypeCheckResult(true, stringExpr.getType());
+    }
+
+    @Override
+    public TypeCheckResult typeCheck(ForStmt forStmt) {
+        var valid = true;
+
+        currentLocalScope.pushScope();
+        var initResult = forStmt.getInit().accept(this);
+        var condResult = forStmt.getCondition().accept(this);
+        var updateResult = forStmt.getUpdate().accept(this);
+
+        valid = valid && initResult.isValid() && condResult.isValid() && updateResult.isValid();
+
+        var bodyResult = forStmt.getStatement().accept(this);
+        currentLocalScope.popScope();
+        valid = valid && bodyResult.isValid();
+        forStmt.setType(bodyResult.getType() == null ? new BaseType(Primitives.VOID) : bodyResult.getType());
+        return new TypeCheckResult(valid, forStmt.getType());
     }
 }

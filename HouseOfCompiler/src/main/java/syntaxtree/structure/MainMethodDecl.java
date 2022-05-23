@@ -5,6 +5,7 @@ import common.BaseType;
 import common.Primitives;
 import common.PrintableVector;
 import syntaxtree.statements.Block;
+import visitor.codevisitor.MethodCodeVisitor;
 
 public class MainMethodDecl extends MethodDecl {
 
@@ -14,4 +15,8 @@ public class MainMethodDecl extends MethodDecl {
                 block);
     }
 
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

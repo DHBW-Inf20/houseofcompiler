@@ -161,6 +161,12 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhileStmt(JavaSubsetParser.WhileStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#forStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStmt(JavaSubsetParser.ForStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#ifElseStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
