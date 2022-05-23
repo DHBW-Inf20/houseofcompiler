@@ -1,16 +1,13 @@
 class ConditionalEvaluation {
 
     boolean foo() {
-        System.out.print('f');
-        System.out.print('o');
-        System.out.println('o');
+        System.out.println("foo");
         return true || bar();
     }
 
     boolean bar() {
-        System.out.print('b');
-        System.out.print('a');
-        System.out.println('r');
+        System.out.println("bar");
+
         return true && foo();
     }
 

@@ -1104,7 +1104,7 @@ public class TestRunner {
             foo.invoke(o);
             System.setOut(new PrintStream(outContent));
             foo.invoke(o);
-            var expected = new String("Shortest path from source (1) to destination (4): 1 3 4  With a distance of 2")
+            var expected = new String("Shortest path from 1 to 4: 1 3 4 With a distance of 2")
                     .replaceAll("\\p{C}", "");
             var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
             assertEquals(expected, actual);
