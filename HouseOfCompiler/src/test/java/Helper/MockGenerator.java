@@ -20,6 +20,7 @@ import syntaxtree.statementexpression.Assign;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
+import syntaxtree.statements.ForStmt;
 import syntaxtree.statements.IStatement;
 import syntaxtree.statements.LocalVarDecl;
 import syntaxtree.statements.ReturnStmt;
@@ -755,6 +756,30 @@ public abstract class MockGenerator {
         expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
 
         return expectedAst;
+    }
+
+    public static Program getForTestAst() {
+        Program expectedAst = getEmptyProgram("ForTest");
+        Block forBlock = getBlock(new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                getArguments(new LocalOrFieldVar("i"))));
+        Block block = getBlock(
+                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                        new Binary(new LocalOrFieldVar("i"), new IntegerExpr(10), Operator.LESS),
+                        new Assign(new LocalOrFieldVar("i"),
+                                new Binary(new LocalOrFieldVar("i"), new IntegerExpr(1), Operator.PLUS)),
+                        forBlock));
+
+        var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
+
+        expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+        expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+        return expectedAst;
+    }
+
+    public static Program getForTestTast() {
+        return null;
     }
 
 }

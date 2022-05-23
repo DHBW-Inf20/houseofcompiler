@@ -27,6 +27,8 @@ public class StatementAdapter {
             return BlockAdapter.adapt(statementContext.block());
         else if (statementContext.whileStmt() != null)
             return WhileStmtAdapter.adapt(statementContext.whileStmt());
+        else if (statementContext.forStmt() != null)
+            return ForStmtAdapter.adapt(statementContext.forStmt());
         else if (statementContext.ifElseStmt() != null)
             return IfStmtAdapter.adapt(statementContext.ifElseStmt());
         else // StatementExpression

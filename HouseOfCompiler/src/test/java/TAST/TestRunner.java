@@ -297,4 +297,12 @@ public class TestRunner {
         assertEquals(expectedTast, generatedTast);
     }
 
+    @Test
+    @DisplayName("ForLoopTest")
+    void forLoopTest() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getForTestAst());
+        Program expectedTast = MockGenerator.getForTestTast();
+        assertEquals(expectedTast, generatedTast);
+    }
+
 }
