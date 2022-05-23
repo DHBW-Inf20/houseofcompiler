@@ -69,7 +69,7 @@ public class SemanticCheck implements SemanticVisitor {
         } else {
             String ANSI_RESET = "\u001B[0m";
             String ANSI_RED = "\u001B[31m";
-            var errorString = ANSI_RED;
+            var errorString = "\n" + ANSI_RED;
             for (int i = semanticCheck.errors.size() - 1; i >= 0; i--) {
                 errorString += semanticCheck.errors.get(i).getMessage() + "\n";
             }

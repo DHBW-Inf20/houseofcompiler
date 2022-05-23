@@ -12,9 +12,11 @@ public class BinaryExpressionAdapter {
          * @return Binary
          */
         public static Binary adapt(JavaSubsetParser.BinaryExprContext binaryExprContext) {
-                IExpression leftExpression = SubExpressionAdapter.adapt(
+                IExpression leftExpression;
+                IExpression rightExpression;
+                leftExpression = SubExpressionAdapter.adapt(
                                 binaryExprContext.subExpression());
-                IExpression rightExpression = ExpressionAdapter.adapt(
+                rightExpression = ExpressionAdapter.adapt(
                                 binaryExprContext.expression());
                 Operator operator = OperatorAdapter.adapt(binaryExprContext.operator());
                 return new Binary(leftExpression,

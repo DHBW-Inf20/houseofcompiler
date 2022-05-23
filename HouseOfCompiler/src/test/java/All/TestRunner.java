@@ -575,11 +575,43 @@ public class TestRunner {
         int b = 20;
         int c = 30;
         int result = a + b * c;
+        int result2 = a * b + c;
         try {
             o = clazz.getDeclaredConstructor().newInstance();
             var foo = loader.getMethod("PunktVorStrich", "foo", int.class, int.class, int.class);
+            var bar = loader.getMethod("PunktVorStrich", "foo", int.class, int.class, int.class);
             var ivalue = (int) foo.invoke(o, a, b, c);
             assertEquals(result, ivalue);
+            ivalue = (int) bar.invoke(o, a, b, c);
+            assertEquals(result2, ivalue);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("AndVorOr")
+    void andVorOr() {
+        Program program = Resources.getProgram("SimpleTests/AndVorOr.java");
+
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> clazz = loader.findClass("AndVorOr");
+        Object o = null;
+        boolean a = true;
+        boolean b = true;
+        boolean c = false;
+        boolean result = a || b && c;
+        boolean result2 = a || b && c || b && c;
+        try {
+            o = clazz.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("AndVorOr", "foo", boolean.class, boolean.class, boolean.class);
+            var bar = loader.getMethod("AndVorOr", "foo", boolean.class, boolean.class, boolean.class);
+            var ivalue = (boolean) foo.invoke(o, a, b, c);
+            assertEquals(result, ivalue);
+            ivalue = (boolean) bar.invoke(o, a, b, c);
+            assertEquals(result2, ivalue);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -1093,4 +1125,26 @@ public class TestRunner {
         // ReflectLoader loader = new ReflectLoader(bc);
 
     }
+
+    @Test
+    @DisplayName("OperatorStacking")
+    void operatorStacking() {
+        Program program = Resources.getProgram("SimpleTests/OperatorStacking.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("OperatorStacking");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("OperatorStacking", "foo");
+            var bar = loader.getMethod("OperatorStacking", "bar");
+            assertEquals(true, foo.invoke(o));
+            assertEquals(1 + 2 * 3 - 4 % 6, bar.invoke(o));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+    }
+
 }
