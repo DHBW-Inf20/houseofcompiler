@@ -1037,11 +1037,38 @@ public class TestRunner {
     @Test
     @DisplayName("MethodCallsInWhile")
     void methodCallsInWhile() {
-
         Program program = Resources.getProgram("SimpleTests/MethodCallsInWhile.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
-//        System.out.println(tast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        // Just checks if no error is thrown
+    }
+
+    @Test
+    @DisplayName("MethodCallStressTest")
+    void methodCallStressTest() {
+        Program program = Resources.getProgram("SimpleTests/MethodCallStressTest.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+
+    }
+
+    @Test
+    @DisplayName("DijsktraTest")
+    void dijsktraTest() {
+        Program program = Resources.getProgram("Integration/Dijkstra.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        // ReflectLoader loader = new ReflectLoader(bc);
+
+    }
+
+    @Test
+    @DisplayName("VoidReturn")
+    void voidReturn() {
+        Program program = Resources.getProgram("SimpleTests/VoidReturn.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        // ReflectLoader loader = new ReflectLoader(bc);
 
     }
 }

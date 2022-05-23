@@ -254,7 +254,7 @@ public class SemanticCheck implements SemanticVisitor {
 
         if (!Objects.equals(lExpression.getType(), rExpression.getType())) {
             errors.add(new TypeMismatchException(
-                    "Mismatch types in Assign-Statement got: \"" + lResult.getType() + "\" and \""
+                    "Mismatch types in Assign-Statement: cannot convert from \"" + lResult.getType() + "\" to \""
                             + rResult.getType() + "\""
                             + TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
             valid = false;
@@ -312,9 +312,16 @@ public class SemanticCheck implements SemanticVisitor {
      */
     @Override
     public TypeCheckResult typeCheck(ReturnStmt returnStmt) {
+        TypeCheckResult returnExpression;
 
-        var returnExpression = returnStmt.getExpression().accept(this);
-        returnStmt.setType(returnStmt.getExpression().getType());
+        // Following check is needed for a void return (void foo(){return;})
+        if (returnStmt.getExpression() == null) {
+            returnExpression = new TypeCheckResult(true, new BaseType(Primitives.VOID));
+            returnStmt.setType(new BaseType(Primitives.VOID));
+        } else {
+            returnExpression = returnStmt.getExpression().accept(this);
+            returnStmt.setType(returnStmt.getExpression().getType());
+        }
         if (currentMethodReturnType != null && !currentMethodReturnType.equals(returnStmt.getType())) {
             errors.add(
                     new TypeMismatchException("Return-Type mismatch:  cannot convert from " + returnExpression.getType()
@@ -340,7 +347,7 @@ public class SemanticCheck implements SemanticVisitor {
             var resultType = localVarDecl.getExpression().getType();
             valid = result.isValid() && valid;
 
-            if (!resultType.equals(localVarDecl.getType())) {
+            if (!Objects.equals(resultType, localVarDecl.getType())) {
                 errors.add(new TypeMismatchException(
                         "Type mismatch: cannot convert from " + resultType + " to " + localVarDecl.getType()
                                 + TypeHelper.generateLocationString(localVarDecl.line, localVarDecl.column, fileName)));
@@ -370,7 +377,7 @@ public class SemanticCheck implements SemanticVisitor {
         // check the Condition
         var conditionResult = ifStmt.getCondition().accept(this);
         valid = valid && conditionResult.isValid();
-        if (!TypeHelper.isBool(conditionResult.getType())) {
+        if (!TypeHelper.isBool(ifStmt.getCondition().getType())) {
             errors.add(
                     new TypeMismatchException(
                             "If Condition expected " + Primitives.BOOL + " but got " + conditionResult.getType()
@@ -756,7 +763,7 @@ public class SemanticCheck implements SemanticVisitor {
                 || operator == Operator.MULT || operator == Operator.DIV || operator == Operator.MOD);
 
         final boolean isSame = lType.equals(rType);
-        final boolean lIsReference = lResult.getType() instanceof ReferenceType;
+        final boolean lIsReference = lType instanceof ReferenceType;
         final boolean oneIsNull = lResult.getType() == null ^ rResult.getType() == null;
         // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
         // gleiche Typen

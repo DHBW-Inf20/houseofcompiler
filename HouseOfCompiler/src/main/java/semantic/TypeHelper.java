@@ -112,6 +112,10 @@ public class TypeHelper {
             }
             var foundMethods = new PrintableVector<MethodContext>();
             var methods = classContext.getMethods().get(methodCall.getIdentifier());
+            if (methods == null) {
+                throw new TypeMismatchException("No declared Method " + methodCall.getIdentifier() + " with Arguments: "
+                        + methodCall.printTypes() + " in Type " + type);
+            }
             for (var method : methods) {
                 if (method.getParameterTypes().size() == methodCall.getArguments().size()) {
                     boolean isSame = true;

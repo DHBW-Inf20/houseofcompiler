@@ -42,7 +42,7 @@ BooleanValue: 'true'|'false';
 NullValue: 'null';
 
 //Statements
-returnStmt: Return expression;
+returnStmt: Return (expression)?;
 localVarDecl: type Identifier (Assign expression)?;
 block: OpenCurlyBracket statement* ClosedCurlyBracket;
 whileStmt: While OpenRoundBracket expression ClosedRoundBracket block;

@@ -25,6 +25,11 @@ public class ReturnStmt implements IStatement {
         this.column = column;
     }
 
+    public ReturnStmt(int line, int column) {
+        this.line = line;
+        this.column = column;
+    }
+
     public ReturnStmt(Type type, IExpression expression) {
         this.expression = expression;
         this.type = type;

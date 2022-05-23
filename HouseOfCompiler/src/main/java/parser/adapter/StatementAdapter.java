@@ -14,7 +14,13 @@ public class StatementAdapter {
         var line = statementContext.start.getLine();
         var column = statementContext.start.getCharPositionInLine();
         if (statementContext.returnStmt() != null)
-            return new ReturnStmt(ExpressionAdapter.adapt(statementContext.returnStmt().expression()), line, column);
+            if (statementContext.returnStmt().expression() != null)
+                return new ReturnStmt(ExpressionAdapter.adapt(statementContext.returnStmt().expression()), line,
+                        column);
+            else
+                return new ReturnStmt(line,
+                        column);
+
         else if (statementContext.localVarDecl() != null)
             return LocalVarDeclAdapter.adapt(statementContext.localVarDecl());
         else if (statementContext.block() != null)
