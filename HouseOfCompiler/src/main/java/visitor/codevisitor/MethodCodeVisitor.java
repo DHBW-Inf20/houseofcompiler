@@ -30,6 +30,7 @@ public interface MethodCodeVisitor {
     void visit(BoolExpr boolExpr);
     void visit(CharExpr charExpr);
     void visit(IntegerExpr integerExpr);
+    void visit(StringExpr stringExpr);
     void visit(InstVar instVar);
     void visit(LocalOrFieldVar localOrFieldVar);
     void visit(Null nullExpr);
