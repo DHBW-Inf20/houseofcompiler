@@ -1147,4 +1147,29 @@ public class TestRunner {
 
     }
 
+    @Test
+    @DisplayName("ConditionalEvaluation")
+    void conditionalEval() {
+        Program program = Resources.getProgram("SimpleTests/ConditionalEvaluation.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("ConditionalEvaluation");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("ConditionalEvaluation", "foo");
+            var bar = loader.getMethod("ConditionalEvaluation", "bar");
+            System.setOut(new PrintStream(outContent));
+            assertEquals(true, bar.invoke(o));
+            assertEquals(true, foo.invoke(o));
+            var expected = new String("bar\n\tfoo\n\tfoo").replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
 }
