@@ -8,12 +8,10 @@ class Test {
 //        return 1;
 //    }
 
-    public static void main(String[] args) {
-
-    }
-
-    int main() {
-        return 1;
+    public int main() {
+        int b = 5;
+        int a = b = 123;
+        return a + b;
     }
 }
 
