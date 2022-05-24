@@ -319,7 +319,80 @@ public class MethodGenerator implements MethodCodeVisitor {
     @Override
     public void visit(Unary unary) {
         switch (unary.getOperator()) {
+            case INC, DEC -> visitArithmetic(unary);
             case NOT -> visitBoolLogic(unary);
+        }
+    }
+
+
+    private void visitArithmetic(Unary unary) {
+        switch (unary.getOperator()) {
+            case INC -> {
+                incUnary(unary);
+                unary.getExpression().accept(this);
+            }
+            case DEC -> {
+                decUnary(unary);
+                unary.getExpression().accept(this);
+            }
+        }
+    }
+
+    private void incUnary(Unary unary) {
+        if (unary.getExpression() instanceof LocalOrFieldVar) {
+            LocalOrFieldVar lof = (LocalOrFieldVar) unary.getExpression();
+            int index = localVars.get(lof.getIdentifier());
+            if (index >= 0) {
+                mv.visitIincInsn(index, 1);
+            } else { // field
+                mv.visitVarInsn(Opcodes.ALOAD, 0);
+                mv.visitInsn(Opcodes.DUP);
+                mv.visitFieldInsn(Opcodes.GETFIELD, className, lof.getIdentifier(),
+                        GenUtils.generateDescriptor(lof.getType()));
+                mv.visitInsn(Opcodes.ICONST_1);
+                mv.visitInsn(Opcodes.IADD);
+                mv.visitFieldInsn(Opcodes.PUTFIELD, className, lof.getIdentifier(),
+                        GenUtils.generateDescriptor(lof.getType()));
+            }
+        } else if (unary.getExpression() instanceof InstVar) {
+            InstVar instVar = (InstVar) unary.getExpression();
+            visitInstVar(instVar, false);
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClass, instVar.getIdentifier(),
+                    GenUtils.generateDescriptor(instVar.getType()));
+            mv.visitInsn(Opcodes.ICONST_1);
+            mv.visitInsn(Opcodes.IADD);
+            mv.visitFieldInsn(Opcodes.PUTFIELD, this.lastClass, instVar.getIdentifier(),
+                    GenUtils.generateDescriptor(instVar.getType()));
+        }
+    }
+
+    private void decUnary(Unary unary) {
+        if (unary.getExpression() instanceof LocalOrFieldVar) {
+            LocalOrFieldVar lof = (LocalOrFieldVar) unary.getExpression();
+            int index = localVars.get(lof.getIdentifier());
+            if (index >= 0) {
+                mv.visitIincInsn(index, -1);
+            } else { // field
+                mv.visitVarInsn(Opcodes.ALOAD, 0);
+                mv.visitInsn(Opcodes.DUP);
+                mv.visitFieldInsn(Opcodes.GETFIELD, className, lof.getIdentifier(),
+                        GenUtils.generateDescriptor(lof.getType()));
+                mv.visitInsn(Opcodes.ICONST_1);
+                mv.visitInsn(Opcodes.ISUB);
+                mv.visitFieldInsn(Opcodes.PUTFIELD, className, lof.getIdentifier(),
+                        GenUtils.generateDescriptor(lof.getType()));
+            }
+        } else if (unary.getExpression() instanceof InstVar) {
+            InstVar instVar = (InstVar) unary.getExpression();
+            visitInstVar(instVar, false);
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClass, instVar.getIdentifier(),
+                    GenUtils.generateDescriptor(instVar.getType()));
+            mv.visitInsn(Opcodes.ICONST_1);
+            mv.visitInsn(Opcodes.ISUB);
+            mv.visitFieldInsn(Opcodes.PUTFIELD, this.lastClass, instVar.getIdentifier(),
+                    GenUtils.generateDescriptor(instVar.getType()));
         }
     }
 
