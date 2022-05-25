@@ -4,7 +4,7 @@ Mini-Java compiler construction project for the 4th semester of computer science
 
 ## Supported Java-Subset Syntax
 
-```java
+```
 Base-Types: int, boolean, char;
 Access-Modifier: public, private, protected
 Operators: + - * / % || && == != < > <= => ! = ++ --
