@@ -4,11 +4,11 @@ Mini-Java compiler construction project for the 4th semester of computer science
 
 ## Supported Java-Subset Syntax
 
-```java
+```
 Base-Types: int, boolean, char;
 Access-Modifier: public, private, protected
-Operators: + - * / % || && == != < > <= => ! = 
-Statements: if...else, while loop, 
+Operators: + - * / % || && == != < > <= => ! = ++ --
+Statements: if...else, while loop, for loop 
 Other Keywords: new, this, null, 
 mentions: - Methods/Constructors are Overloadable
           - statically-imported Methods: 
@@ -23,6 +23,7 @@ mentions: - Methods/Constructors are Overloadable
           - no Arrays and Exceptions
           - no static methods
             - only "public static void main(String[] args)" for the main class
+          - Semantic Error-Handling
 ```
 
 ## Used Tools
@@ -88,45 +89,56 @@ Implemented by Raphael Sack ([@Raqhael](https://github.com/Raqhael)):
 
 ## Installation
 
-This Project using [maven v4.0.0](https://maven.apache.org/) and can be easily installed when using IntelliJ, Eclipse and other JavaIDE's
+This Project using [maven v4.0.0](https://maven.apache.org/) and can be easily built using IntelliJ, Eclipse and other JavaIDE's with the given pom.xml-File
 
-## Usage
-
-When you wanna Test the Compiler without building a jar file, you can simply go to `src.main.java.main.Testing.java` and Compiles the given .java-File (found in `src.main.resources.*`). It will run the Compiler, builds the .class-Files into the `./build`-Directory and a Java-Reflection loader will invoke a non-statically main method and prints the output to the stdout.
+The main-Method is located the `main.main`
 
 ## Downloads
 
-You can find the latest `.jar`-Artifacts of the Compiler and runner [here](https://github.com/DHBW-Inf20/houseofcompiler/releases)
+You can find the latest `.jar`-Artifacts of the Compiler [here](https://github.com/DHBW-Inf20/houseofcompiler/releases)
 
 ### Usage
 
-Since we cant declare static methods, there isnt a `static void main`-Method, thus we created a Reflection-Wrapper that is loading the classFiles, instantiates the received class with the default constructor and invokes the main method. So a basic File should look like this:
+You can only build code that is preserved into one File.
+To later run the file, it needs a `public static void main(String[] args)`-Method like any other normal Java-Program. But its important that the method Name and arguments are written with these exact names. The Compiler cant handle Strings, nor Arrays and nor static Methods, so the main method is a static Parse-Token.
 
+To later run the code, its important to place the main-method in the Class that holds the same Name as the File so it can be identified!
+
+To Show output in code we statically imported following Fields and Methods:
 ```java
-class Test{
+java.lang.System:
+          java.io.PrintStream out;
+          java.io.PrintStream err;
 
-          public Test(){} // <-- Always set the default constructor if you use one with parameters
-          
-          void main(){
-                    //...Code to execute
-          }
-
-}
+java.io.PrintStream:
+          print(int i);
+          print(char c);
+          print(boolean b);
+          print(String s); // <-- Can only be called like this: System.out.print("Hello"); No Strings itself are implemented
+          println(int i);
+          println(char c);
+          println(boolean b);
+          println(String s);
+          println();
 ```
 
-You can then build the Class with:
+#### Build the file
+
+You can either create a `.class`-File to run it in the java-jre:
 ```
-java -jar HouseOfCompiler.jar ./Path/to/Test.java [outdir="."]
+java -jar HouseOfCompiler.jar <file.java> [out-dir="."]
 ````
-
-All The necessary `.class`-Files are now being build and will appear in the specified Out-Directory (if non is specified, it defaults to ".")
-If there were multiple Classes in one `.java`-File the Compiler will write the class files with a "`MainClass$`"-Prefix, where `MainClass` is the Name that is obtained from the FileName (e.g. if there is a class `Test` and another `Test2` in the same File but the filename is `Test.java` the Compiler will produce a `Test.class` and a `Test$Test2.class`) 
-
-You can now run the main-.class File with:
+or you can directly create a `.jar`-File from your `.java`-File (that also can be run in the jre, but when it consists of more than 1 file its easier to handle)
 ```
-java -jar HouseOfCompiler.jar outDir/Test.class
+java -jar HouseOfCompiler.jar -jar <file.java> [out-dir=".]
 ```
-If the original .java File contained more than One class, it will be loaded automatically with the other prefixed-`.class` Files.
 
+You can then either Run the `.class`-File:
+```
+java out.class
+```
 
-
+Or run the `.jar`:
+```
+java -jar out.jar
+```
