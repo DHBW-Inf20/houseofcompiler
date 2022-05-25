@@ -25,7 +25,6 @@ public class Testing {
             Compiler.getFactory().compileTest(fileName);
             var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
             ReflectLoader loader = new ReflectLoader(bc);
-            Class<?> c = loader.findClass(className);
             Object o;
 
             o = loader.getConstructor(className).newInstance();

@@ -321,6 +321,7 @@ public class MethodGenerator implements MethodCodeVisitor {
         switch (unary.getOperator()) {
             case INC, DEC -> visitArithmetic(unary);
             case NOT -> visitBoolLogic(unary);
+            default -> throw new IllegalArgumentException("Unexpected value: " + unary.getOperator());
         }
     }
 
@@ -335,6 +336,7 @@ public class MethodGenerator implements MethodCodeVisitor {
                 decUnary(unary);
                 unary.getExpression().accept(this);
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + unary.getOperator());
         }
     }
 
@@ -408,6 +410,7 @@ public class MethodGenerator implements MethodCodeVisitor {
                 unary.getExpression().accept(this);
                 mv.visitJumpInsn(Opcodes.IFNE, falseLabel); // == true -> false
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + unary.getOperator());
         }
 
         Label end = new Label();
@@ -430,6 +433,7 @@ public class MethodGenerator implements MethodCodeVisitor {
         switch (binary.getOperator()) {
             case PLUS, MINUS, MULT, DIV, MOD -> visitArithmetic(binary);
             case GREATER, LESS, GREATEREQUAL, LESSEQUAL, EQUAL, NOTEQUAL, AND, OR -> visitBoolLogic(binary);
+            default -> throw new IllegalArgumentException("Unexpected value: " + binary.getOperator());
         }
     }
 
@@ -446,6 +450,7 @@ public class MethodGenerator implements MethodCodeVisitor {
             case MULT -> mv.visitInsn(Opcodes.IMUL);
             case DIV -> mv.visitInsn(Opcodes.IDIV);
             case MOD -> mv.visitInsn(Opcodes.IREM);
+            default -> throw new IllegalArgumentException("Unexpected value: " + binary.getOperator());
         }
     }
 
@@ -510,6 +515,7 @@ public class MethodGenerator implements MethodCodeVisitor {
                     mv.visitJumpInsn(Opcodes.IF_ACMPEQ, falseLabel);
                 }
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + binary.getOperator());
         }
 
         Label end = new Label();

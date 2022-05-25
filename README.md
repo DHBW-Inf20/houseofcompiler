@@ -16,10 +16,13 @@ mentions: - Methods/Constructors are Overloadable
               - System.out.println 
               - System.err.print 
               - System.err.println
+          - Strings can be used in System.out.println
           - no inheritance 
           - no imports and packages
           - no interfaces and abstract classes
           - no Arrays and Exceptions
+          - no static methods
+            - only "public static void main(String[] args)" for the main class
 ```
 
 ## Used Tools
@@ -59,25 +62,25 @@ mentions: - Methods/Constructors are Overloadable
 
 ### Parsing + Abstract Syntax Tree
 
-Implemented by [@LukasEEH](https://github.com/LukasEEH):
+Implemented by Lukas Epple ([@LukasEEH](https://github.com/LukasEEH)):
 * ANTL-Grammar for the JavaSubset
 * Adapter to generate the Abstract Syntax Tree
 
 
 ### Semantic Check + Typed Syntax Tree
 
-Implemented by [@Lucs77777](https://github.com/Lucs77777) and [@Raqhael](https://github.com/Raqhael):
+Implemented by Luca Negron ([@Lucs77777](https://github.com/Lucs77777)):
 * Semantic-Visitors to typecheck the entire Syntax Tree
 * Semantic Error Handling
 
 ### Bytecode generation
 
-Implemented by [@FabiKl](https://github.com/FabiKl)
+Implemented by Fabian Klimpel ([@FabiKl](https://github.com/FabiKl)):
 * Translation from Abstract Syntax Tree to Java-Bytecode with ASM
 
 ### Testing 
 
-Implemented by [@Raqhael](https://github.com/Raqhael):
+Implemented by Raphael Sack ([@Raqhael](https://github.com/Raqhael)):
 * Tests to check if the Abstract Syntax Tree is generated correctly
 * Tests to check wheter the Semantic-Check types the AST correctly and throws errors
 * Tests to check if the Byte-Code is generated correctly (Tested with Java-Reflections)

@@ -487,10 +487,7 @@ public abstract class MockGenerator {
                                 "e");
 
                 classDecl.getFieldDelcarations().add(i);
-                Assign assignStmt = new Assign(new InstVar(new This(), "i"), new Null());
-                Block block = getBlock(assignStmt);
 
-                var parameters = getParameters(new MethodParameter(Primitives.INT, "i"));
 
                 var test = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.VOID), "test",
                                 getParameters(),
@@ -512,10 +509,7 @@ public abstract class MockGenerator {
                                 "selfRef");
 
                 classDecl.getFieldDelcarations().add(i);
-                Assign assignStmt = new Assign(new InstVar(new This(), "i"), new This());
-                Block block = getBlock(assignStmt);
 
-                var parameters = getParameters(new MethodParameter(Primitives.INT, "i"));
 
                 var foo = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "foo",
                                 getParameters(),
