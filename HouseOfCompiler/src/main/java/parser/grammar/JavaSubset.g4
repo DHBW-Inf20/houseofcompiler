@@ -32,13 +32,13 @@ crementExpr: incExpr | decExpr;
 
 incExpr: preIncExpr | sufIncExpr;
 
-preIncExpr: Plus Plus assignableExpr;
-sufIncExpr: assignableExpr Plus Plus;
+preIncExpr: '++' assignableExpr;
+sufIncExpr: assignableExpr '++';
 
 decExpr: preDecExpr | sufDecExpr;
 
-preDecExpr: Minus Minus assignableExpr;
-sufDecExpr: assignableExpr Minus Minus;
+preDecExpr: '--' assignableExpr;
+sufDecExpr: assignableExpr '--';
 
 assignableExpr: Identifier | instVar;
 
