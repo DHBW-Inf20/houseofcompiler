@@ -89,11 +89,9 @@ Implemented by Raphael Sack ([@Raqhael](https://github.com/Raqhael)):
 
 ## Installation
 
-This Project using [maven v4.0.0](https://maven.apache.org/) and can be easily built using IntelliJ, Eclipse and other JavaIDE's
+This Project using [maven v4.0.0](https://maven.apache.org/) and can be easily built using IntelliJ, Eclipse and other JavaIDE's with the given pom.xml-File
 
-## Usage
-
-When you wanna Test the Compiler without building a jar file, you can simply go to `src.main.java.main.Testing.java` and Compiles the given .java-File (found in `src.main.resources.*`). It will run the Compiler, builds the .class-Files into the `./build`-Directory and a Java-Reflection loader will invoke a non-statically main method and prints the output to the stdout.
+The main-Method is located the `main.main`
 
 ## Downloads
 
