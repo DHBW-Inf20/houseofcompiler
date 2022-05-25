@@ -31,7 +31,7 @@ public class MethodCallAdapter {
                 receiver = new LocalOrFieldVar(methodCallContext.receiver().Identifier().getText());
             }
         }
-        if (methodCallContext.receivingMethod().size() > 0) { // A.b.m().n()
+        if (methodCallContext.receivingMethod() != null && methodCallContext.receivingMethod().size() > 0) { // A.b.m().n()
             receiver = recursivelyAdaptRecievingMethods(methodCallContext.receivingMethod(),
                     methodCallContext.receivingMethod().size() - 1, receiver);
         }
