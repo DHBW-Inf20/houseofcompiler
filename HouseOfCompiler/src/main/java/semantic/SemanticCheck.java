@@ -79,17 +79,7 @@ public class SemanticCheck implements SemanticVisitor {
         }
     }
 
-    /**
-     * @param type1
-     * @param type2
-     * @return boolean
-     */
-    private boolean compareTypes(Type type1, Type type2) {
-        return (type1.equals(type2) ||
-                type1.equals(new ReferenceType("Object"))) ||
-                (type1.equals(new BaseType(Primitives.INT)) &&
-                        type2.equals(new BaseType(Primitives.CHAR)));
-    }
+
 
     /**
      * @param toCheck

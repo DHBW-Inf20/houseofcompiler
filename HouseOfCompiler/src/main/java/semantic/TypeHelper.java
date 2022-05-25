@@ -47,15 +47,7 @@ public class TypeHelper {
         return Objects.equals(boolType, type);
     }
 
-    /**
-     * @param blockType
-     * @param type
-     * @return Type
-     */
-    private Type getUpperBound(Type blockType, Type type) {
 
-        return null;
-    }
 
     /**
      * @param identifier
