@@ -109,8 +109,8 @@ To later run the code, its important to place the main-method in the Class that 
 To Show output in code we statically imported following Fields and Methods:
 ```java
 java.lang.System:
-          static java/io/PrintStream out;
-          static java/io/PrintStream err;
+          java.io.PrintStream out;
+          java.io.PrintStream err;
 
 java.io.PrintStream:
           print(int i);
