@@ -226,6 +226,8 @@ public class Compiler implements CompilerFactory {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            System.err.println("No unique main method found.");
         }
     }
 
