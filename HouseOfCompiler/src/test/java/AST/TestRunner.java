@@ -254,4 +254,20 @@ public class TestRunner {
         assertEquals(expectedAst, generatedAst);
     }
 
+    @Test
+    @DisplayName("IncTest")
+    void incTest() {
+        Program generatedAst = Resources.getProgram("SimpleTests/IncTest.java");
+        Program expectedAst = MockGenerator.getIncTestAst();
+        assertEquals(expectedAst, generatedAst);
+    }
+
+    @Test
+    @DisplayName("DecTest")
+    void decTest() {
+        Program generatedAst = Resources.getProgram("SimpleTests/DecTest.java");
+        Program expectedAst = MockGenerator.getDecTestAst();
+        assertEquals(expectedAst, generatedAst);
+    }
+
 }

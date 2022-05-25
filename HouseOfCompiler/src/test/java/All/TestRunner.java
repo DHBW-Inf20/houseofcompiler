@@ -1195,4 +1195,39 @@ public class TestRunner {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    @DisplayName("IncDecStressTest")
+    void incDecTest() {
+        Program program = Resources.getProgram("SimpleTests/IncDecStressTest.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("IncDecStressTest");
+        Object o = null;
+        int value = 5;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var incrementThenReturn = loader.getMethod("IncDecStressTest", "incrementThenReturn", int.class);
+            var returnThenIncrement = loader.getMethod("IncDecStressTest", "returnThenIncrement", int.class);
+            var decrementThenReturn = loader.getMethod("IncDecStressTest", "decrementThenReturn", int.class);
+            var returnThenDecrement = loader.getMethod("IncDecStressTest", "returnThenDecrement", int.class);
+            var callInline = loader.getMethod("IncDecStressTest", "callInline", int.class);
+
+            var shouldBeIncremented = incrementThenReturn.invoke(o, value);
+            var shouldBeSame = returnThenIncrement.invoke(o, value);
+            var shouldBeDecremented = decrementThenReturn.invoke(o, value);
+            var shouldBeSame2 = returnThenDecrement.invoke(o, value);
+            var shouldBeIncremented2 = callInline.invoke(o, value);
+
+            assertEquals(value + 1, shouldBeIncremented);
+            assertEquals(value, shouldBeSame);
+            assertEquals(value - 1, shouldBeDecremented);
+            assertEquals(value, shouldBeSame2);
+            assertEquals(value + 1, shouldBeIncremented2);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 }

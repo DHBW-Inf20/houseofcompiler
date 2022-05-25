@@ -1,12 +1,16 @@
 package syntaxtree.statementexpression;
 
-import common.*;
+import java.util.Objects;
+
+import common.BaseType;
+import common.Operator;
+import common.Primitives;
+import common.ReferenceType;
+import common.Type;
 import semantic.TypeCheckResult;
 import syntaxtree.expressions.IExpression;
 import visitor.SemanticVisitor;
 import visitor.codevisitor.MethodCodeVisitor;
-
-import java.util.Objects;
 
 public class CrementStmtExpr implements IStatementExpression {
 
@@ -118,6 +122,17 @@ public class CrementStmtExpr implements IStatementExpression {
      */
     @Override
     public String toString() {
-        return this.type + ": " + expression + ";\n";
+        switch (operator) {
+            case INCPRE:
+                return "++" + expression.toString() + " (" + this.type + ")";
+            case DECPRE:
+                return "--" + expression.toString() + " (" + this.type + ")";
+            case INCSUF:
+                return expression.toString() + "++" + " (" + this.type + ")";
+            case DECSUF:
+                return expression.toString() + "--" + " (" + this.type + ")";
+            default:
+                return "CrementWithWrongOperator???";
+        }
     }
 }

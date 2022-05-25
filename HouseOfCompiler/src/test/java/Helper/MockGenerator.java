@@ -17,6 +17,7 @@ import syntaxtree.expressions.Null;
 import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
@@ -488,7 +489,6 @@ public abstract class MockGenerator {
 
                 classDecl.getFieldDelcarations().add(i);
 
-
                 var test = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.VOID), "test",
                                 getParameters(),
                                 getBlock(new Assign(new LocalOrFieldVar("e"), new Null())));
@@ -509,7 +509,6 @@ public abstract class MockGenerator {
                                 "selfRef");
 
                 classDecl.getFieldDelcarations().add(i);
-
 
                 var foo = new MethodDecl(AccessModifier.PACKAGE_PRIVATE, new BaseType(Primitives.INT), "foo",
                                 getParameters(),
@@ -817,6 +816,146 @@ public abstract class MockGenerator {
                 var method = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), block);
 
                 expectedAst.getClasses().firstElement().getMethodDeclarations().add(method);
+
+                expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+                return expectedAst;
+        }
+
+        public static Program getIncTestAst() {
+                Program expectedAst = getEmptyProgram("IncTest");
+                Block forBlock = getBlock(new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                                getArguments(new LocalOrFieldVar("i"))));
+                Block blockfoo = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                                                new Binary(new LocalOrFieldVar("i"), new IntegerExpr(10),
+                                                                Operator.LESS),
+                                                new CrementStmtExpr(new LocalOrFieldVar("i"), Operator.INCSUF),
+                                                forBlock));
+
+                Block blockbar = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                                                new Binary(new LocalOrFieldVar("i"), new IntegerExpr(10),
+                                                                Operator.LESS),
+                                                new CrementStmtExpr(new LocalOrFieldVar("i"), Operator.INCPRE),
+                                                forBlock));
+
+                var foo = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), blockfoo);
+
+                var bar = new MethodDecl(new BaseType(Primitives.VOID), "bar", getEmptyParameters(), blockbar);
+
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(foo);
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(bar);
+
+                expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+                return expectedAst;
+        }
+
+        public static Program getIncTestTast() {
+                Program expectedAst = getEmptyProgram("IncTest");
+                var iv = new InstVar(new ReferenceType("java/io/PrintStream"),
+                                new LocalOrFieldVar(new ReferenceType("java/lang/System"), "System"), "out");
+                iv.setAccessModifier(AccessModifier.PUBLIC_STATIC);
+                Block forBlock = getBlock(new MethodCall(new BaseType(Primitives.VOID),
+                                iv,
+                                "println",
+                                getArguments(new LocalOrFieldVar(new BaseType(Primitives.INT), "i"))));
+                Block fooblock = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                                                new Binary(new BaseType(Primitives.BOOL),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                new IntegerExpr(10),
+                                                                Operator.LESS),
+                                                new CrementStmtExpr(new BaseType(Primitives.INT),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                Operator.INCSUF),
+                                                forBlock));
+                Block barblock = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(0)),
+                                                new Binary(new BaseType(Primitives.BOOL),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                new IntegerExpr(10),
+                                                                Operator.LESS),
+                                                new CrementStmtExpr(new BaseType(Primitives.INT),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                Operator.INCPRE),
+                                                forBlock));
+                var foo = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), fooblock);
+                var bar = new MethodDecl(new BaseType(Primitives.VOID), "bar", getEmptyParameters(), barblock);
+
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(foo);
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(bar);
+
+                expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+                return expectedAst;
+        }
+
+        public static Program getDecTestAst() {
+                Program expectedAst = getEmptyProgram("DecTest");
+                Block forBlock = getBlock(new MethodCall(new InstVar(new LocalOrFieldVar("System"), "out"), "println",
+                                getArguments(new LocalOrFieldVar("i"))));
+                Block blockfoo = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(10)),
+                                                new Binary(new LocalOrFieldVar("i"), new IntegerExpr(0),
+                                                                Operator.GREATER),
+                                                new CrementStmtExpr(new LocalOrFieldVar("i"), Operator.DECSUF),
+                                                forBlock));
+
+                Block blockbar = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(10)),
+                                                new Binary(new LocalOrFieldVar("i"), new IntegerExpr(0),
+                                                                Operator.GREATER),
+                                                new CrementStmtExpr(new LocalOrFieldVar("i"), Operator.DECPRE),
+                                                forBlock));
+
+                var foo = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), blockfoo);
+
+                var bar = new MethodDecl(new BaseType(Primitives.VOID), "bar", getEmptyParameters(), blockbar);
+
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(foo);
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(bar);
+
+                expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
+
+                return expectedAst;
+        }
+
+        public static Program getDecTestTast() {
+                Program expectedAst = getEmptyProgram("DecTest");
+                var iv = new InstVar(new ReferenceType("java/io/PrintStream"),
+                                new LocalOrFieldVar(new ReferenceType("java/lang/System"), "System"), "out");
+                iv.setAccessModifier(AccessModifier.PUBLIC_STATIC);
+                Block forBlock = getBlock(new MethodCall(new BaseType(Primitives.VOID),
+                                iv,
+                                "println",
+                                getArguments(new LocalOrFieldVar(new BaseType(Primitives.INT), "i"))));
+                Block fooblock = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(10)),
+                                                new Binary(new BaseType(Primitives.BOOL),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                new IntegerExpr(0),
+                                                                Operator.GREATER),
+                                                new CrementStmtExpr(new BaseType(Primitives.INT),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                Operator.DECSUF),
+                                                forBlock));
+                Block barblock = getBlock(
+                                new ForStmt(new LocalVarDecl(new BaseType(Primitives.INT), "i", new IntegerExpr(10)),
+                                                new Binary(new BaseType(Primitives.BOOL),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                new IntegerExpr(0),
+                                                                Operator.GREATER),
+                                                new CrementStmtExpr(new BaseType(Primitives.INT),
+                                                                new LocalOrFieldVar(new BaseType(Primitives.INT), "i"),
+                                                                Operator.DECPRE),
+                                                forBlock));
+                var foo = new MethodDecl(new BaseType(Primitives.VOID), "foo", getEmptyParameters(), fooblock);
+                var bar = new MethodDecl(new BaseType(Primitives.VOID), "bar", getEmptyParameters(), barblock);
+
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(foo);
+                expectedAst.getClasses().firstElement().getMethodDeclarations().add(bar);
 
                 expectedAst.getClasses().firstElement().getConstructorDeclarations().add(new ConstructorDecl());
 

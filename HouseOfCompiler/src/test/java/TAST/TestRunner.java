@@ -305,4 +305,20 @@ public class TestRunner {
         assertEquals(expectedTast, generatedTast);
     }
 
+    @Test
+    @DisplayName("IncTest")
+    void incTest() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getIncTestAst());
+        Program expectedTast = MockGenerator.getIncTestTast();
+        assertEquals(expectedTast, generatedTast);
+    }
+
+    @Test
+    @DisplayName("DecTest")
+    void decTest() {
+        Program generatedTast = Compiler.getFactory().getTastAdapter().getTast(MockGenerator.getDecTestAst());
+        Program expectedTast = MockGenerator.getDecTestTast();
+        assertEquals(expectedTast, generatedTast);
+    }
+
 }

@@ -3,6 +3,8 @@ package CodeGen;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
@@ -20,6 +22,11 @@ import syntaxtree.structure.Program;
 
 @DisplayName("Bytecode Generation")
 public class TestRunner {
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
 
     @Test
     @DisplayName("Empty Class")
@@ -283,6 +290,64 @@ public class TestRunner {
         try {
             var m = c.getMethod("main", String[].class);
             m.invoke(null, new Object[] { new String[] {} });
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("IncTest")
+    void incTest() {
+        Program tast = MockGenerator.getIncTestTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("IncTest");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("IncTest", "foo");
+            var bar = loader.getMethod("IncTest", "bar");
+            foo.invoke(o);
+            bar.invoke(o);
+            System.setOut(new PrintStream(outContent));
+            foo.invoke(o);
+            var expected = new String("0123456789").replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            outContent.reset();
+            assertEquals(expected, actual);
+            bar.invoke(o);
+            actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("DecTest")
+    void decTest() {
+        Program tast = MockGenerator.getDecTestTast();
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        Class<?> c = loader.findClass("DecTest");
+        Object o = null;
+        try {
+            o = c.getDeclaredConstructor().newInstance();
+            var foo = loader.getMethod("DecTest", "foo");
+            var bar = loader.getMethod("DecTest", "bar");
+            foo.invoke(o);
+            bar.invoke(o);
+            System.setOut(new PrintStream(outContent));
+            foo.invoke(o);
+            var expected = new String("10987654321").replaceAll("\\p{C}", "");
+            var actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            outContent.reset();
+            assertEquals(expected, actual);
+            bar.invoke(o);
+            actual = new String(outContent.toByteArray()).replaceAll("\\p{C}", "");
+            assertEquals(expected, actual);
+            System.setOut(originalOut);
         } catch (Exception e) {
             fail(e.getMessage());
         }
