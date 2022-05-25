@@ -6,28 +6,33 @@ import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.IStatementExpression;
 
 public class CrementExprAdapter {
-    public static IStatementExpression adapt(JavaSubsetParser.CrementExprContext crementExprContext){
-        if(crementExprContext.incExpr() != null)
+    public static IStatementExpression adapt(JavaSubsetParser.CrementExprContext crementExprContext) {
+        int line = crementExprContext.getStart().getLine();
+        int column = crementExprContext.getStart().getCharPositionInLine();
+        if (crementExprContext.incExpr() != null)
             if (crementExprContext.incExpr().preIncExpr() != null)
                 return new CrementStmtExpr(
                         AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
-                        Operator.INCPRE
-                );
+                        Operator.INCPRE,
+                        line,
+                        column);
             else
                 return new CrementStmtExpr(
                         AssignableExpressionAdapter.adapt(crementExprContext.incExpr().sufIncExpr().assignableExpr()),
-                        Operator.INCSUF
-                );
+                        Operator.INCSUF,
+                        line,
+                        column);
+        else if (crementExprContext.decExpr().preDecExpr() != null)
+            return new CrementStmtExpr(
+                    AssignableExpressionAdapter.adapt(crementExprContext.decExpr().preDecExpr().assignableExpr()),
+                    Operator.DECPRE,
+                    line,
+                    column);
         else
-            if (crementExprContext.decExpr().preDecExpr() != null)
-                return new CrementStmtExpr(
-                        AssignableExpressionAdapter.adapt(crementExprContext.decExpr().preDecExpr().assignableExpr()),
-                        Operator.DECPRE
-                );
-            else
-                return new CrementStmtExpr(
-                        AssignableExpressionAdapter.adapt(crementExprContext.decExpr().sufDecExpr().assignableExpr()),
-                        Operator.DECSUF
-                );
+            return new CrementStmtExpr(
+                    AssignableExpressionAdapter.adapt(crementExprContext.decExpr().sufDecExpr().assignableExpr()),
+                    Operator.DECSUF,
+                    line,
+                    column);
     }
 }

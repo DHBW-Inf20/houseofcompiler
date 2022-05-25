@@ -79,8 +79,6 @@ public class SemanticCheck implements SemanticVisitor {
         }
     }
 
-
-
     /**
      * @param toCheck
      * @return TypeCheckResult
@@ -165,11 +163,14 @@ public class SemanticCheck implements SemanticVisitor {
         toCheck.getExpression().accept(this);
         Type type = toCheck.getExpression().getType();
 
-        if (type instanceof BaseType && (((BaseType) type).getIdentifier() == Primitives.INT || ((BaseType) type).getIdentifier() == Primitives.CHAR)) {
+        if (type instanceof BaseType && (((BaseType) type).getIdentifier() == Primitives.INT
+                || ((BaseType) type).getIdentifier() == Primitives.CHAR)) {
             toCheck.setType(toCheck.getExpression().getType());
         } else {
             valid = false;
-            //schreib hier den error rein bitte
+            errors.add(new TypeMismatchException("The Operator: " + toCheck.getOperator()
+                    + " is undefined for the argument type: " + toCheck.getExpression().getType()
+                    + TypeHelper.generateLocationString(toCheck.line, toCheck.column, fileName)));
         }
         return new TypeCheckResult(valid, null);
     }
