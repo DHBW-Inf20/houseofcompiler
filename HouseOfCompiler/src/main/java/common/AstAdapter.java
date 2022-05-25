@@ -27,10 +27,13 @@ public class AstAdapter implements IAstAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         JavaSubsetLexer lexer = new JavaSubsetLexer(charStream);
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaSubsetParser parser = new JavaSubsetParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(ThrowingErrorListener.INSTANCE);
         return ProgramAdapter.adapt(parser.program());
     }
 }

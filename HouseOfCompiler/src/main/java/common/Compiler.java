@@ -231,7 +231,7 @@ public class Compiler implements CompilerFactory {
 
     private byte[] getManifest(String main) {
         String manifest = "Manifest-Version: 1.0" + "\n" +
-                            "Main-Class: " + main + "\n";
+                "Main-Class: " + main + "\n";
         return manifest.getBytes(StandardCharsets.UTF_8);
     }
 
