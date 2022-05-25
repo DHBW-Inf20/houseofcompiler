@@ -13,11 +13,7 @@ public class AssignAdapter {
      */
     public static Assign adapt(JavaSubsetParser.AssignContext assignContext) {
         var rExpression = ExpressionAdapter.adapt(assignContext.expression());
-        IExpression lExpression;
-        if (assignContext.instVar() != null)
-            lExpression = InstVarAdapter.adapt(assignContext.instVar());
-        else
-            lExpression = new LocalOrFieldVar(assignContext.Identifier().getText());
+        var lExpression = AssignableExpressionAdapter.adapt(assignContext.assignableExpr());
         return new Assign(lExpression, rExpression, assignContext.start.getLine(),
                 assignContext.start.getCharPositionInLine());
     }
