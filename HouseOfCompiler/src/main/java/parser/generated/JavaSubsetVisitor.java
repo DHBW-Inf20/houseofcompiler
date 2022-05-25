@@ -107,11 +107,35 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIncExpr(JavaSubsetParser.IncExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#preIncExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPreIncExpr(JavaSubsetParser.PreIncExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#sufIncExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSufIncExpr(JavaSubsetParser.SufIncExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#decExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDecExpr(JavaSubsetParser.DecExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#preDecExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPreDecExpr(JavaSubsetParser.PreDecExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#sufDecExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSufDecExpr(JavaSubsetParser.SufDecExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#assignableExpr}.
 	 * @param ctx the parse tree

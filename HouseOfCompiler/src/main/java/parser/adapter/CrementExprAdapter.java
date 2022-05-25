@@ -1,11 +1,33 @@
 package parser.adapter;
 
+import common.Operator;
 import parser.generated.JavaSubsetParser;
-import syntaxtree.expressions.Unary;
+import syntaxtree.statementexpression.CrementStmtExpr;
+import syntaxtree.statementexpression.IStatementExpression;
 
 public class CrementExprAdapter {
-    public static Unary adapt(JavaSubsetParser.CrementExprContext crementExprContext){
+    public static IStatementExpression adapt(JavaSubsetParser.CrementExprContext crementExprContext){
         if(crementExprContext.incExpr() != null)
-            return new Unary()
+            if (crementExprContext.incExpr().preIncExpr() != null)
+                return new CrementStmtExpr(
+                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        Operator.INCPRE
+                );
+            else
+                return new CrementStmtExpr(
+                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        Operator.INCSUF
+                );
+        else
+            if (crementExprContext.decExpr().preDecExpr() != null)
+                return new CrementStmtExpr(
+                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        Operator.DECPRE
+                );
+            else
+                return new CrementStmtExpr(
+                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        Operator.DECSUF
+                );
     }
 }

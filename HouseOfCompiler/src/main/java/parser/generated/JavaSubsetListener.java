@@ -168,6 +168,26 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitIncExpr(JavaSubsetParser.IncExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#preIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreIncExpr(JavaSubsetParser.PreIncExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#preIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreIncExpr(JavaSubsetParser.PreIncExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#sufIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSufIncExpr(JavaSubsetParser.SufIncExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#sufIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSufIncExpr(JavaSubsetParser.SufIncExprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#decExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -177,6 +197,26 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDecExpr(JavaSubsetParser.DecExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#preDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreDecExpr(JavaSubsetParser.PreDecExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#preDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreDecExpr(JavaSubsetParser.PreDecExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#sufDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSufDecExpr(JavaSubsetParser.SufDecExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#sufDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSufDecExpr(JavaSubsetParser.SufDecExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#assignableExpr}.
 	 * @param ctx the parse tree

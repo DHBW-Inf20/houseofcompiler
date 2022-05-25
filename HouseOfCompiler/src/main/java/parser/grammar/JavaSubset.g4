@@ -29,8 +29,17 @@ stmtExpr: assign | newDecl | methodCall | crementExpr;
 notExpr: Not expression;
 
 crementExpr: incExpr | decExpr;
-incExpr: Plus Plus assignableExpr | assignableExpr Plus Plus;
-decExpr: Minus Minus assignableExpr | assignableExpr Minus Minus;
+
+incExpr: preIncExpr | sufIncExpr;
+
+preIncExpr: Plus Plus assignableExpr;
+sufIncExpr: assignableExpr Plus Plus;
+
+decExpr: preDecExpr | sufDecExpr;
+
+preDecExpr: Minus Minus assignableExpr;
+sufDecExpr: assignableExpr Minus Minus;
+
 assignableExpr: Identifier | instVar;
 
 instVar: This Dot Identifier | (This Dot)? (Identifier Dot)+ Identifier;
