@@ -15,18 +15,18 @@ public class CrementExprAdapter {
                 );
             else
                 return new CrementStmtExpr(
-                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().sufIncExpr().assignableExpr()),
                         Operator.INCSUF
                 );
         else
             if (crementExprContext.decExpr().preDecExpr() != null)
                 return new CrementStmtExpr(
-                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        AssignableExpressionAdapter.adapt(crementExprContext.decExpr().preDecExpr().assignableExpr()),
                         Operator.DECPRE
                 );
             else
                 return new CrementStmtExpr(
-                        AssignableExpressionAdapter.adapt(crementExprContext.incExpr().preIncExpr().assignableExpr()),
+                        AssignableExpressionAdapter.adapt(crementExprContext.decExpr().sufDecExpr().assignableExpr()),
                         Operator.DECSUF
                 );
     }

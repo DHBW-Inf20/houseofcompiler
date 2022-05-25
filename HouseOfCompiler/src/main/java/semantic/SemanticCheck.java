@@ -161,13 +161,17 @@ public class SemanticCheck implements SemanticVisitor {
      */
     @Override
     public TypeCheckResult typeCheck(CrementStmtExpr toCheck) {
+        boolean valid = true;
+        toCheck.getExpression().accept(this);
         Type type = toCheck.getExpression().getType();
+
         if (type instanceof BaseType && (((BaseType) type).getIdentifier() == Primitives.INT || ((BaseType) type).getIdentifier() == Primitives.CHAR)) {
             toCheck.setType(toCheck.getExpression().getType());
         } else {
+            valid = false;
             //schreib hier den error rein bitte
         }
-        return null;
+        return new TypeCheckResult(valid, null);
     }
 
     /**
