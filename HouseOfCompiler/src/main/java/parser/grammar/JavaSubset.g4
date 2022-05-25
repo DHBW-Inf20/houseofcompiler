@@ -18,15 +18,20 @@ argumentList: expression? | expression (Comma expression)*?;
 expression: subExpression | binaryExpr;
 
 //subExpression to dissolve left-recusion
-subExpression: This | Identifier | instVar  | value | stmtExpr | unaryExpr | OpenRoundBracket expression ClosedRoundBracket;
+subExpression: This | Identifier | instVar  | value | stmtExpr | notExpr | OpenRoundBracket expression ClosedRoundBracket;
 
 methodCall: receiver? receivingMethod* Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 //int a, {...}, while(a > 10){...}, for(i=0;i<10;i++){...}, if(...){...} else if{...} else{...}
 statement: returnStmt Semicolon | localVarDecl Semicolon | block | whileStmt | forStmt | ifElseStmt | stmtExpr Semicolon;
 //a = expr, new Object(), method(param1)
-stmtExpr: assign | newDecl | methodCall;
+stmtExpr: assign | newDecl | methodCall | crementExpr;
 
-unaryExpr: Not expression;
+notExpr: Not expression;
+
+crementExpr: incExpr | decExpr;
+incExpr: Plus Plus assignableExpr | assignableExpr Plus Plus;
+decExpr: Minus Minus assignableExpr | assignableExpr Minus Minus;
+assignableExpr: Identifier | instVar;
 
 instVar: This Dot Identifier | (This Dot)? (Identifier Dot)+ Identifier;
 
@@ -51,7 +56,7 @@ forStmt: For OpenRoundBracket (stmtExpr | localVarDecl) Semicolon (expression) S
 ifElseStmt: ifStmt elseStmt?;
 ifStmt: If OpenRoundBracket expression ClosedRoundBracket statement;
 elseStmt: Else statement;
-assign: (instVar | Identifier) Assign expression;
+assign: assignableExpr Assign expression;
 newDecl: New Identifier OpenRoundBracket argumentList ClosedRoundBracket;
 receiver: ((This | instVar | newDecl | Identifier) Dot);
 receivingMethod: Identifier OpenRoundBracket argumentList ClosedRoundBracket Dot; //reciever?

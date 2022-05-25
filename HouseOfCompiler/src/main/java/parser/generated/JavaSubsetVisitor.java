@@ -1,4 +1,4 @@
-// Generated from D:/Raqha/Dokumente/DHBW_Vorlesungen/TheoInf/CUM/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
+// Generated from C:/Users/lukas/Documents/Git-Repositories/houseofcompiler/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
 package parser.generated;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -89,11 +89,35 @@ public interface JavaSubsetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStmtExpr(JavaSubsetParser.StmtExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavaSubsetParser#unaryExpr}.
+	 * Visit a parse tree produced by {@link JavaSubsetParser#notExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnaryExpr(JavaSubsetParser.UnaryExprContext ctx);
+	T visitNotExpr(JavaSubsetParser.NotExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#crementExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCrementExpr(JavaSubsetParser.CrementExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#incExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIncExpr(JavaSubsetParser.IncExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#decExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecExpr(JavaSubsetParser.DecExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavaSubsetParser#assignableExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignableExpr(JavaSubsetParser.AssignableExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavaSubsetParser#instVar}.
 	 * @param ctx the parse tree

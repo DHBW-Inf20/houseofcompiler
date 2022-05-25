@@ -16,7 +16,11 @@ public enum Operator {
     NOT("!"),
     AND("&&"),
     MOD("%"),
-    OR("||");
+    OR("||"),
+    INCPRE("++"),
+    INCSUF("++"),
+    DECPRE("--"),
+    DECSUF("--");
 
     private String symbol;
 

@@ -14,6 +14,8 @@ public class StatementExpressionAdapter {
             return AssignAdapter.adapt(stmtExprContext.assign());
         else if (stmtExprContext.newDecl() != null)
             return NewDeclAdapter.adapt(stmtExprContext.newDecl());
+        else if (stmtExprContext.crementExpr() != null)
+            return CrementExprAdapter
         else // methodCall
             return MethodCallAdapter.adapt(stmtExprContext.methodCall());
     }
