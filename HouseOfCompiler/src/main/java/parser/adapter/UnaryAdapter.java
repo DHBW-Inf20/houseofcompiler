@@ -7,16 +7,16 @@ import syntaxtree.expressions.Unary;
 public class UnaryAdapter {
 
     /**
-     * @param unaryExprContext
+     * @param notExprContext
      * @return Unary
      */
-    public static Unary adapt(JavaSubsetParser.UnaryExprContext unaryExprContext) {
-        unaryExprContext.start.getLine();
-        unaryExprContext.start.getCharPositionInLine();
+    public static Unary adapt(JavaSubsetParser.NotExprContext notExprContext) {
+        notExprContext.start.getLine();
+        notExprContext.start.getCharPositionInLine();
         return new Unary(
-                ExpressionAdapter.adapt(unaryExprContext.expression()),
+                ExpressionAdapter.adapt(notExprContext.expression()),
                 Operator.NOT,
-                unaryExprContext.start.getLine(),
-                unaryExprContext.start.getCharPositionInLine());
+                notExprContext.start.getLine(),
+                notExprContext.start.getCharPositionInLine());
     }
 }
