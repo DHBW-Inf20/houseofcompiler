@@ -1,4 +1,4 @@
-// Generated from D:/Raqha/Dokumente/DHBW_Vorlesungen/TheoInf/CUM/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
+// Generated from C:/Users/lukas/Documents/Git-Repositories/houseofcompiler/HouseOfCompiler/src/main/java/parser/grammar\JavaSubset.g4 by ANTLR 4.9.2
 package parser.generated;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -138,15 +138,95 @@ public interface JavaSubsetListener extends ParseTreeListener {
 	 */
 	void exitStmtExpr(JavaSubsetParser.StmtExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavaSubsetParser#unaryExpr}.
+	 * Enter a parse tree produced by {@link JavaSubsetParser#notExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnaryExpr(JavaSubsetParser.UnaryExprContext ctx);
+	void enterNotExpr(JavaSubsetParser.NotExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JavaSubsetParser#unaryExpr}.
+	 * Exit a parse tree produced by {@link JavaSubsetParser#notExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnaryExpr(JavaSubsetParser.UnaryExprContext ctx);
+	void exitNotExpr(JavaSubsetParser.NotExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#crementExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCrementExpr(JavaSubsetParser.CrementExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#crementExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCrementExpr(JavaSubsetParser.CrementExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#incExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncExpr(JavaSubsetParser.IncExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#incExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncExpr(JavaSubsetParser.IncExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#preIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreIncExpr(JavaSubsetParser.PreIncExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#preIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreIncExpr(JavaSubsetParser.PreIncExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#sufIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSufIncExpr(JavaSubsetParser.SufIncExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#sufIncExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSufIncExpr(JavaSubsetParser.SufIncExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#decExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecExpr(JavaSubsetParser.DecExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#decExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecExpr(JavaSubsetParser.DecExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#preDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreDecExpr(JavaSubsetParser.PreDecExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#preDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreDecExpr(JavaSubsetParser.PreDecExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#sufDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSufDecExpr(JavaSubsetParser.SufDecExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#sufDecExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSufDecExpr(JavaSubsetParser.SufDecExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavaSubsetParser#assignableExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignableExpr(JavaSubsetParser.AssignableExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavaSubsetParser#assignableExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignableExpr(JavaSubsetParser.AssignableExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavaSubsetParser#instVar}.
 	 * @param ctx the parse tree
