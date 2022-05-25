@@ -194,7 +194,6 @@ public class Compiler implements CompilerFactory {
         IProgramGenerator programGenerator = this.getProgramGenerator();
         Program program = astAdapter.getAst(inputStream);
 
-        var className = program.getClasses().get(0).getIdentifier();
         Program tast = tastAdapter.getTast(program);
         var bc = programGenerator.generateBytecode(tast);
 

@@ -236,7 +236,7 @@ public class TestRunner {
 
         System.out.println(program);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
     }
 
     @Test
@@ -280,7 +280,6 @@ public class TestRunner {
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
         Class<?> c = loader.findClass("MainMethodTest");
-        int i = 0;
         try {
             var m = c.getMethod("main", String[].class);
             m.invoke(null, new Object[] { new String[] {} });

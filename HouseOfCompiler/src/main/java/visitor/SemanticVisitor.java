@@ -12,6 +12,7 @@ import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
@@ -33,6 +34,8 @@ public interface SemanticVisitor {
     TypeCheckResult typeCheck(ClassDecl toCheck);
 
     TypeCheckResult typeCheck(FieldDecl toCheck);
+
+    TypeCheckResult typeCheck(CrementStmtExpr toCheck);
 
     TypeCheckResult typeCheck(ConstructorDecl toCheck);
 

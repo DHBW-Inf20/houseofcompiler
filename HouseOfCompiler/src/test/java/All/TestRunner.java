@@ -801,7 +801,7 @@ public class TestRunner {
 
         System.out.println(program);
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
     }
 
     @Test
@@ -813,7 +813,6 @@ public class TestRunner {
         System.out.println(tast);
         var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         ReflectLoader loader = new ReflectLoader(bc);
-        Class<?> clazz = loader.findClass("MultipleClassesMethodCalls");
         int x = 10;
         try {
             Object o = loader.getConstructor("MultipleClassesMethodCalls").newInstance();
@@ -880,8 +879,6 @@ public class TestRunner {
         try {
             Object o = loader.getConstructor("StringList", char.class).newInstance('H');
             var add = loader.getMethod("StringList", "add", char.class);
-            var get = loader.getMethod("StringList", "get", int.class);
-            var length = loader.getMethod("StringList", "length");
             var print = loader.getMethod("StringList", "print");
             add.invoke(o, 'e');
             add.invoke(o, 'l');
@@ -1071,7 +1068,7 @@ public class TestRunner {
     void methodCallsInWhile() {
         Program program = Resources.getProgram("SimpleTests/MethodCallsInWhile.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         // Just checks if no error is thrown
     }
 
@@ -1080,7 +1077,7 @@ public class TestRunner {
     void methodCallStressTest() {
         Program program = Resources.getProgram("SimpleTests/MethodCallStressTest.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
 
     }
 
@@ -1122,7 +1119,7 @@ public class TestRunner {
         // private final ByteArrayOutput
         Program program = Resources.getProgram("SimpleTests/VoidReturn.java");
         Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
-        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
         // ReflectLoader loader = new ReflectLoader(bc);
 
     }

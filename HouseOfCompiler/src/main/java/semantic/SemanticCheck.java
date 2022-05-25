@@ -29,6 +29,7 @@ import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
@@ -50,7 +51,6 @@ public class SemanticCheck implements SemanticVisitor {
     private ClassDecl currentClass;
 
     private ArrayList<String> currentFields = new ArrayList<>();
-    private String currentMethod = "";
     private Type currentMethodReturnType;
     private Type currentNullType;
     private String fileName;
@@ -160,6 +160,21 @@ public class SemanticCheck implements SemanticVisitor {
      * @return TypeCheckResult
      */
     @Override
+    public TypeCheckResult typeCheck(CrementStmtExpr toCheck) {
+        Type type = toCheck.getExpression().getType();
+        if (type instanceof BaseType && (((BaseType) type).getIdentifier() == Primitives.INT || ((BaseType) type).getIdentifier() == Primitives.CHAR)) {
+            toCheck.setType(toCheck.getExpression().getType());
+        } else {
+            //schreib hier den error rein bitte
+        }
+        return null;
+    }
+
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
+    @Override
     public TypeCheckResult typeCheck(ConstructorDecl toCheck) {
         boolean valid = true;
         currentLocalScope.pushScope();
@@ -169,7 +184,6 @@ public class SemanticCheck implements SemanticVisitor {
             currentLocalScope.addLocalVar(parameter);
         }
         currentMethodReturnType = new BaseType(Primitives.VOID);
-        currentMethod = this.currentClass.getIdentifier();
         var result = toCheck.getBlock().accept(this);
         currentLocalScope.popScope();
         if (result.getType() != null && result.getType() != new BaseType(Primitives.VOID)) {
@@ -211,7 +225,6 @@ public class SemanticCheck implements SemanticVisitor {
         // Check if this method is already declared
 
         currentMethodReturnType = methodDecl.getType();
-        currentMethod = methodDecl.getIdentifier();
         currentNullType = currentMethodReturnType; // Solange nicht in einem Assign oder Methoden-Aufruf dieser Typ
                                                    // gesetzt ist, ist dieser der Rückgabewert der Methode
         var result = methodDecl.getBlock().accept(this);
@@ -490,7 +503,7 @@ public class SemanticCheck implements SemanticVisitor {
         }
 
         try {
-            var constructor = TypeHelper.getConstructor(newDecl, this.context);
+            TypeHelper.getConstructor(newDecl, this.context);
         } catch (TypeMismatchException e) {
             errors.add(new SemanticError(e.getMessage() + TypeHelper.generateLocationString(newDecl.line,
                     newDecl.column, fileName)));
@@ -776,8 +789,6 @@ public class SemanticCheck implements SemanticVisitor {
         final boolean oneIsNull = lResult.getType() == null ^ rResult.getType() == null;
         // Unser Compiler kann ja nur BaseType-Operatoren verarbeiten und auch nur 2
         // gleiche Typen
-        // TODO: Chars dürfen mit Ints verglichen werden
-        // TODO: ReferenceTypes dürfen mit Equal und NotEqual verglichen werden
         if (isSame && !lIsReference) { // Wenn 2 gleiche BaseTypes miteinander verglichen werden
             var lBaseType = (BaseType) lType;
             switch (lBaseType.getIdentifier()) {

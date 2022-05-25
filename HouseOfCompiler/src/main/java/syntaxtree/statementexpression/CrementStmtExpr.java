@@ -10,26 +10,26 @@ import java.util.Objects;
 
 public class CrementStmtExpr implements IStatementExpression {
 
-    private IExpression stmtExpr;
+    private IExpression expression;
     private Operator operator;
     private Type type;
     public int line;
     public int column;
 
-    public CrementStmtExpr(IExpression stmtExpr, Operator operator) {
-        this.stmtExpr = stmtExpr;
+    public CrementStmtExpr(IExpression expression, Operator operator) {
+        this.expression = expression;
         this.operator = operator;
     }
 
-    public CrementStmtExpr(IExpression stmtExpr, Operator operator, int line, int col) {
-        this.stmtExpr = stmtExpr;
+    public CrementStmtExpr(IExpression expression, Operator operator, int line, int col) {
+        this.expression = expression;
         this.operator = operator;
         this.line = line;
         this.column = col;
     }
 
-    public CrementStmtExpr(Type type, IExpression stmtExpr, Operator operator) {
-        this.stmtExpr = stmtExpr;
+    public CrementStmtExpr(Type type, IExpression expression, Operator operator) {
+        this.expression = expression;
         this.operator = operator;
         this.type = type;
     }
@@ -37,8 +37,12 @@ public class CrementStmtExpr implements IStatementExpression {
     /**
      * @return IExpression
      */
-    public IExpression getExpr() {
-        return stmtExpr;
+    public IExpression getExpression() {
+        return expression;
+    }
+
+    public Operator getOperator() {
+        return operator;
     }
 
     /**
@@ -97,7 +101,7 @@ public class CrementStmtExpr implements IStatementExpression {
         if (o == null || getClass() != o.getClass())
             return false;
         CrementStmtExpr assign = (CrementStmtExpr) o;
-        return stmtExpr.equals(assign.stmtExpr)
+        return expression.equals(assign.expression)
                 && Objects.equals(type, assign.type);
     }
 
@@ -106,7 +110,7 @@ public class CrementStmtExpr implements IStatementExpression {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(stmtExpr, type);
+        return Objects.hash(expression, type);
     }
 
     /**
@@ -114,6 +118,6 @@ public class CrementStmtExpr implements IStatementExpression {
      */
     @Override
     public String toString() {
-        return this.type + ": " + stmtExpr + ";\n";
+        return this.type + ": " + expression + ";\n";
     }
 }

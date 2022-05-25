@@ -34,7 +34,6 @@ public class LocalVarDecl implements IStatement {
     }
 
     public LocalVarDecl(String identifier, IExpression expression, int line, int column) {
-        this.type = type;
         this.identifier = identifier;
         this.expression = expression;
         this.line = line;

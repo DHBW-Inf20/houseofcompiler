@@ -27,6 +27,7 @@ import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.*;
@@ -312,35 +313,32 @@ public class MethodGenerator implements MethodCodeVisitor {
                 false);
     }
 
-    /***************
-     * Expressions *
-     ***************/
-
     @Override
-    public void visit(Unary unary) {
-        switch (unary.getOperator()) {
-            case INC, DEC -> visitArithmetic(unary);
-            case NOT -> visitBoolLogic(unary);
+    public void visit(CrementStmtExpr cse) {
+        switch (cse.getOperator()) {
+            case INCPRE -> {
+                incStEx(cse);
+                cse.getExpression().accept(this);
+            }
+            case INCSUF -> {
+                cse.getExpression().accept(this);
+                incStEx(cse);
+            }
+            case DECPRE -> {
+                decStEx(cse);
+                cse.getExpression().accept(this);
+            }
+            case DECSUF -> {
+                cse.getExpression().accept(this);
+                decStEx(cse);
+            }
+            default -> throw new IllegalArgumentException("Unexpected value: " + cse.getOperator());
         }
     }
 
-
-    private void visitArithmetic(Unary unary) {
-        switch (unary.getOperator()) {
-            case INC -> {
-                incUnary(unary);
-                unary.getExpression().accept(this);
-            }
-            case DEC -> {
-                decUnary(unary);
-                unary.getExpression().accept(this);
-            }
-        }
-    }
-
-    private void incUnary(Unary unary) {
-        if (unary.getExpression() instanceof LocalOrFieldVar) {
-            LocalOrFieldVar lof = (LocalOrFieldVar) unary.getExpression();
+    private void incStEx(CrementStmtExpr cse) {
+        if (cse.getExpression() instanceof LocalOrFieldVar) {
+            LocalOrFieldVar lof = (LocalOrFieldVar) cse.getExpression();
             int index = localVars.get(lof.getIdentifier());
             if (index >= 0) {
                 mv.visitIincInsn(index, 1);
@@ -354,8 +352,8 @@ public class MethodGenerator implements MethodCodeVisitor {
                 mv.visitFieldInsn(Opcodes.PUTFIELD, className, lof.getIdentifier(),
                         GenUtils.generateDescriptor(lof.getType()));
             }
-        } else if (unary.getExpression() instanceof InstVar) {
-            InstVar instVar = (InstVar) unary.getExpression();
+        } else if (cse.getExpression() instanceof InstVar) {
+            InstVar instVar = (InstVar) cse.getExpression();
             visitInstVar(instVar, false);
             mv.visitInsn(Opcodes.DUP);
             mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClass, instVar.getIdentifier(),
@@ -367,9 +365,9 @@ public class MethodGenerator implements MethodCodeVisitor {
         }
     }
 
-    private void decUnary(Unary unary) {
-        if (unary.getExpression() instanceof LocalOrFieldVar) {
-            LocalOrFieldVar lof = (LocalOrFieldVar) unary.getExpression();
+    private void decStEx(CrementStmtExpr cse) {
+        if (cse.getExpression() instanceof LocalOrFieldVar) {
+            LocalOrFieldVar lof = (LocalOrFieldVar) cse.getExpression();
             int index = localVars.get(lof.getIdentifier());
             if (index >= 0) {
                 mv.visitIincInsn(index, -1);
@@ -383,8 +381,8 @@ public class MethodGenerator implements MethodCodeVisitor {
                 mv.visitFieldInsn(Opcodes.PUTFIELD, className, lof.getIdentifier(),
                         GenUtils.generateDescriptor(lof.getType()));
             }
-        } else if (unary.getExpression() instanceof InstVar) {
-            InstVar instVar = (InstVar) unary.getExpression();
+        } else if (cse.getExpression() instanceof InstVar) {
+            InstVar instVar = (InstVar) cse.getExpression();
             visitInstVar(instVar, false);
             mv.visitInsn(Opcodes.DUP);
             mv.visitFieldInsn(Opcodes.GETFIELD, this.lastClass, instVar.getIdentifier(),
@@ -393,6 +391,18 @@ public class MethodGenerator implements MethodCodeVisitor {
             mv.visitInsn(Opcodes.ISUB);
             mv.visitFieldInsn(Opcodes.PUTFIELD, this.lastClass, instVar.getIdentifier(),
                     GenUtils.generateDescriptor(instVar.getType()));
+        }
+    }
+
+    /***************
+     * Expressions *
+     ***************/
+
+    @Override
+    public void visit(Unary unary) {
+        switch (unary.getOperator()) {
+            case NOT -> visitBoolLogic(unary);
+            default -> throw new IllegalArgumentException("Unexpected value: " + unary.getOperator());
         }
     }
 
@@ -408,6 +418,7 @@ public class MethodGenerator implements MethodCodeVisitor {
                 unary.getExpression().accept(this);
                 mv.visitJumpInsn(Opcodes.IFNE, falseLabel); // == true -> false
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + unary.getOperator());
         }
 
         Label end = new Label();
@@ -430,6 +441,7 @@ public class MethodGenerator implements MethodCodeVisitor {
         switch (binary.getOperator()) {
             case PLUS, MINUS, MULT, DIV, MOD -> visitArithmetic(binary);
             case GREATER, LESS, GREATEREQUAL, LESSEQUAL, EQUAL, NOTEQUAL, AND, OR -> visitBoolLogic(binary);
+            default -> throw new IllegalArgumentException("Unexpected value: " + binary.getOperator());
         }
     }
 
@@ -446,6 +458,7 @@ public class MethodGenerator implements MethodCodeVisitor {
             case MULT -> mv.visitInsn(Opcodes.IMUL);
             case DIV -> mv.visitInsn(Opcodes.IDIV);
             case MOD -> mv.visitInsn(Opcodes.IREM);
+            default -> throw new IllegalArgumentException("Unexpected value: " + binary.getOperator());
         }
     }
 
@@ -510,6 +523,7 @@ public class MethodGenerator implements MethodCodeVisitor {
                     mv.visitJumpInsn(Opcodes.IF_ACMPEQ, falseLabel);
                 }
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + binary.getOperator());
         }
 
         Label end = new Label();

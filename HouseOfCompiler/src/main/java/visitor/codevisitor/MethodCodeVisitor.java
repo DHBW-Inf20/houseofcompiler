@@ -11,6 +11,7 @@ import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.*;
@@ -44,6 +45,8 @@ public interface MethodCodeVisitor {
 
     void visit(NewDecl newDecl);
 
+    void visit(CrementStmtExpr crementStmtExpr);
+
     // Expressions
     void visit(Unary unary);
 
@@ -64,4 +67,5 @@ public interface MethodCodeVisitor {
     void visit(Null nullExpr);
 
     void visit(This thisExpr);
+
 }

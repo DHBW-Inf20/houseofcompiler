@@ -6,7 +6,6 @@ import syntaxtree.expressions.Binary;
 import syntaxtree.expressions.IExpression;
 import syntaxtree.expressions.IntegerExpr;
 import syntaxtree.expressions.LocalOrFieldVar;
-import syntaxtree.statementexpression.MethodCall;
 
 public class DotExprAdapter {
     public static IExpression adapt(JavaSubsetParser.DotExprContext dotExprContext){
