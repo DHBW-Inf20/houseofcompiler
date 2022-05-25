@@ -29,6 +29,7 @@ import syntaxtree.expressions.StringExpr;
 import syntaxtree.expressions.This;
 import syntaxtree.expressions.Unary;
 import syntaxtree.statementexpression.Assign;
+import syntaxtree.statementexpression.CrementStmtExpr;
 import syntaxtree.statementexpression.MethodCall;
 import syntaxtree.statementexpression.NewDecl;
 import syntaxtree.statements.Block;
@@ -152,6 +153,21 @@ public class SemanticCheck implements SemanticVisitor {
         valid = valid && TypeHelper.typeExists(toCheck.getType(), context);
 
         return new TypeCheckResult(valid, toCheck.getType());
+    }
+
+    /**
+     * @param toCheck
+     * @return TypeCheckResult
+     */
+    @Override
+    public TypeCheckResult typeCheck(CrementStmtExpr toCheck) {
+        Type type = toCheck.getExpression().getType();
+        if (type instanceof BaseType && (((BaseType) type).getIdentifier() == Primitives.INT || ((BaseType) type).getIdentifier() == Primitives.CHAR)) {
+            toCheck.setType(toCheck.getExpression().getType());
+        } else {
+            //schreib hier den error rein bitte
+        }
+        return null;
     }
 
     /**
