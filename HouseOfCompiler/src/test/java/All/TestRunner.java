@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import org.junit.jupiter.api.DisplayName;
@@ -1229,5 +1230,25 @@ public class TestRunner {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("Div0Test")
+    void div0() {
+        Program program = Resources.getProgram("FailTests/Div0.java");
+        Program tast = Compiler.getFactory().getTastAdapter().getTast(program);
+        var bc = Compiler.getFactory().getProgramGenerator().generateBytecode(tast);
+        ReflectLoader loader = new ReflectLoader(bc);
+        try {
+            Class<?> c = loader.findClass("Div0");
+            var main = c.getMethod("main", String[].class);
+            main.invoke(null, new Object[] { new String[] {} });
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            System.err.println();
+            assertEquals("/ by zero", e.getCause().getMessage());
+            return;
+        }
+        fail("Should have thrown an exception");
+
     }
 }
