@@ -23,13 +23,13 @@ public class GenUtils {
     }
 
     public static void clearReturn(IStatement statement, MethodVisitor mv) {
-        if (statement instanceof MethodCall || statement instanceof NewDecl || statement instanceof Assign) {
+        if (statement instanceof IStatementExpression) {
             clearReturn((IStatementExpression) statement, mv);
         }
     }
 
     public static void clearReturn(IExpression expression, MethodVisitor mv) {
-        if (expression instanceof MethodCall || expression instanceof NewDecl || expression instanceof Assign) {
+        if (expression instanceof IStatementExpression) {
             clearReturn((IStatementExpression) expression, mv);
         }
     }
