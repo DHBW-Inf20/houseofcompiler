@@ -10,20 +10,21 @@ Access-Modifier: public, private, protected
 Operators: + - * / % || && == != < > <= => ! = ++ --
 Statements: if...else, while loop, for loop 
 Other Keywords: new, this, null, 
-mentions: - Methods/Constructors are Overloadable
+honorable-mentions: - Methods/Constructors are Overloadable
           - statically-imported Methods: 
               - System.out.print 
               - System.out.println 
               - System.err.print 
               - System.err.println
           - Strings can be used in System.out.println
+          - Semantic Error-Handling
+explicitly left out:
+          - no static methods
+            - only "public static void main(String[] args)" for the main class
           - no inheritance 
           - no imports and packages
           - no interfaces and abstract classes
           - no Arrays and Exceptions
-          - no static methods
-            - only "public static void main(String[] args)" for the main class
-          - Semantic Error-Handling
 ```
 
 ## Used Tools
