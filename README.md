@@ -90,7 +90,7 @@ Implemented by Raphael Sack ([@Raqhael](https://github.com/Raqhael)):
 
 ## Installation
 
-This Project using [maven v4.0.0](https://maven.apache.org/) (With Java 16+) and can be easily built using IntelliJ, Eclipse and other JavaIDE's with the given pom.xml-File
+This Project using [maven v4.0.0](https://maven.apache.org/) (with Java 16+) and can be easily built using IntelliJ, Eclipse and other JavaIDE's with the given pom.xml-File
 
 The main-Method is located the `main.main`
 
