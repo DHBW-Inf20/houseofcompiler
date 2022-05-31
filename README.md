@@ -6,10 +6,10 @@ Mini-Java compiler construction project for the 4th semester of computer science
 
 ```
 Base-Types: int, boolean, char;
-Access-Modifier: public, private, protected
+Access-Modifier: public, private, protected (class Declarations without Access-Modifier)
 Operators: + - * / % || && == != < > <= => ! = ++ --
 Statements: if...else, while loop, for loop 
-Other Keywords: new, this, null, 
+Other Keywords: class, new, this, null, 
 honorable-mentions: - Methods/Constructors are Overloadable
           - statically-imported Methods: 
               - System.out.print 
