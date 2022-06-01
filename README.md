@@ -6,24 +6,25 @@ Mini-Java compiler construction project for the 4th semester of computer science
 
 ```
 Base-Types: int, boolean, char;
-Access-Modifier: public, private, protected
+Access-Modifier: public, private, protected (class Declarations without Access-Modifier)
 Operators: + - * / % || && == != < > <= => ! = ++ --
 Statements: if...else, while loop, for loop 
-Other Keywords: new, this, null, 
-mentions: - Methods/Constructors are Overloadable
+Other Keywords: class, new, this, null, 
+honorable-mentions: - Methods/Constructors are Overloadable
           - statically-imported Methods: 
               - System.out.print 
               - System.out.println 
               - System.err.print 
               - System.err.println
           - Strings can be used in System.out.println
+          - Semantic Error-Handling
+explicitly left out:
+          - no static methods
+            - only "public static void main(String[] args)" for the main class
           - no inheritance 
           - no imports and packages
           - no interfaces and abstract classes
           - no Arrays and Exceptions
-          - no static methods
-            - only "public static void main(String[] args)" for the main class
-          - Semantic Error-Handling
 ```
 
 ## Used Tools
@@ -89,7 +90,7 @@ Implemented by Raphael Sack ([@Raqhael](https://github.com/Raqhael)):
 
 ## Installation
 
-This Project using [maven v4.0.0](https://maven.apache.org/) and can be easily built using IntelliJ, Eclipse and other JavaIDE's with the given pom.xml-File
+This Project using [maven v4.0.0](https://maven.apache.org/) (with Java 16+) and can be easily built using IntelliJ, Eclipse and other JavaIDE's with the given pom.xml-File
 
 The main-Method is located the `main.main`
 
