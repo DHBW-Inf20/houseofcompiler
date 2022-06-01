@@ -1,13 +1,7 @@
-class Test {
+class Tst {
 
-    void main() {
-        char i = 1;
-        i++;
-        boolean x = true;
-        x++;
-        int a = 1;
-        a++;
-        System.out.println('t');
+    public static void main(String[] args) {
+        int a = 1 / 0;
     }
 
 }

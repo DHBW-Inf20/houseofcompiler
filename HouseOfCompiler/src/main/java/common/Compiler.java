@@ -144,7 +144,7 @@ public class Compiler implements CompilerFactory {
         Program tast = tastAdapter.getTast(program);
         var bc = programGenerator.generateBytecode(tast);
         // Write the bytecode to a file
-        var prefix = className + "$";
+        var prefix = "";
         // Create folder build if it does not exist
         var buildFolder = new File(outDir);
         if (!buildFolder.exists()) {
